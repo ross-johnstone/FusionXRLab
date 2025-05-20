@@ -73,3 +73,28 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# IDE/editor-specific settings
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Unity Collaborate / PlasticSCM
+.collabignore
+.plastic/
+.ignore
+.wktree
+workspace.temp
+
+# Node modules (if using external JS tooling)
+node_modules/
+
+# Blender backups (if using .blend files)
+*.blend1
+*.blend2
+*.blend@
+*.bak.meta
