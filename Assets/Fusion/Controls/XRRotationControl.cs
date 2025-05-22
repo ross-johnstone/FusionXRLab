@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.XR;
-using Ubiq.Logging;
 using System.Collections.Generic;
 
 public class XRRotationControl : MonoBehaviour
@@ -16,11 +15,9 @@ public class XRRotationControl : MonoBehaviour
 
     private InputDevice leftHand;
     private InputDevice rightHand;
-    private ExperimentLogEmitter events;
 
     void Start()
     {
-        events = new ExperimentLogEmitter(this);
         InputDevices.deviceConnected += OnDeviceConnected;
         InputDevices.deviceDisconnected += OnDeviceDisconnected;
         RefreshControllers();
@@ -30,7 +27,10 @@ public class XRRotationControl : MonoBehaviour
     {
         if (!leftHand.isValid || !rightHand.isValid) return;
 
-        HandleThumbstickRotation();
+        if (ControlsManager.Instance.AreControlsEnabled())
+        {
+            HandleThumbstickRotation();
+        }
     }
 
     private void HandleThumbstickRotation()
@@ -98,8 +98,7 @@ public class XRRotationControl : MonoBehaviour
 
     private void LogRotation(string target, float rotationAmount)
     {
-        Debug.Log($"{target} rotated {rotationAmount:F2} degrees");
-        events?.Log($"{target} rotated {rotationAmount:F2} degrees");
+        Debug.Log($"[XRRotationControl] {target} rotated {rotationAmount:F2} degrees");
     }
 
     private void RefreshControllers()
@@ -118,13 +117,13 @@ public class XRRotationControl : MonoBehaviour
         if (leftHandDevices.Count > 0)
         {
             leftHand = leftHandDevices[0];
-            Debug.Log($"Found left controller: {leftHand.name}");
+            Debug.Log($"[XRRotationControl] Found left controller: {leftHand.name}");
         }
 
         if (rightHandDevices.Count > 0)
         {
             rightHand = rightHandDevices[0];
-            Debug.Log($"Found right controller: {rightHand.name}");
+            Debug.Log($"[XRRotationControl] Found right controller: {rightHand.name}");
         }
     }
 
@@ -134,14 +133,14 @@ public class XRRotationControl : MonoBehaviour
             device.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
         {
             leftHand = device;
-            Debug.Log($"Left controller connected: {leftHand.name}");
+            Debug.Log($"[XRRotationControl] Left controller connected: {leftHand.name}");
         }
 
         if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) &&
             device.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
         {
             rightHand = device;
-            Debug.Log($"Right controller connected: {rightHand.name}");
+            Debug.Log($"[XRRotationControl] Right controller connected: {rightHand.name}");
         }
     }
 
@@ -153,7 +152,7 @@ public class XRRotationControl : MonoBehaviour
             if (rightHand == device)
             {
                 rightHand = default(InputDevice);
-                Debug.Log("Right controller disconnected");
+                Debug.Log("[XRRotationControl] Right controller disconnected");
             }
         }
 
@@ -163,7 +162,7 @@ public class XRRotationControl : MonoBehaviour
             if (leftHand == device)
             {
                 leftHand = default(InputDevice);
-                Debug.Log("Left controller disconnected");
+                Debug.Log("[XRRotationControl] Left controller disconnected");
             }
         }
     }

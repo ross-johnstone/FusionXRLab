@@ -1613,6 +1613,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1081141707}
   - component: {fileID: 1081141708}
+  - component: {fileID: 1081141709}
   m_Layer: 0
   m_Name: Admin Controls
   m_TagString: Untagged
@@ -1652,6 +1653,18 @@ MonoBehaviour:
   networkScene: {fileID: 8839457145026391852}
   maxRotationSpeed: 90
   exponentialFactor: 2
+--- !u!114 &1081141709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081141706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68f10fd2adc5c1f478ed959353b50c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1285189039 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 291365661117087098, guid: ff023e59e9ac5a1469fd1b584e5d6d59, type: 3}
@@ -1815,7 +1828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1679218111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1947,7 +1960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1925840217
 Transform:
   m_ObjectHideFlags: 0
