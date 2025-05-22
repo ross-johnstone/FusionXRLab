@@ -223,6 +223,22 @@ public class AdminControls : MonoBehaviour
             }
         }
 
+        // Handle anchor placement with right trigger
+        if (rightHand.isValid && rightHand.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTriggerPressed))
+        {
+            if (rightTriggerPressed && SpatialAnchorManager.Instance != null)
+            {
+                // Get the position in front of the controller
+                rightHand.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 controllerPosition);
+                rightHand.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion controllerRotation);
+                Vector3 forward = controllerRotation * Vector3.forward;
+                
+                // Place anchor 2 meters in front of the controller
+                Vector3 anchorPosition = controllerPosition + (forward * 2f);
+                SpatialAnchorManager.Instance.PlaceAnchor(anchorPosition);
+            }
+        }
+
         // Periodic controller check
         if (Time.time > nextControllerCheck)
         {
