@@ -33,6 +33,11 @@ public class AdminControls : MonoBehaviour
     private float controllerCheckInterval = 0.1f;
     private float nextControllerCheck = 0f;
     private readonly WaitForSeconds initializationDelay = new WaitForSeconds(1f);
+    
+    // New fields for tracking scene rotation
+    private Quaternion originalSceneRotation;
+    private Quaternion currentSceneRotation;
+    private bool hasStoredOriginalRotation = false;
     #endregion
 
     #region Unity Lifecycle Methods
@@ -55,6 +60,7 @@ public class AdminControls : MonoBehaviour
         HandleControllerInput();
         CheckControllerState();
         HandleSceneRotation();
+        CheckAndUpdateHandRotation();
     }
 
     void OnDestroy()
@@ -289,14 +295,74 @@ public class AdminControls : MonoBehaviour
     #endregion
 
     #region Scene Manipulation
+    private void CheckAndUpdateHandRotation()
+    {
+        if (!hasStoredOriginalRotation || rootTransform == null) return;
+
+        Transform leftHandObj = xrOrigin?.Find("Left Hand");
+        Transform rightHandObj = xrOrigin?.Find("Right Hand");
+
+        // Check if hands are active and controllers are not
+        bool leftHandActive = leftHandObj != null && leftHandObj.gameObject.activeSelf;
+        bool rightHandActive = rightHandObj != null && rightHandObj.gameObject.activeSelf;
+        bool leftControllerActive = xrOrigin?.Find("Left Controller")?.gameObject.activeSelf ?? false;
+        bool rightControllerActive = xrOrigin?.Find("Right Controller")?.gameObject.activeSelf ?? false;
+
+        if ((leftHandActive && !leftControllerActive) || (rightHandActive && !rightControllerActive))
+        {
+            // Calculate rotation difference
+            Quaternion rotationDifference = rootTransform.rotation * Quaternion.Inverse(originalSceneRotation);
+
+            // Apply rotation to hands if they're active
+            if (leftHandActive && !leftControllerActive)
+            {
+                ApplyRotationToHand(leftHandObj, rotationDifference);
+            }
+            if (rightHandActive && !rightControllerActive)
+            {
+                ApplyRotationToHand(rightHandObj, rotationDifference);
+            }
+        }
+    }
+
+    private void ApplyRotationToHand(Transform handTransform, Quaternion rotationDifference)
+    {
+        if (handTransform == null) return;
+
+        // Get the current position relative to the XR Origin
+        Vector3 localPosition = handTransform.localPosition;
+        Quaternion localRotation = handTransform.localRotation;
+
+        // Apply the rotation difference
+        handTransform.localPosition = rotationDifference * localPosition;
+        handTransform.localRotation = rotationDifference * localRotation;
+    }
+
+    private void StoreOriginalSceneRotation()
+    {
+        if (rootTransform != null && !hasStoredOriginalRotation)
+        {
+            originalSceneRotation = rootTransform.rotation;
+            currentSceneRotation = originalSceneRotation;
+            hasStoredOriginalRotation = true;
+            Debug.Log("Stored original scene rotation: " + originalSceneRotation.eulerAngles);
+        }
+    }
+
     private void RotateSceneAroundPointThumbstick(Vector3 pivot, float rotationAmount)
     {
         if (!ValidateSceneComponents()) return;
 
+        // Store original rotation if not already stored
+        if (!hasStoredOriginalRotation)
+        {
+            StoreOriginalSceneRotation();
+        }
+
         Vector3 originalXROriginPos = xrOrigin.position;
         Vector3 originalCameraOffsetPos = cameraOffset != null ? cameraOffset.position : xrOrigin.position;
         Quaternion originalXROriginRot = xrOrigin.rotation;
-        
+
         rootTransform.RotateAround(pivot, Vector3.up, rotationAmount);
         
         xrOrigin.position = originalXROriginPos;
@@ -307,6 +373,9 @@ public class AdminControls : MonoBehaviour
             cameraOffset.position = originalCameraOffsetPos;
         }
 
+        // Update current scene rotation
+        currentSceneRotation = rootTransform.rotation;
+        
         LogRotation(rotationAmount);
     }
 

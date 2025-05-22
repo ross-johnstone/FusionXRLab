@@ -233,7 +233,9 @@ public class DeviceLogger : MonoBehaviour
             XRHandJoint joint = hand.GetJoint(jointId);
             if (joint.TryGetPose(out Pose pose))
             {
-                handEvents.Log($"{label}Joint", jointId, pose.position, pose.rotation, Time.time);
+                // Create a unique key for each joint by combining the label and joint ID
+                string jointKey = $"{label}Joint_{jointId}";
+                handEvents.Log(jointKey, pose.position, pose.rotation, Time.time);
             }
         }
     }
