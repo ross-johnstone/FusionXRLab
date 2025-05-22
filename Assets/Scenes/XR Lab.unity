@@ -1644,13 +1644,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1081141706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b2a3e0eb63faa748876d416a6376089, type: 3}
+  m_Script: {fileID: 11500000, guid: 48bc8ed0f53a1344da590ba764bb2d64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rootTransform: {fileID: 2069825086}
-  xrOrigin: {fileID: 991322266}
-  cameraOffset: {fileID: 231856689}
-  adminControlsEnabled: 1
+  xrRig: {fileID: 991322266}
+  vrEnvironment: {fileID: 312045685}
+  networkScene: {fileID: 8839457145026391852}
   maxRotationSpeed: 90
   exponentialFactor: 2
 --- !u!4 &1285189039 stripped
@@ -1977,11 +1976,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facilitatorRoomName: Experiment Room
---- !u!4 &2069825086 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3723249095139361141, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
-  m_PrefabInstance: {fileID: 8839457145026391851}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2103108762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2882,6 +2876,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
+--- !u!4 &8839457145026391852 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3723249095139361141, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
+  m_PrefabInstance: {fileID: 8839457145026391851}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

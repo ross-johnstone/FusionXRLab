@@ -4,155 +4,101 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AdminControlsTests
+public class XRRotationControlTests
 {
     private GameObject testObject;
-    private AdminControls adminControls;
-    private Transform rootTransform;
-    private Transform xrOrigin;
-    private Transform cameraOffset;
+    private XRRotationControl rotationControl;
+    private Transform xrRig;
+    private Transform vrEnvironment;
+    private Transform networkScene;
 
     [SetUp]
     public void Setup()
     {
         // Create test objects
-        testObject = new GameObject("AdminControls");
-        adminControls = testObject.AddComponent<AdminControls>();
+        testObject = new GameObject("XRRotationControl");
+        rotationControl = testObject.AddComponent<XRRotationControl>();
 
         // Create and setup required transforms
-        rootTransform = new GameObject("RootTransform").transform;
-        xrOrigin = new GameObject("XR Origin").transform;
-        cameraOffset = new GameObject("Camera Offset").transform;
-
-        // Setup hierarchy
-        cameraOffset.SetParent(xrOrigin);
-        xrOrigin.SetParent(rootTransform);
+        xrRig = new GameObject("XR Rig").transform;
+        vrEnvironment = new GameObject("VR Environment").transform;
+        networkScene = new GameObject("Network Scene").transform;
 
         // Assign references
-        adminControls.rootTransform = rootTransform;
-        adminControls.xrOrigin = xrOrigin;
-        adminControls.cameraOffset = cameraOffset;
+        rotationControl.xrRig = xrRig;
+        rotationControl.vrEnvironment = vrEnvironment;
+        rotationControl.networkScene = networkScene;
     }
 
     [TearDown]
     public void TearDown()
     {
         Object.DestroyImmediate(testObject);
-        Object.DestroyImmediate(rootTransform.gameObject);
+        Object.DestroyImmediate(xrRig.gameObject);
+        Object.DestroyImmediate(vrEnvironment.gameObject);
+        Object.DestroyImmediate(networkScene.gameObject);
     }
 
     [Test]
-    public void EnableControls_AllButtonsPressed_ControlsEnabled()
+    public void RotateXRRig_ValidRotation_RotatesCorrectly()
     {
         // Arrange
-        adminControls.adminControlsEnabled = false;
-        var forceEnabledField = adminControls.GetType().GetField("forceEnabled", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        forceEnabledField.SetValue(adminControls, false);
-
-        // Act
-        adminControls.SendMessage("EnableControls");
-
-        // Assert
-        Assert.IsTrue(adminControls.adminControlsEnabled);
-        Assert.IsTrue((bool)forceEnabledField.GetValue(adminControls));
-    }
-
-    [Test]
-    public void DisableControls_RightGripPressed_ControlsDisabled()
-    {
-        // Arrange
-        adminControls.adminControlsEnabled = true;
-        var forceEnabledField = adminControls.GetType().GetField("forceEnabled", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        forceEnabledField.SetValue(adminControls, true);
-
-        // Act
-        adminControls.SendMessage("DisableControls");
-
-        // Assert
-        Assert.IsFalse(adminControls.adminControlsEnabled);
-        Assert.IsFalse((bool)forceEnabledField.GetValue(adminControls));
-    }
-
-    [Test]
-    public void SaveCurrentRotation_RootTransformExists_RotationSaved()
-    {
-        // Arrange
-        Quaternion testRotation = Quaternion.Euler(0, 45, 0);
-        rootTransform.rotation = testRotation;
-
-        // Act
-        adminControls.SendMessage("SaveCurrentRotation");
-
-        // Assert
-        Assert.AreEqual(testRotation, adminControls.GetType().GetField("savedRotation", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(adminControls));
-    }
-
-    [Test]
-    public void RestoreSavedRotation_SavedRotationExists_RotationRestored()
-    {
-        // Arrange
-        Quaternion testRotation = Quaternion.Euler(0, 45, 0);
-        adminControls.GetType().GetField("savedRotation", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(adminControls, testRotation);
-
-        // Act
-        adminControls.SendMessage("RestoreSavedRotation");
-
-        // Assert
-        Assert.AreEqual(testRotation, rootTransform.rotation);
-    }
-
-    [Test]
-    public void ValidateSceneComponents_AllComponentsPresent_ReturnsTrue()
-    {
-        // Act
-        bool result = (bool)adminControls.GetType().GetMethod("ValidateSceneComponents", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(adminControls, null);
-
-        // Assert
-        Assert.IsTrue(result);
-    }
-
-    [Test]
-    public void ValidateSceneComponents_MissingRootTransform_ReturnsFalse()
-    {
-        // Arrange
-        adminControls.rootTransform = null;
-
-        // Act
-        bool result = (bool)adminControls.GetType().GetMethod("ValidateSceneComponents", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(adminControls, null);
-
-        // Assert
-        Assert.IsFalse(result);
-    }
-
-    [Test]
-    public void ValidateSceneComponents_MissingXROrigin_ReturnsFalse()
-    {
-        // Arrange
-        adminControls.xrOrigin = null;
-
-        // Act
-        bool result = (bool)adminControls.GetType().GetMethod("ValidateSceneComponents", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(adminControls, null);
-
-        // Assert
-        Assert.IsFalse(result);
-    }
-
-    [Test]
-    public void RotateSceneAroundPointThumbstick_ValidRotation_RotatesCorrectly()
-    {
-        // Arrange
-        Vector3 initialPosition = rootTransform.position;
-        Quaternion initialRotation = rootTransform.rotation;
+        Vector3 initialPosition = xrRig.position;
+        Quaternion initialRotation = xrRig.rotation;
         float rotationAmount = 45f;
 
         // Act
-        adminControls.GetType().GetMethod("RotateSceneAroundPointThumbstick", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-            .Invoke(adminControls, new object[] { rootTransform.position, rotationAmount });
+        rotationControl.GetType().GetMethod("RotateXRRig", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            .Invoke(rotationControl, new object[] { rotationAmount });
 
         // Assert
-        Assert.AreEqual(Quaternion.Euler(0, rotationAmount, 0), rootTransform.rotation);
-        Assert.AreEqual(initialPosition, xrOrigin.position);
-        Assert.AreEqual(initialRotation, xrOrigin.rotation);
+        Assert.AreEqual(Quaternion.Euler(0, rotationAmount, 0), xrRig.rotation);
+        Assert.AreEqual(initialPosition, xrRig.position);
+    }
+
+    [Test]
+    public void RotateVREnvironment_ValidRotation_RotatesCorrectly()
+    {
+        // Arrange
+        Vector3 initialPosition = vrEnvironment.position;
+        Quaternion initialRotation = vrEnvironment.rotation;
+        float rotationAmount = 45f;
+
+        // Act
+        rotationControl.GetType().GetMethod("RotateVREnvironment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            .Invoke(rotationControl, new object[] { rotationAmount });
+
+        // Assert
+        Assert.AreEqual(Quaternion.Euler(0, rotationAmount, 0), vrEnvironment.rotation);
+        Assert.AreEqual(initialPosition, vrEnvironment.position);
+    }
+
+    [Test]
+    public void RotateXRRig_NullReference_NoRotation()
+    {
+        // Arrange
+        rotationControl.xrRig = null;
+        float rotationAmount = 45f;
+
+        // Act & Assert
+        Assert.DoesNotThrow(() => {
+            rotationControl.GetType().GetMethod("RotateXRRig", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .Invoke(rotationControl, new object[] { rotationAmount });
+        });
+    }
+
+    [Test]
+    public void RotateVREnvironment_NullReference_NoRotation()
+    {
+        // Arrange
+        rotationControl.vrEnvironment = null;
+        float rotationAmount = 45f;
+
+        // Act & Assert
+        Assert.DoesNotThrow(() => {
+            rotationControl.GetType().GetMethod("RotateVREnvironment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .Invoke(rotationControl, new object[] { rotationAmount });
+        });
     }
 }
 #endif 
