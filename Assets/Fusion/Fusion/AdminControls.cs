@@ -5,28 +5,37 @@ using UnityEngine.XR;
 using Ubiq.Logging;
 using Ubiq.Avatars;
 
+/// <summary>
+/// Manages administrative controls for VR scene manipulation and controller input handling.
+/// Provides functionality for scene rotation, anchor placement, and controller state management.
+/// </summary>
 public class AdminControls : MonoBehaviour
 {
-    public Transform rootTransform; // The object that contains your whole scene
-    ExperimentLogEmitter events; // Changed to interface type
+    #region Inspector Fields
+    [Header("Scene References")]
+    public Transform rootTransform;
+    public Transform xrOrigin;
+    public Transform cameraOffset;
+
+    [Header("Control Settings")]
     public bool adminControlsEnabled = true;
-    BoundaryAligner aligner;
-    float exponentialFactor = 2f; 
     public float maxRotationSpeed = 90f;
-    Coroutine reenableCoroutine;
+    public float exponentialFactor = 2f;
+    #endregion
+
+    #region Private Fields
+    private ExperimentLogEmitter events;
+    private InputDevice leftHand;
+    private InputDevice rightHand;
     private Quaternion savedRotation;
-    public Transform xrOrigin; // Reference to the XR Origin transform
-    public Transform cameraOffset; // Reference to the Camera Offset transform under XR Origin
-
-    InputDevice leftHand;
-    InputDevice rightHand;
-
-    private float controllerCheckInterval = 0.1f; // Check more frequently
-    private float nextControllerCheck = 0f;
     private bool forceEnabled = false;
     private bool isInitialized = false;
-    private WaitForSeconds initializationDelay = new WaitForSeconds(1f);
+    private float controllerCheckInterval = 0.1f;
+    private float nextControllerCheck = 0f;
+    private readonly WaitForSeconds initializationDelay = new WaitForSeconds(1f);
+    #endregion
 
+    #region Unity Lifecycle Methods
     void Awake()
     {
         events = new ExperimentLogEmitter(this);
@@ -39,31 +48,44 @@ public class AdminControls : MonoBehaviour
         StartCoroutine(InitializeWithDelay());
     }
 
-    IEnumerator InitializeWithDelay()
+    void Update()
+    {
+        if (!isInitialized) return;
+
+        HandleControllerInput();
+        CheckControllerState();
+        HandleSceneRotation();
+    }
+
+    void OnDestroy()
+    {
+        InputDevices.deviceConnected -= OnDeviceConnected;
+        InputDevices.deviceDisconnected -= OnDeviceDisconnected;
+    }
+    #endregion
+
+    #region Initialization Methods
+    private IEnumerator InitializeWithDelay()
     {
         Debug.Log("Starting delayed initialization...");
-        
-        // Wait for XR to initialize
         yield return initializationDelay;
 
-        // Find XR Origin if not set
+        FindXRComponents();
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(InitialControllerDetection());
+    }
+
+    private void FindXRComponents()
+    {
         if (xrOrigin == null)
         {
             GameObject xrOriginObj = GameObject.Find("XR Origin Hands (XR Rig)");
-            
             if (xrOriginObj != null)
             {
                 xrOrigin = xrOriginObj.transform;
-                Transform foundOffset = xrOrigin.Find("Camera Offset");
-                if (foundOffset == null) foundOffset = xrOrigin.Find("CameraOffset");
-                cameraOffset = foundOffset;
-                
+                cameraOffset = xrOrigin.Find("Camera Offset") ?? xrOrigin.Find("CameraOffset");
                 Debug.Log($"Found XR Origin: {xrOriginObj.name}");
-                if (cameraOffset != null)
-                {
-                    Debug.Log("Found Camera Offset");
-                }
-                else
+                if (cameraOffset == null)
                 {
                     Debug.LogWarning("Camera Offset not found under XR Origin");
                 }
@@ -73,15 +95,11 @@ public class AdminControls : MonoBehaviour
                 Debug.LogError("Could not find XR Origin in scene. Please assign it manually in the inspector.");
             }
         }
-
-        // Wait additional time for controllers to fully initialize
-        yield return new WaitForSeconds(1f);
-
-        // Initial controller detection with retries
-        StartCoroutine(InitialControllerDetection());
     }
+    #endregion
 
-    IEnumerator InitialControllerDetection()
+    #region Controller Management
+    private IEnumerator InitialControllerDetection()
     {
         int maxAttempts = 5;
         int currentAttempt = 0;
@@ -89,26 +107,9 @@ public class AdminControls : MonoBehaviour
 
         while (currentAttempt < maxAttempts && !controllersReady)
         {
-            ForceControllerRefresh();
+            RefreshControllers();
+            controllersReady = ValidateControllerFeatures();
             
-            // Test if controllers are fully functional
-            if (leftHand.isValid)
-            {
-                bool hasThumbstick = leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 thumbstick);
-                bool hasButtons = leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out _) &&
-                                leftHand.TryGetFeatureValue(CommonUsages.secondaryButton, out _);
-                
-                if (hasThumbstick && hasButtons)
-                {
-                    Debug.Log("Left controller fully initialized with all required features");
-                    controllersReady = true;
-                }
-                else
-                {
-                    Debug.Log($"Left controller features not ready (Attempt {currentAttempt + 1}/{maxAttempts}): Thumbstick={hasThumbstick}, Buttons={hasButtons}");
-                }
-            }
-
             if (!controllersReady)
             {
                 currentAttempt++;
@@ -125,32 +126,23 @@ public class AdminControls : MonoBehaviour
             Debug.LogWarning("Could not fully initialize controllers. Some features may not work until controllers are reconnected.");
         }
 
-        // Start the periodic validation
-        StartCoroutine(ValidateControllers());
+        StartCoroutine(PeriodicControllerValidation());
         isInitialized = true;
         Debug.Log("Initialization complete. System ready.");
     }
 
-    IEnumerator ValidateControllers()
+    private bool ValidateControllerFeatures()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(10f);
+        if (!leftHand.isValid) return false;
 
-            if ((adminControlsEnabled || forceEnabled) && leftHand.isValid)
-            {
-                // Check thumbstick functionality
-                bool hasThumbstick = leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out _);
-                if (!hasThumbstick)
-                {
-                    Debug.LogWarning("Left controller thumbstick not responding - attempting to refresh connection");
-                    ForceControllerRefresh();
-                }
-            }
-        }
+        bool hasThumbstick = leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out _);
+        bool hasButtons = leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out _) &&
+                         leftHand.TryGetFeatureValue(CommonUsages.secondaryButton, out _);
+
+        return hasThumbstick && hasButtons;
     }
 
-    private void ForceControllerRefresh()
+    private void RefreshControllers()
     {
         var leftHandDevices = new List<InputDevice>();
         var rightHandDevices = new List<InputDevice>();
@@ -163,199 +155,207 @@ public class AdminControls : MonoBehaviour
             InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller,
             rightHandDevices);
 
-        foreach (var device in leftHandDevices)
-        {
-            if (device.isValid)
-            {
-                if (device != leftHand) // Only log if it's a new device
-                {
-                    leftHand = device;
-                    Debug.Log($"Found left controller: {leftHand.name}");
-                }
-                break;
-            }
-        }
+        UpdateControllerReference(leftHandDevices, ref leftHand, "Left");
+        UpdateControllerReference(rightHandDevices, ref rightHand, "Right");
+    }
 
-        foreach (var device in rightHandDevices)
+    private void UpdateControllerReference(List<InputDevice> devices, ref InputDevice currentDevice, string side)
+    {
+        foreach (var device in devices)
         {
-            if (device.isValid)
+            if (device.isValid && device != currentDevice)
             {
-                if (device != rightHand) // Only log if it's a new device
-                {
-                    rightHand = device;
-                    Debug.Log($"Found right controller: {rightHand.name}");
-                }
+                currentDevice = device;
+                Debug.Log($"Found {side.ToLower()} controller: {currentDevice.name}");
                 break;
             }
         }
     }
 
-    void Update()
+    private IEnumerator PeriodicControllerValidation()
     {
-        if (!isInitialized) return;
-
-        // Check for force-enable command
-        if (rightHand.isValid && leftHand.isValid)
+        while (true)
         {
-            rightHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool rightAPressed);
-            rightHand.TryGetFeatureValue(CommonUsages.secondaryButton, out bool rightBPressed);
-            leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool leftAPressed);
-            leftHand.TryGetFeatureValue(CommonUsages.secondaryButton, out bool leftBPressed);
+            yield return new WaitForSeconds(10f);
+
+            if ((adminControlsEnabled || forceEnabled) && leftHand.isValid)
+            {
+                bool hasThumbstick = leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out _);
+                if (!hasThumbstick)
+                {
+                    Debug.LogWarning("Left controller thumbstick not responding - attempting to refresh connection");
+                    RefreshControllers();
+                }
+            }
+        }
+    }
+    #endregion
+
+    #region Input Handling
+    private void HandleControllerInput()
+    {
+        if (!rightHand.isValid || !leftHand.isValid) return;
+
+        bool rightAPressed = GetButtonState(rightHand, CommonUsages.primaryButton);
+        bool rightBPressed = GetButtonState(rightHand, CommonUsages.secondaryButton);
+        bool leftAPressed = GetButtonState(leftHand, CommonUsages.primaryButton);
+        bool leftBPressed = GetButtonState(leftHand, CommonUsages.secondaryButton);
+
+        if (rightAPressed && rightBPressed && leftAPressed && leftBPressed)
+        {
+            EnableControls();
+        }
+        else if (rightAPressed || leftAPressed)
+        {
+            SaveCurrentRotation();
+        }
+        else if (rightBPressed || leftBPressed)
+        {
+            RestoreSavedRotation();
+        }
+
+        HandleAnchorPlacement();
+    }
+
+    private bool GetButtonState(InputDevice device, InputFeatureUsage<bool> button)
+    {
+        return device.TryGetFeatureValue(button, out bool pressed) && pressed;
+    }
+
+    private void HandleAnchorPlacement()
+    {
+        if (rightHand.isValid && GetButtonState(rightHand, CommonUsages.triggerButton) && 
+            SpatialAnchorManager.Instance != null)
+        {
+            Vector3 controllerPosition = GetControllerPosition(rightHand);
+            Quaternion controllerRotation = GetControllerRotation(rightHand);
+            Vector3 forward = controllerRotation * Vector3.forward;
+            Vector3 anchorPosition = controllerPosition + (forward * 2f);
             
-            // Force enable with all buttons still requires all buttons
-            if (rightAPressed && rightBPressed && leftAPressed && leftBPressed)
-            {
-                forceEnabled = true;
-                adminControlsEnabled = true;
-                Debug.Log("Controls force-enabled via all buttons pressed.");
-            }
-            // Save rotation when either A button is pressed
-            else if (rightAPressed || leftAPressed)
-            {
-                SaveCurrentRotation();
-                Debug.Log("Scene rotation saved using A button");
-            }
-            // Restore rotation when either B button is pressed
-            else if (rightBPressed || leftBPressed)
-            {
-                RestoreSavedRotation();
-                Debug.Log("Scene rotation restored using B button");
-            }
+            SpatialAnchorManager.Instance.PlaceAnchor(anchorPosition);
         }
+    }
 
-        // Handle anchor placement with right trigger
-        if (rightHand.isValid && rightHand.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTriggerPressed))
+    private Vector3 GetControllerPosition(InputDevice device)
+    {
+        device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+        return position;
+    }
+
+    private Quaternion GetControllerRotation(InputDevice device)
+    {
+        device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
+        return rotation;
+    }
+
+    private void HandleSceneRotation()
+    {
+        if (!adminControlsEnabled && !forceEnabled) return;
+        if (!leftHand.isValid) return;
+
+        if (leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 leftThumbstickValue) && 
+            leftThumbstickValue != Vector2.zero)
         {
-            if (rightTriggerPressed && SpatialAnchorManager.Instance != null)
+            float horizontalInput = leftThumbstickValue.x;
+            float scaledInput = Mathf.Sign(horizontalInput) * Mathf.Pow(Mathf.Abs(horizontalInput), exponentialFactor);
+            float rotationAmount = scaledInput * Time.deltaTime * maxRotationSpeed;
+            
+            if (Mathf.Abs(rotationAmount) > 0.01f)
             {
-                // Get the position in front of the controller
-                rightHand.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 controllerPosition);
-                rightHand.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion controllerRotation);
-                Vector3 forward = controllerRotation * Vector3.forward;
-                
-                // Place anchor 2 meters in front of the controller
-                Vector3 anchorPosition = controllerPosition + (forward * 2f);
-                SpatialAnchorManager.Instance.PlaceAnchor(anchorPosition);
+                RotateSceneAroundPointThumbstick(rootTransform.position, rotationAmount);
             }
         }
 
-        // Periodic controller check
+        if (rightHand.isValid && GetButtonState(rightHand, CommonUsages.gripButton))
+        {
+            DisableControls();
+        }
+    }
+
+    private void CheckControllerState()
+    {
         if (Time.time > nextControllerCheck)
         {
             nextControllerCheck = Time.time + controllerCheckInterval;
             
-            if (!leftHand.isValid || !rightHand.isValid)
+            if ((!leftHand.isValid || !rightHand.isValid) && 
+                FindAnyObjectByType<Facilitator>() == null)
             {
-                // Only log if there's no Facilitator in the scene
-                if (FindAnyObjectByType<Facilitator>() == null)
-                {
-                    Debug.Log("Periodic check: Controllers not valid, attempting to detect...");
-                    ForceControllerRefresh();
-                }
-            }
-        }
-
-        if (adminControlsEnabled || forceEnabled)
-        {
-            if (leftHand.isValid)
-            {
-                bool hasThumbstick = leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 leftThumbstickValue);
-                
-                if (hasThumbstick && leftThumbstickValue != Vector2.zero)
-                {
-                    float horizontalInput = leftThumbstickValue.x;
-                    float scaledInput = Mathf.Sign(horizontalInput) * Mathf.Pow(Mathf.Abs(horizontalInput), exponentialFactor);
-                    float rotationAmount = scaledInput * Time.deltaTime * maxRotationSpeed;
-                    
-                    // Only log when actually rotating
-                    if (Mathf.Abs(rotationAmount) > 0.01f)
-                    {
-                        Debug.Log($"Rotating scene by {rotationAmount:F2} degrees (Input: {horizontalInput:F2})");
-                    }
-                    
-                    RotateSceneAroundPointThumbstick(rootTransform.position, rotationAmount);
-                }
-            }
-
-            // Use right grip for disabling controls
-            if (rightHand.isValid && rightHand.TryGetFeatureValue(CommonUsages.gripButton, out bool rightGripPressed))
-            {
-                if (rightGripPressed) 
-                {
-                    adminControlsEnabled = false;
-                    forceEnabled = false;
-                    Debug.Log("Controls disabled via right grip button");
-                }
+                Debug.Log("Periodic check: Controllers not valid, attempting to detect...");
+                RefreshControllers();
             }
         }
     }
+    #endregion
 
-    void RotateSceneAroundPointThumbstick(Vector3 pivot, float rotationAmount)
+    #region Scene Manipulation
+    private void RotateSceneAroundPointThumbstick(Vector3 pivot, float rotationAmount)
     {
-        if (rootTransform == null)
-        {
-            Debug.LogError("Root transform is not assigned!");
-            return;
-        }
+        if (!ValidateSceneComponents()) return;
 
-        // Check if XR Origin is found
-        if (xrOrigin == null)
-        {
-            Debug.LogError("XR Origin not found! Please assign it in the inspector or ensure it exists in the scene.");
-            return;
-        }
-
-        if (cameraOffset == null)
-        {
-            Debug.LogWarning("Camera Offset not found! Scene rotation might not work correctly.");
-            // Continue anyway, just using XR Origin
-        }
-
-        // Store the original position of the XR Origin and Camera Offset
         Vector3 originalXROriginPos = xrOrigin.position;
         Vector3 originalCameraOffsetPos = cameraOffset != null ? cameraOffset.position : xrOrigin.position;
         Quaternion originalXROriginRot = xrOrigin.rotation;
         
-        // Rotate the scene
         rootTransform.RotateAround(pivot, Vector3.up, rotationAmount);
-        Debug.Log($"Scene rotated around {pivot} by {rotationAmount} degrees");
         
-        // Counter-rotate the XR Origin to keep it aligned with the real world
         xrOrigin.position = originalXROriginPos;
         xrOrigin.rotation = originalXROriginRot;
         
-        // Ensure camera offset maintains its position if it exists
         if (cameraOffset != null)
         {
             cameraOffset.position = originalCameraOffsetPos;
         }
 
-        Debug.Log("Scene rotated " + rotationAmount + " degrees around pivot point.");
-        if (events != null)
-        {
-            events.Log("Scene rotated " + rotationAmount + " degrees around pivot point.");
-        }
+        LogRotation(rotationAmount);
     }
 
-    void SaveCurrentRotation()
+    private bool ValidateSceneComponents()
+    {
+        if (rootTransform == null)
+        {
+            Debug.LogError("Root transform is not assigned!");
+            return false;
+        }
+
+        if (xrOrigin == null)
+        {
+            Debug.LogError("XR Origin not found! Please assign it in the inspector or ensure it exists in the scene.");
+            return false;
+        }
+
+        if (cameraOffset == null)
+        {
+            Debug.LogWarning("Camera Offset not found! Scene rotation might not work correctly.");
+        }
+
+        return true;
+    }
+
+    private void LogRotation(float rotationAmount)
+    {
+        Debug.Log($"Scene rotated {rotationAmount:F2} degrees around pivot point.");
+        events?.Log($"Scene rotated {rotationAmount:F2} degrees around pivot point.");
+    }
+
+    private void SaveCurrentRotation()
     {
         if (rootTransform == null) return;
+        
         savedRotation = rootTransform.rotation;
         Debug.Log("Rotation saved: " + savedRotation.eulerAngles);
         
-        // Update the avatar in the networked scene
+        UpdateAvatarInNetworkedScene();
+    }
+
+    private void UpdateAvatarInNetworkedScene()
+    {
         var avatarManager = AvatarManager.Find(this);
         if (avatarManager != null)
         {
-            // Store the current prefab
             var currentPrefab = avatarManager.avatarPrefab;
-            
-            // Temporarily set to null to trigger despawn
             avatarManager.avatarPrefab = null;
-            
-            // Set back to original prefab to trigger respawn
             avatarManager.avatarPrefab = currentPrefab;
-            
             Debug.Log("Avatar respawned in networked scene");
         }
         else
@@ -364,15 +364,33 @@ public class AdminControls : MonoBehaviour
         }
     }
 
-    void RestoreSavedRotation()
+    private void RestoreSavedRotation()
     {
         if (rootTransform == null) return;
+        
         rootTransform.rotation = savedRotation;
         Debug.Log("Rotation restored to: " + savedRotation.eulerAngles);
-        InvokeRepeating("TryAlignSceneToPlayArea", 20f, 20f);
+    }
+    #endregion
+
+    #region Control State Management
+    private void EnableControls()
+    {
+        forceEnabled = true;
+        adminControlsEnabled = true;
+        Debug.Log("Controls force-enabled via all buttons pressed.");
     }
 
-    void OnDeviceConnected(InputDevice device)
+    private void DisableControls()
+    {
+        adminControlsEnabled = false;
+        forceEnabled = false;
+        Debug.Log("Controls disabled via right grip button");
+    }
+    #endregion
+
+    #region Device Event Handlers
+    private void OnDeviceConnected(InputDevice device)
     {
         if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left) &&
             device.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
@@ -391,36 +409,7 @@ public class AdminControls : MonoBehaviour
         }
     }
 
-    IEnumerator WaitForControllerFeatures(InputDevice device, bool isLeft)
-    {
-        int attempts = 0;
-        bool featuresReady = false;
-        
-        while (attempts < 5 && !featuresReady && device.isValid)
-        {
-            if (isLeft)
-            {
-                featuresReady = device.TryGetFeatureValue(CommonUsages.primary2DAxis, out _);
-            }
-            else
-            {
-                featuresReady = device.TryGetFeatureValue(CommonUsages.primaryButton, out _);
-            }
-            
-            if (!featuresReady)
-            {
-                yield return new WaitForSeconds(0.2f);
-                attempts++;
-            }
-        }
-        
-        if (featuresReady)
-        {
-            Debug.Log($"{(isLeft ? "Left" : "Right")} controller features initialized");
-        }
-    }
-
-    void OnDeviceDisconnected(InputDevice device)
+    private void OnDeviceDisconnected(InputDevice device)
     {
         if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) &&
             device.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
@@ -442,5 +431,30 @@ public class AdminControls : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator WaitForControllerFeatures(InputDevice device, bool isLeft)
+    {
+        int attempts = 0;
+        bool featuresReady = false;
+        
+        while (attempts < 5 && !featuresReady && device.isValid)
+        {
+            featuresReady = isLeft ? 
+                device.TryGetFeatureValue(CommonUsages.primary2DAxis, out _) :
+                device.TryGetFeatureValue(CommonUsages.primaryButton, out _);
+            
+            if (!featuresReady)
+            {
+                yield return new WaitForSeconds(0.2f);
+                attempts++;
+            }
+        }
+        
+        if (featuresReady)
+        {
+            Debug.Log($"{(isLeft ? "Left" : "Right")} controller features initialized");
+        }
+    }
+    #endregion
 }
 

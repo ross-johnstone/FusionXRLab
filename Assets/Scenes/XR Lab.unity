@@ -1601,11 +1601,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b2a3e0eb63faa748876d416a6376089, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rootTransform: {fileID: 312045685}
+  rootTransform: {fileID: 2069825086}
+  xrOrigin: {fileID: 991322266}
+  cameraOffset: {fileID: 231856689}
   adminControlsEnabled: 1
   maxRotationSpeed: 90
-  xrOrigin: {fileID: 0}
-  cameraOffset: {fileID: 0}
+  exponentialFactor: 2
 --- !u!4 &1285189039 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 291365661117087098, guid: ff023e59e9ac5a1469fd1b584e5d6d59, type: 3}
@@ -1769,7 +1770,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1679218111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1901,7 +1902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1925840217
 Transform:
   m_ObjectHideFlags: 0
@@ -1930,6 +1931,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facilitatorRoomName: Experiment Room
+--- !u!4 &2069825086 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3723249095139361141, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
+  m_PrefabInstance: {fileID: 8839457145026391851}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2103108762
 GameObject:
   m_ObjectHideFlags: 0
