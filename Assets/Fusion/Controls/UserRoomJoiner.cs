@@ -8,6 +8,8 @@ using UnityEngine.XR;
 // using Oculus;
 // using Oculus.VR;
 
+/// Replaced by the RoomManager component. 
+
 public class UserRoomJoiner : MonoBehaviour
 {
     [SerializeField]
@@ -15,14 +17,14 @@ public class UserRoomJoiner : MonoBehaviour
 
     private RoomClient roomClient;
     private NetworkScene networkScene;
-    private ExperimentLogEmitter appEvents;
+    private ComponentLogEmitter appEvents;
     private float lastDiscoveryTime = 0f;
     private const float DISCOVERY_INTERVAL = 2f;
 
     void Start()
     {
         // Initialize logging
-        appEvents = new ExperimentLogEmitter(this);
+        appEvents = new ComponentLogEmitter(this, Ubiq.Logging.EventType.Application);
 
         // Get required components
         networkScene = NetworkScene.Find(this);
@@ -42,8 +44,6 @@ public class UserRoomJoiner : MonoBehaviour
         // Start discovering rooms
         StartRoomDiscovery();
 
-        // Disable Oculus system UI
-        DisableOculusSystemUI();
     }
 
     void Update()
@@ -52,35 +52,6 @@ public class UserRoomJoiner : MonoBehaviour
         if (!roomClient.JoinedRoom && Time.time - lastDiscoveryTime > DISCOVERY_INTERVAL)
         {
             StartRoomDiscovery();
-        }
-    }
-
-    private void DisableOculusSystemUI()
-    {
-        // Check both hands for presence
-        InputDevice leftHand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-        InputDevice rightHand = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-
-        bool leftHandPresent = false;
-        bool rightHandPresent = false;
-
-        if (leftHand.isValid)
-        {
-            leftHand.TryGetFeatureValue(CommonUsages.userPresence, out leftHandPresent);
-        }
-
-        if (rightHand.isValid)
-        {
-            rightHand.TryGetFeatureValue(CommonUsages.userPresence, out rightHandPresent);
-        }
-
-        // If either hand is present, disable the system UI
-        if (leftHandPresent || rightHandPresent)
-        {
-            // #if UNITY_ANDROID && !UNITY_EDITOR
-            // OVRPlugin.SetSystemOverlayPresented(false);
-            // #endif
-            // appEvents.Log("Oculus system UI disabled");
         }
     }
 

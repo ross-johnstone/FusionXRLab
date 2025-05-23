@@ -13,7 +13,7 @@ public class ControlsManager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<ControlsManager>();
+                instance = FindFirstObjectByType<ControlsManager>();
                 if (instance == null)
                 {
                     GameObject obj = new GameObject("ControlsManager");

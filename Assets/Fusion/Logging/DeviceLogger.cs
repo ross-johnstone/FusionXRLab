@@ -12,9 +12,20 @@ public class DeviceLogger : MonoBehaviour
     private ExperimentLogEmitter headEvents; // For head tracking
     private ExperimentLogEmitter handEvents; // For hand tracking
     private ExperimentLogEmitter gazeEvents; // For gaze tracking
-    private ExperimentLogEmitter controllerEvents; // For controller input
     private Camera mainCamera; // For gaze tracking
     private InputDevice headset; // For XR headset tracking
+
+    [Header("Logging Settings")]
+    [SerializeField] private float gazeLogInterval = 0.1f; // Log gaze data every 0.1 seconds
+    private float lastGazeLogTime = 0f;
+    private Vector3 lastGazePosition;
+    private Quaternion lastGazeRotation;
+    private float gazePositionThreshold = 0.01f; // Minimum position change to log
+    private float gazeRotationThreshold = 0.1f; // Minimum rotation change to log
+
+    // Track hand states
+    private bool leftHandWasTracked = false;
+    private bool rightHandWasTracked = false;
 
     void Start()
     {
@@ -25,7 +36,6 @@ public class DeviceLogger : MonoBehaviour
             headEvents = new ExperimentLogEmitter(this);
             handEvents = new ExperimentLogEmitter(this);
             gazeEvents = new ExperimentLogEmitter(this);
-            controllerEvents = new ExperimentLogEmitter(this);
 
             Debug.Log("XRTracker is starting...");
             mainCamera = Camera.main;
@@ -72,7 +82,7 @@ public class DeviceLogger : MonoBehaviour
 
     void Update()
     {
-        // Enhanced gaze tracking
+        // Enhanced gaze tracking with throttling
         if (headset.isValid)
         {
             // Get headset position and rotation
@@ -82,23 +92,34 @@ public class DeviceLogger : MonoBehaviour
                 // Get the forward direction from the rotation
                 Vector3 gazeDirection = rotation * Vector3.forward;
                 
-                // Log detailed gaze information
-                gazeEvents.Log("GazeData", 
-                    position, // Headset position
-                    rotation, // Headset rotation
-                    gazeDirection, // Gaze direction vector
-                    Time.time // Timestamp
-                );
-
-                // Optional: Cast a ray to see what the user is looking at
-                RaycastHit hit;
-                if (Physics.Raycast(position, gazeDirection, out hit))
+                // Check if enough time has passed and if position/rotation has changed significantly
+                if (Time.time - lastGazeLogTime >= gazeLogInterval &&
+                    (Vector3.Distance(position, lastGazePosition) > gazePositionThreshold ||
+                     Quaternion.Angle(rotation, lastGazeRotation) > gazeRotationThreshold))
                 {
-                    gazeEvents.Log("GazeTarget", 
-                        hit.point, // Where the gaze ray hits
-                        hit.distance, // How far the user is looking
-                        hit.collider.gameObject.name // What they're looking at
+                    // Log detailed gaze information
+                    gazeEvents.Log("GazeData", 
+                        position, // Headset position
+                        rotation, // Headset rotation
+                        gazeDirection, // Gaze direction vector
+                        Time.time // Timestamp
                     );
+
+                    // Optional: Cast a ray to see what the user is looking at
+                    RaycastHit hit;
+                    if (Physics.Raycast(position, gazeDirection, out hit))
+                    {
+                        gazeEvents.Log("GazeTarget", 
+                            hit.point, // Where the gaze ray hits
+                            hit.distance, // How far the user is looking
+                            hit.collider.gameObject.name // What they're looking at
+                        );
+                    }
+
+                    // Update last logged values
+                    lastGazeLogTime = Time.time;
+                    lastGazePosition = position;
+                    lastGazeRotation = rotation;
                 }
             }
         }
@@ -107,12 +128,24 @@ public class DeviceLogger : MonoBehaviour
             // Fallback to camera-based tracking if headset is not available
             Vector3 gazePosition = mainCamera.transform.position;
             Vector3 gazeDirection = mainCamera.transform.forward;
-            gazeEvents.Log("GazeData", 
-                gazePosition,
-                mainCamera.transform.rotation,
-                gazeDirection,
-                Time.time
-            );
+            
+            // Check if enough time has passed and if position/rotation has changed significantly
+            if (Time.time - lastGazeLogTime >= gazeLogInterval &&
+                (Vector3.Distance(gazePosition, lastGazePosition) > gazePositionThreshold ||
+                 Quaternion.Angle(mainCamera.transform.rotation, lastGazeRotation) > gazeRotationThreshold))
+            {
+                gazeEvents.Log("GazeData", 
+                    gazePosition,
+                    mainCamera.transform.rotation,
+                    gazeDirection,
+                    Time.time
+                );
+
+                // Update last logged values
+                lastGazeLogTime = Time.time;
+                lastGazePosition = gazePosition;
+                lastGazeRotation = mainCamera.transform.rotation;
+            }
         }
 
         // Get head position and rotation
@@ -131,99 +164,53 @@ public class DeviceLogger : MonoBehaviour
             }
         }
 
-        // Track controllers with null checks
-        if (controllerEvents != null)
-        {
-            TrackController(XRNode.LeftHand, "Left Hand");
-            TrackController(XRNode.RightHand, "Right Hand");
-        }
-
-        // Only capture controller inputs if we have valid events
-        if (controllerEvents != null)
-        {
-            CaptureControllerInputs();
-        }
-
         // Only log hand data if we have valid subsystem and events
         if (handSubsystem != null && handEvents != null)
         {
-            LogHandData(handSubsystem.leftHand, "Left");
-            LogHandData(handSubsystem.rightHand, "Right");
+            CheckAndLogHandTrackingState(handSubsystem.leftHand, "Left");
+            CheckAndLogHandTrackingState(handSubsystem.rightHand, "Right");
         }
     }
 
-    private void TrackController(XRNode node, string name)
+    private void CheckAndLogHandTrackingState(XRHand hand, string label)
     {
-        List<XRNodeState> nodeStates = new List<XRNodeState>();
-        InputTracking.GetNodeStates(nodeStates);
-        foreach (XRNodeState nodeState in nodeStates)
+        bool isCurrentlyTracked = hand.isTracked;
+        bool wasTracked = label == "Left" ? leftHandWasTracked : rightHandWasTracked;
+
+        // Log state changes
+        if (isCurrentlyTracked != wasTracked)
         {
-            if (nodeState.nodeType == node)
+            if (isCurrentlyTracked)
             {
-                Vector3 position;
-                Quaternion rotation;
-                if (nodeState.TryGetPosition(out position) && nodeState.TryGetRotation(out rotation))
-                {
-                    controllerEvents.Log($"{name}Data", position, rotation, Time.time);
-                }
+                appEvents.Log($"{label} Hand tracking started");
+                handEvents.Log($"{label}HandTrackingStarted", Time.time);
+            }
+            else
+            {
+                appEvents.Log($"{label} Hand tracking stopped");
+                handEvents.Log($"{label}HandTrackingStopped", Time.time);
+            }
+
+            // Update tracking state
+            if (label == "Left")
+            {
+                leftHandWasTracked = isCurrentlyTracked;
+            }
+            else
+            {
+                rightHandWasTracked = isCurrentlyTracked;
             }
         }
-    }
 
-    void CaptureControllerInputs()
-    {
-        CaptureInputsForDevice(InputDevices.GetDeviceAtXRNode(XRNode.LeftHand), "Left");
-        CaptureInputsForDevice(InputDevices.GetDeviceAtXRNode(XRNode.RightHand), "Right");
-    }
-
-    void CaptureInputsForDevice(InputDevice device, string hand)
-    {
-        if (!device.isValid)
+        // Only log hand data if the hand is being tracked
+        if (isCurrentlyTracked)
         {
-            appEvents.Log($"{hand} Controller not found or not valid.");
-            return;
-        }
-
-        // Query all available features
-        List<InputFeatureUsage> features = new List<InputFeatureUsage>();
-        device.TryGetFeatureUsages(features);
-
-        foreach (var feature in features)
-        {
-            // Handle common types: bool, float, Vector2, Vector3, Quaternion
-            if (feature.type == typeof(bool) && device.TryGetFeatureValue(feature.As<bool>(), out bool boolValue))
-            {
-                controllerEvents.Log($"{hand}Button", feature.name, boolValue, Time.time);
-            }
-            else if (feature.type == typeof(float) && device.TryGetFeatureValue(feature.As<float>(), out float floatValue))
-            {
-                controllerEvents.Log($"{hand}Axis", feature.name, floatValue, Time.time);
-            }
-            else if (feature.type == typeof(Vector2) && device.TryGetFeatureValue(feature.As<Vector2>(), out Vector2 vec2Value))
-            {
-                controllerEvents.Log($"{hand}Vector2", feature.name, vec2Value, Time.time);
-            }
-            else if (feature.type == typeof(Vector3) && device.TryGetFeatureValue(feature.As<Vector3>(), out Vector3 vec3Value))
-            {
-                controllerEvents.Log($"{hand}Vector3", feature.name, vec3Value, Time.time);
-            }
-            else if (feature.type == typeof(Quaternion) && device.TryGetFeatureValue(feature.As<Quaternion>(), out Quaternion quatValue))
-            {
-                controllerEvents.Log($"{hand}Rotation", feature.name, quatValue, Time.time);
-            }
+            LogHandData(hand, label);
         }
     }
 
     void LogHandData(XRHand hand, string label)
     {
-        if (!hand.isTracked)
-        {
-            appEvents.Log($"{label} Hand is NOT tracked.");
-            return;
-        }
-
-        appEvents.Log($"{label} Hand is tracked.");
-
         foreach (XRHandJointID jointId in System.Enum.GetValues(typeof(XRHandJointID)))
         {
             // Skip EndMarker and any negative/invalid values
@@ -237,6 +224,14 @@ public class DeviceLogger : MonoBehaviour
                 string jointKey = $"{label}Joint_{jointId}";
                 handEvents.Log(jointKey, pose.position, pose.rotation, Time.time);
             }
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (handSubsystem != null)
+        {
+            handSubsystem.Stop();
         }
     }
 }
