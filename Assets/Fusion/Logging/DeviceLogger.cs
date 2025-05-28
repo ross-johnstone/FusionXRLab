@@ -53,6 +53,16 @@ public class DeviceLogger : MonoBehaviour
                 appEvents.Log("No headset found. Gaze tracking will be limited.");
             }
 
+            appEvents.Log("Unique ID: " + SystemInfo.deviceUniqueIdentifier, 
+                            "Device Model: " + SystemInfo.deviceModel, 
+                            "Device Name: " + SystemInfo.deviceName, 
+                            "Device Type: " + SystemInfo.deviceType, 
+                            "Operating System: " + SystemInfo.operatingSystem, 
+                            "Processor Type: " + SystemInfo.processorType, 
+                            "Processor Count: " + SystemInfo.processorCount, 
+                            "System Memory Size: " + SystemInfo.systemMemorySize);
+
+
             // Initialize hand tracking subsystem
             var subsystems = new List<XRHandSubsystem>();
             SubsystemManager.GetSubsystems(subsystems);
@@ -81,6 +91,21 @@ public class DeviceLogger : MonoBehaviour
     }
 
     void Update()
+    {
+        #if !UNITY_EDITOR
+        TrackGaze();
+        TrackHead();
+        
+        // Only log hand data if we have valid subsystem and events
+        if (handSubsystem != null && handEvents != null)
+        {
+            CheckAndLogHandTrackingState(handSubsystem.leftHand, "Left");
+            CheckAndLogHandTrackingState(handSubsystem.rightHand, "Right");
+        }
+        #endif
+    }
+
+    private void TrackGaze()
     {
         // Enhanced gaze tracking with throttling
         if (headset.isValid)
@@ -147,7 +172,10 @@ public class DeviceLogger : MonoBehaviour
                 lastGazeRotation = mainCamera.transform.rotation;
             }
         }
+    }
 
+    private void TrackHead()
+    {
         // Get head position and rotation
         List<XRNodeState> nodeStates = new List<XRNodeState>();
         InputTracking.GetNodeStates(nodeStates);
@@ -163,13 +191,6 @@ public class DeviceLogger : MonoBehaviour
                 }
             }
         }
-
-        // Only log hand data if we have valid subsystem and events
-        if (handSubsystem != null && handEvents != null)
-        {
-            CheckAndLogHandTrackingState(handSubsystem.leftHand, "Left");
-            CheckAndLogHandTrackingState(handSubsystem.rightHand, "Right");
-        }
     }
 
     private void CheckAndLogHandTrackingState(XRHand hand, string label)
@@ -183,12 +204,10 @@ public class DeviceLogger : MonoBehaviour
             if (isCurrentlyTracked)
             {
                 appEvents.Log($"{label} Hand tracking started");
-                handEvents.Log($"{label}HandTrackingStarted", Time.time);
             }
             else
             {
                 appEvents.Log($"{label} Hand tracking stopped");
-                handEvents.Log($"{label}HandTrackingStopped", Time.time);
             }
 
             // Update tracking state

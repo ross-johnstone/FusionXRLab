@@ -51,6 +51,20 @@ public class ControlsManager : MonoBehaviour
         if (!leftHand.isValid || !rightHand.isValid) return;
 
         CheckControlState();
+        CheckRoomRealignment();
+    }
+
+    private void CheckRoomRealignment()
+    {
+        if (GetButtonState(rightHand, CommonUsages.triggerButton))
+        {
+            var roomAlignmentManager = FindObjectOfType<RoomAlignmentManager>();
+            if (roomAlignmentManager != null)
+            {
+                roomAlignmentManager.ForceRealignment();
+                Debug.Log("[ControlsManager] Room realignment triggered");
+            }
+        }
     }
 
     private void CheckControlState()
