@@ -58,7 +58,7 @@ public class ControlsManager : MonoBehaviour
     {
         if (GetButtonState(rightHand, CommonUsages.triggerButton))
         {
-            var roomAlignmentManager = FindObjectOfType<RoomAlignmentManager>();
+            var roomAlignmentManager = FindFirstObjectByType<RoomAlignmentManager>();
             if (roomAlignmentManager != null)
             {
                 roomAlignmentManager.ForceRealignment();
@@ -102,6 +102,11 @@ public class ControlsManager : MonoBehaviour
         if (!controlsEnabled)
         {
             controlsEnabled = true;
+            var roomAlignmentManager = FindFirstObjectByType<RoomAlignmentManager>();
+            if (roomAlignmentManager != null)
+            {
+                roomAlignmentManager.RestoreStoredTransform();
+            }
             Debug.Log("[ControlsManager] Controls enabled");
         }
     }
@@ -111,6 +116,11 @@ public class ControlsManager : MonoBehaviour
         if (controlsEnabled)
         {
             controlsEnabled = false;
+            var roomAlignmentManager = FindFirstObjectByType<RoomAlignmentManager>();
+            if (roomAlignmentManager != null)
+            {
+                roomAlignmentManager.StoreCurrentTransform();
+            }
             Debug.Log("[ControlsManager] Controls disabled");
         }
     }
