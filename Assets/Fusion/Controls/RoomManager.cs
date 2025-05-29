@@ -40,6 +40,7 @@ public class RoomManager : MonoBehaviour
     private int selectedAudioClipIndex = 0;
     private bool isPlaying = false;
     private bool isExperimentRunning = false;
+    private Dictionary<Material, Color> originalColors = new Dictionary<Material, Color>();
     #endregion
 
     #region Unity Lifecycle Methods
@@ -444,15 +445,42 @@ public class RoomManager : MonoBehaviour
     #endif
     #endregion
 
-    public void ToggleDarkness()
+    private void ScaleMaterialColor(GameObject obj, float scaleFactor)
     {
-        // Toggle lights
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null && renderer.materials != null)
+        {
+            foreach (Material mat in renderer.materials)
+            {
+                if (mat != null)
+                {
+                    // Store original color if we haven't seen this material before
+                    if (!originalColors.ContainsKey(mat))
+                    {
+                        Color baseColor = mat.GetColor("_BaseColor");
+                        originalColors[mat] = baseColor;
+                    }
+
+                    // Get the color to apply (either scaled down or original)
+                    Color colorToApply = scaleFactor < 1f ? 
+                        originalColors[mat] * scaleFactor : // Scale down
+                        originalColors[mat]; // Restore original
+
+                    mat.SetColor("_BaseColor", colorToApply);
+                    mat.SetColor("_Color", colorToApply);
+                }
+            }
+        }
+    }
+
+    #region Environment Control Methods
+    private void ToggleLights()
+    {
         if (roomLights == null || roomLights.Length == 0)
         {
             roomLights = FindObjectsByType<Light>(FindObjectsSortMode.None);
         }
 
-        lightsEnabled = !lightsEnabled;
         foreach (var light in roomLights)
         {
             if (light != null)
@@ -460,26 +488,84 @@ public class RoomManager : MonoBehaviour
                 light.enabled = lightsEnabled;
             }
         }
+    }
 
-        // Toggle wall colors
+    private void HandleEmissiveMaterial(GameObject obj, string materialName, Color enabledColor, Color disabledColor)
+    {
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material[] materials = renderer.materials;
+            foreach (Material mat in materials)
+            {
+                if (mat != null && mat.name.Contains(materialName))
+                {
+                    Color emissiveColor = lightsEnabled ? enabledColor : disabledColor;
+                    mat.EnableKeyword("_EMISSION");
+                    mat.SetColor("_EmissionColor", emissiveColor);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void HandleSpecificMaterial(GameObject obj, string materialName, Color enabledColor, Color disabledColor)
+    {
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material[] materials = renderer.materials;
+            foreach (Material mat in materials)
+            {
+                if (mat != null && mat.name.Contains(materialName))
+                {
+                    Color color = lightsEnabled ? enabledColor : disabledColor;
+                    mat.SetColor("_BaseColor", color);
+                    mat.SetColor("_Color", color);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void ProcessChildObjects(GameObject parent, System.Action<GameObject> action)
+    {
+        if (parent != null)
+        {
+            foreach (Transform child in parent.transform)
+            {
+                action(child.gameObject);
+            }
+        }
+    }
+
+    public void ToggleDarkness()
+    {
+        lightsEnabled = !lightsEnabled;
+
+        // Toggle all lights in the scene
+        ToggleLights();
+
+        // Process XRLabRoomC Walls & Lights children
+        GameObject xrLabRoom = GameObject.Find("XRLabRoomC Walls & Lights");
+        ProcessChildObjects(xrLabRoom, obj => ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.2f));
+
+        // Process wall lines
         GameObject linesParent = GameObject.Find("Lines");
         if (linesParent != null)
         {
-            // Get all child objects
             roomLines = new GameObject[linesParent.transform.childCount];
             for (int i = 0; i < linesParent.transform.childCount; i++)
             {
                 roomLines[i] = linesParent.transform.GetChild(i).gameObject;
             }
 
-            // Change color based on light state
             Color targetColor = lightsEnabled ? Color.white : new Color(0.2f, 0.2f, 0.2f);
             foreach (GameObject line in roomLines)
             {
                 if (line != null)
                 {
-                    Renderer[] renderers = line.GetComponentsInChildren<Renderer>();
-                    foreach (Renderer renderer in renderers)
+                    foreach (Renderer renderer in line.GetComponentsInChildren<Renderer>())
                     {
                         if (renderer != null)
                         {
@@ -490,35 +576,47 @@ public class RoomManager : MonoBehaviour
             }
             Debug.Log($"[RoomManager] Changed color of {roomLines.Length} line objects to {(lightsEnabled ? "white" : "dark grey")}");
         }
-        else
-        {
-            Debug.LogWarning("[RoomManager] Could not find parent object named 'Lines'");
-        }
 
-        // Toggle emissive light
+        // Handle specific objects with their materials
         GameObject emissiveLight = GameObject.Find("SM_XR_Lights_01_0");
-        if (emissiveLight != null)
+        HandleEmissiveMaterial(emissiveLight, "M_EmissiveLight", 
+            new Color(1f, 167f/255f, 28f/255f), Color.black);
+
+        GameObject floor = GameObject.Find("SM_XR_Floor_01_44");
+        HandleSpecificMaterial(floor, "M_Floor",
+            new Color(188f/255f, 190f/255f, 190f/255f), new Color(0.18f, 0.2f, 0.2f));
+
+        GameObject wall = GameObject.Find("SM_XR_Walls_01_52");
+        HandleSpecificMaterial(wall, "M_Wall",
+            new Color(255f/255f, 254f/255f, 242f/255f), new Color(0.25f, 0.254f, 0.242f));
+
+        // Process Hololens objects
+        GameObject cleanBoxsParent = GameObject.Find("CleanBoxs");
+        if (cleanBoxsParent != null)
         {
-            Renderer renderer = emissiveLight.GetComponent<Renderer>();
-            Debug.Log($"[RoomManager] Emissive light found: {emissiveLight.name}");
-            
-            if (renderer != null)
+            var hololensObjects = new List<GameObject>();
+            foreach (Transform child in cleanBoxsParent.GetComponentsInChildren<Transform>())
             {
-                // Change emissive color based on light state
-                Color emissiveColor = lightsEnabled ? 
-                    new Color(1f, 167f/255f, 28f/255f) : // Original color (255, 167, 28)
-                    Color.black;
-                renderer.material.SetColor("_EmissiveColor", emissiveColor);
-                Debug.Log($"[RoomManager] Changed emissive light color to {(lightsEnabled ? "original orange" : "black")}");
+                if (child.gameObject.name == "Hololens")
+                {
+                    hololensObjects.Add(child.gameObject);
+                }
+            }
+
+            foreach (GameObject hololens in hololensObjects)
+            {
+                HandleEmissiveMaterial(hololens, "M_General_ORM",
+                    Color.white, new Color(0.2f, 0.2f, 0.2f));
             }
         }
-        else
-        {
-            Debug.LogWarning("[RoomManager] Could not find emissive light object");
-        }
+
+        // Process Switches
+        GameObject switchesParent = GameObject.Find("Switches");
+        ProcessChildObjects(switchesParent, obj => ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.2f));
 
         Debug.Log($"[RoomManager] Room environment {(lightsEnabled ? "enabled" : "disabled")}");
     }
+    #endregion
 
     public void PlaySelectedAudio()
     {
