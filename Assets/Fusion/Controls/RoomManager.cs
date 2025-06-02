@@ -41,6 +41,7 @@ public class RoomManager : MonoBehaviour
     private bool isPlaying = false;
     private bool isExperimentRunning = false;
     private Dictionary<Material, Color> originalColors = new Dictionary<Material, Color>();
+    private Dictionary<Material, Color> switchOriginalColors = new Dictionary<Material, Color>();
     #endregion
 
     #region Unity Lifecycle Methods
@@ -457,8 +458,7 @@ public class RoomManager : MonoBehaviour
                     // Store original color if we haven't seen this material before
                     if (!originalColors.ContainsKey(mat))
                     {
-                        Color baseColor = mat.GetColor("_BaseColor");
-                        originalColors[mat] = baseColor;
+                        originalColors[mat] = mat.GetColor("_BaseColor");
                     }
 
                     // Get the color to apply (either scaled down or original)
@@ -539,16 +539,103 @@ public class RoomManager : MonoBehaviour
         }
     }
 
+    private void HandleSwitchMaterials(GameObject obj, bool enable)
+    {
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material[] materials = renderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Material mat = materials[i];
+                if (mat != null)
+                {
+                    // Define the original colors for different switch materials
+                    Color colorToApply;
+                    if (mat.name.Contains("M_Switch_Base"))
+                    {
+                        colorToApply = enable ? new Color(0.8f, 0.8f, 0.8f) : new Color(0.16f, 0.16f, 0.16f);
+                    }
+                    else if (mat.name.Contains("M_Switch_Button"))
+                    {
+                        colorToApply = enable ? new Color(0.2f, 0.2f, 0.2f) : new Color(0.04f, 0.04f, 0.04f);
+                    }
+                    else if (mat.name.Contains("M_Switch_Light"))
+                    {
+                        colorToApply = enable ? new Color(1f, 0.2f, 0.2f) : new Color(0.2f, 0.04f, 0.04f);
+                    }
+                    else
+                    {
+                        // For any other materials, use a default scaling
+                        colorToApply = enable ? Color.white : new Color(0.2f, 0.2f, 0.2f);
+                    }
+
+                    // Create a new material instance
+                    Material newMat = new Material(mat);
+                    newMat.SetColor("_BaseColor", colorToApply);
+                    newMat.SetColor("_Color", colorToApply);
+                    materials[i] = newMat;
+
+                    Debug.Log($"[RoomManager] Applied color to switch material {mat.name}: {colorToApply} (enabled: {enable})");
+                }
+            }
+            renderer.materials = materials;
+        }
+    }
+
+    private void HandleBasicWhiteMaterial(GameObject obj, bool enable)
+    {
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material[] materials = renderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Material mat = materials[i];
+                if (mat != null && mat.name.Contains("BasicWhite"))
+                {
+                    Color colorToApply = enable ? Color.white : new Color(0.2f, 0.2f, 0.2f);
+                    
+                    // Create a new material instance
+                    Material newMat = new Material(mat);
+                    newMat.SetColor("_BaseColor", colorToApply);
+                    newMat.SetColor("_Color", colorToApply);
+                    materials[i] = newMat;
+
+                    Debug.Log($"[RoomManager] Applied color to BasicWhite material on {obj.name}: {colorToApply} (enabled: {enable})");
+                }
+            }
+            renderer.materials = materials;
+        }
+    }
+
     public void ToggleDarkness()
     {
         lightsEnabled = !lightsEnabled;
+        Debug.Log($"[RoomManager] Toggling darkness. Lights enabled: {lightsEnabled}");
 
         // Toggle all lights in the scene
         ToggleLights();
 
         // Process XRLabRoomC Walls & Lights children
         GameObject xrLabRoom = GameObject.Find("XRLabRoomC Walls & Lights");
-        ProcessChildObjects(xrLabRoom, obj => ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.2f));
+        if (xrLabRoom != null)
+        {
+            // Handle divider ends specifically
+            GameObject dividerEnds = xrLabRoom.transform.Find("SM_XR_DividerEnds_01_10")?.gameObject;
+            if (dividerEnds != null)
+            {
+                HandleBasicWhiteMaterial(dividerEnds, lightsEnabled);
+            }
+
+            // Process other children
+            ProcessChildObjects(xrLabRoom, obj => {
+                if (obj.name != "SM_XR_DividerEnds_01_10") // Skip divider ends as they're handled separately
+                {
+                    ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.2f);
+                }
+            });
+        }
 
         // Process wall lines
         GameObject linesParent = GameObject.Find("Lines");
@@ -612,7 +699,18 @@ public class RoomManager : MonoBehaviour
 
         // Process Switches
         GameObject switchesParent = GameObject.Find("Switches");
-        ProcessChildObjects(switchesParent, obj => ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.2f));
+        if (switchesParent != null)
+        {
+            Debug.Log($"[RoomManager] Processing {switchesParent.transform.childCount} switches");
+            foreach (Transform child in switchesParent.transform)
+            {
+                HandleSwitchMaterials(child.gameObject, lightsEnabled);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[RoomManager] Could not find Switches parent object");
+        }
 
         Debug.Log($"[RoomManager] Room environment {(lightsEnabled ? "enabled" : "disabled")}");
     }

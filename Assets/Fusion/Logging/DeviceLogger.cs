@@ -163,7 +163,7 @@ public class DeviceLogger : MonoBehaviour
                      Quaternion.Angle(rotation, lastGazeRotation) > gazeRotationThreshold))
                 {
                     // Log detailed gaze information
-                    gazeEvents.Log("GazeData", 
+                    gazeEvents.Log("GazeData (Headset)", 
                         position, // Headset position
                         rotation, // Headset rotation
                         gazeDirection, // Gaze direction vector
@@ -199,7 +199,7 @@ public class DeviceLogger : MonoBehaviour
                 (Vector3.Distance(gazePosition, lastGazePosition) > gazePositionThreshold ||
                  Quaternion.Angle(mainCamera.transform.rotation, lastGazeRotation) > gazeRotationThreshold))
             {
-                gazeEvents.Log("GazeData", 
+                gazeEvents.Log("GazeData (Camera)", 
                     gazePosition,
                     mainCamera.transform.rotation,
                     gazeDirection,
