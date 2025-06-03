@@ -16,8 +16,6 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private bool enableVoice = true;
     [SerializeField] private bool forceFacilitatorMode = false;
     [SerializeField] private bool forceUserMode = false;
-    [SerializeField] private Light[] roomLights; // Array of lights to control
-    [SerializeField] private GameObject[] roomLines; // Array of lines to control
     [SerializeField] private AudioSource roomAudioSource; // Audio source for playing sounds
     [SerializeField] private AudioClip[] availableAudioClips; // Array of available audio clips
     #endregion
@@ -36,12 +34,10 @@ public class RoomManager : MonoBehaviour
     private float lastDiscoveryTime = 0f;
     private const float DISCOVERY_INTERVAL = 2f;
     private bool isFacilitator;
-    private bool lightsEnabled = true;
     private int selectedAudioClipIndex = 0;
     private bool isPlaying = false;
     private bool isExperimentRunning = false;
-    private Dictionary<Material, Color> originalColors = new Dictionary<Material, Color>();
-    private Dictionary<Material, Color> switchOriginalColors = new Dictionary<Material, Color>();
+    private DarknessController darknessController;
     #endregion
 
     #region Unity Lifecycle Methods
@@ -52,6 +48,13 @@ public class RoomManager : MonoBehaviour
         SetupEventListeners();
         ConfigureAvatarVisibility();
         SetupAudioSource();
+        
+        // Get or add DarknessController
+        darknessController = GetComponent<DarknessController>();
+        if (darknessController == null)
+        {
+            darknessController = gameObject.AddComponent<DarknessController>();
+        }
     }
 
     void Update()
@@ -86,24 +89,38 @@ public class RoomManager : MonoBehaviour
     #region Initialization Methods
     private void InitializeComponents()
     {
-        // Initialize logging
-        appEvents = new ComponentLogEmitter(this, Ubiq.Logging.EventType.Application);
-        experimentLogger = new ExperimentLogEmitter(this);
-
-        // Get required components
-        networkScene = NetworkScene.Find(this);
-        roomClient = networkScene.GetComponent<RoomClient>();
-        voipManager = networkScene.GetComponent<VoipPeerConnectionManager>();
-        avatarManager = AvatarManager.Find(this);
-
-        if (roomClient == null)
+        try
         {
-            Debug.LogError("RoomManager: RoomClient component not found!");
-            return;
-        }
+            // Initialize logging
+            appEvents = new ComponentLogEmitter(this, Ubiq.Logging.EventType.Application);
+            experimentLogger = new ExperimentLogEmitter(this);
 
-        // Configure RoomClient for connection maintenance
-        roomClient.timeoutBehaviour = RoomClient.TimeoutBehaviour.Reconnect;
+            // Get required components
+            networkScene = NetworkScene.Find(this);
+            if (networkScene == null)
+            {
+                Debug.LogError("[RoomManager] NetworkScene not found! Make sure there is a NetworkScene in the scene hierarchy.");
+                return;
+            }
+
+            roomClient = networkScene.GetComponent<RoomClient>();
+            if (roomClient == null)
+            {
+                Debug.LogError("[RoomManager] RoomClient component not found on NetworkScene!");
+                return;
+            }
+
+            voipManager = networkScene.GetComponent<VoipPeerConnectionManager>();
+            avatarManager = AvatarManager.Find(this);
+
+            // Configure RoomClient for connection maintenance
+            roomClient.timeoutBehaviour = RoomClient.TimeoutBehaviour.Reconnect;
+            Debug.Log("[RoomManager] Components initialized successfully");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"[RoomManager] Error initializing components: {e.Message}\n{e.StackTrace}");
+        }
     }
 
     private void DetermineRole()
@@ -191,11 +208,18 @@ public class RoomManager : MonoBehaviour
     #region Room Management Methods
     public void CreateRoom()
     {
-        if (!roomClient.JoinedRoom)
+        try
         {
-            appEvents.Log("RoomManager: Creating room", roomName);
-            roomClient.Join(roomName, true);
-            roomClient.Ping();
+            if (!roomClient.JoinedRoom)
+            {
+                Debug.Log($"[RoomManager] Creating room: {roomName}");
+                roomClient.Join(roomName, true);
+                roomClient.Ping();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"[RoomManager] Error creating room: {e.Message}\n{e.StackTrace}");
         }
     }
 
@@ -410,7 +434,7 @@ public class RoomManager : MonoBehaviour
                 UnityEditor.EditorGUILayout.Space();
                 if (GUILayout.Button("Toggle Room Environment"))
                 {
-                    manager.ToggleDarkness();
+                    manager.darknessController.ToggleDarkness();
                 }
 
                 UnityEditor.EditorGUILayout.Space();
@@ -444,276 +468,6 @@ public class RoomManager : MonoBehaviour
         }
     }
     #endif
-    #endregion
-
-    private void ScaleMaterialColor(GameObject obj, float scaleFactor)
-    {
-        Renderer renderer = obj.GetComponent<Renderer>();
-        if (renderer != null && renderer.materials != null)
-        {
-            foreach (Material mat in renderer.materials)
-            {
-                if (mat != null)
-                {
-                    // Store original color if we haven't seen this material before
-                    if (!originalColors.ContainsKey(mat))
-                    {
-                        originalColors[mat] = mat.GetColor("_BaseColor");
-                    }
-
-                    // Get the color to apply (either scaled down or original)
-                    Color colorToApply = scaleFactor < 1f ? 
-                        originalColors[mat] * scaleFactor : // Scale down
-                        originalColors[mat]; // Restore original
-
-                    mat.SetColor("_BaseColor", colorToApply);
-                    mat.SetColor("_Color", colorToApply);
-                }
-            }
-        }
-    }
-
-    #region Environment Control Methods
-    private void ToggleLights()
-    {
-        if (roomLights == null || roomLights.Length == 0)
-        {
-            roomLights = FindObjectsByType<Light>(FindObjectsSortMode.None);
-        }
-
-        foreach (var light in roomLights)
-        {
-            if (light != null)
-            {
-                light.enabled = lightsEnabled;
-            }
-        }
-    }
-
-    private void HandleEmissiveMaterial(GameObject obj, string materialName, Color enabledColor, Color disabledColor)
-    {
-        Renderer renderer = obj.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            Material[] materials = renderer.materials;
-            foreach (Material mat in materials)
-            {
-                if (mat != null && mat.name.Contains(materialName))
-                {
-                    Color emissiveColor = lightsEnabled ? enabledColor : disabledColor;
-                    mat.EnableKeyword("_EMISSION");
-                    mat.SetColor("_EmissionColor", emissiveColor);
-                    break;
-                }
-            }
-        }
-    }
-
-    private void HandleSpecificMaterial(GameObject obj, string materialName, Color enabledColor, Color disabledColor)
-    {
-        Renderer renderer = obj.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            Material[] materials = renderer.materials;
-            foreach (Material mat in materials)
-            {
-                if (mat != null && mat.name.Contains(materialName))
-                {
-                    Color color = lightsEnabled ? enabledColor : disabledColor;
-                    mat.SetColor("_BaseColor", color);
-                    mat.SetColor("_Color", color);
-                    break;
-                }
-            }
-        }
-    }
-
-    private void ProcessChildObjects(GameObject parent, System.Action<GameObject> action)
-    {
-        if (parent != null)
-        {
-            foreach (Transform child in parent.transform)
-            {
-                action(child.gameObject);
-            }
-        }
-    }
-
-    private void HandleSwitchMaterials(GameObject obj, bool enable)
-    {
-        Renderer renderer = obj.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            Material[] materials = renderer.materials;
-            for (int i = 0; i < materials.Length; i++)
-            {
-                Material mat = materials[i];
-                if (mat != null)
-                {
-                    // Define the original colors for different switch materials
-                    Color colorToApply;
-                    if (mat.name.Contains("M_Switch_Base"))
-                    {
-                        colorToApply = enable ? new Color(0.8f, 0.8f, 0.8f) : new Color(0.16f, 0.16f, 0.16f);
-                    }
-                    else if (mat.name.Contains("M_Switch_Button"))
-                    {
-                        colorToApply = enable ? new Color(0.2f, 0.2f, 0.2f) : new Color(0.04f, 0.04f, 0.04f);
-                    }
-                    else if (mat.name.Contains("M_Switch_Light"))
-                    {
-                        colorToApply = enable ? new Color(1f, 0.2f, 0.2f) : new Color(0.2f, 0.04f, 0.04f);
-                    }
-                    else
-                    {
-                        // For any other materials, use a default scaling
-                        colorToApply = enable ? Color.white : new Color(0.2f, 0.2f, 0.2f);
-                    }
-
-                    // Create a new material instance
-                    Material newMat = new Material(mat);
-                    newMat.SetColor("_BaseColor", colorToApply);
-                    newMat.SetColor("_Color", colorToApply);
-                    materials[i] = newMat;
-
-                    Debug.Log($"[RoomManager] Applied color to switch material {mat.name}: {colorToApply} (enabled: {enable})");
-                }
-            }
-            renderer.materials = materials;
-        }
-    }
-
-    private void HandleBasicWhiteMaterial(GameObject obj, bool enable)
-    {
-        Renderer renderer = obj.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            Material[] materials = renderer.materials;
-            for (int i = 0; i < materials.Length; i++)
-            {
-                Material mat = materials[i];
-                if (mat != null && mat.name.Contains("BasicWhite"))
-                {
-                    Color colorToApply = enable ? Color.white : new Color(0.2f, 0.2f, 0.2f);
-                    
-                    // Create a new material instance
-                    Material newMat = new Material(mat);
-                    newMat.SetColor("_BaseColor", colorToApply);
-                    newMat.SetColor("_Color", colorToApply);
-                    materials[i] = newMat;
-
-                    Debug.Log($"[RoomManager] Applied color to BasicWhite material on {obj.name}: {colorToApply} (enabled: {enable})");
-                }
-            }
-            renderer.materials = materials;
-        }
-    }
-
-    public void ToggleDarkness()
-    {
-        lightsEnabled = !lightsEnabled;
-        Debug.Log($"[RoomManager] Toggling darkness. Lights enabled: {lightsEnabled}");
-
-        // Toggle all lights in the scene
-        ToggleLights();
-
-        // Process XRLabRoomC Walls & Lights children
-        GameObject xrLabRoom = GameObject.Find("XRLabRoomC Walls & Lights");
-        if (xrLabRoom != null)
-        {
-            // Handle divider ends specifically
-            GameObject dividerEnds = xrLabRoom.transform.Find("SM_XR_DividerEnds_01_10")?.gameObject;
-            if (dividerEnds != null)
-            {
-                HandleBasicWhiteMaterial(dividerEnds, lightsEnabled);
-            }
-
-            // Process other children
-            ProcessChildObjects(xrLabRoom, obj => {
-                if (obj.name != "SM_XR_DividerEnds_01_10") // Skip divider ends as they're handled separately
-                {
-                    ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.2f);
-                }
-            });
-        }
-
-        // Process wall lines
-        GameObject linesParent = GameObject.Find("Lines");
-        if (linesParent != null)
-        {
-            roomLines = new GameObject[linesParent.transform.childCount];
-            for (int i = 0; i < linesParent.transform.childCount; i++)
-            {
-                roomLines[i] = linesParent.transform.GetChild(i).gameObject;
-            }
-
-            Color targetColor = lightsEnabled ? Color.white : new Color(0.2f, 0.2f, 0.2f);
-            foreach (GameObject line in roomLines)
-            {
-                if (line != null)
-                {
-                    foreach (Renderer renderer in line.GetComponentsInChildren<Renderer>())
-                    {
-                        if (renderer != null)
-                        {
-                            renderer.material.color = targetColor;
-                        }
-                    }
-                }
-            }
-            Debug.Log($"[RoomManager] Changed color of {roomLines.Length} line objects to {(lightsEnabled ? "white" : "dark grey")}");
-        }
-
-        // Handle specific objects with their materials
-        GameObject emissiveLight = GameObject.Find("SM_XR_Lights_01_0");
-        HandleEmissiveMaterial(emissiveLight, "M_EmissiveLight", 
-            new Color(1f, 167f/255f, 28f/255f), Color.black);
-
-        GameObject floor = GameObject.Find("SM_XR_Floor_01_44");
-        HandleSpecificMaterial(floor, "M_Floor",
-            new Color(188f/255f, 190f/255f, 190f/255f), new Color(0.18f, 0.2f, 0.2f));
-
-        GameObject wall = GameObject.Find("SM_XR_Walls_01_52");
-        HandleSpecificMaterial(wall, "M_Wall",
-            new Color(255f/255f, 254f/255f, 242f/255f), new Color(0.25f, 0.254f, 0.242f));
-
-        // Process Hololens objects
-        GameObject cleanBoxsParent = GameObject.Find("CleanBoxs");
-        if (cleanBoxsParent != null)
-        {
-            var hololensObjects = new List<GameObject>();
-            foreach (Transform child in cleanBoxsParent.GetComponentsInChildren<Transform>())
-            {
-                if (child.gameObject.name == "Hololens")
-                {
-                    hololensObjects.Add(child.gameObject);
-                }
-            }
-
-            foreach (GameObject hololens in hololensObjects)
-            {
-                HandleEmissiveMaterial(hololens, "M_General_ORM",
-                    Color.white, new Color(0.2f, 0.2f, 0.2f));
-            }
-        }
-
-        // Process Switches
-        GameObject switchesParent = GameObject.Find("Switches");
-        if (switchesParent != null)
-        {
-            Debug.Log($"[RoomManager] Processing {switchesParent.transform.childCount} switches");
-            foreach (Transform child in switchesParent.transform)
-            {
-                HandleSwitchMaterials(child.gameObject, lightsEnabled);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[RoomManager] Could not find Switches parent object");
-        }
-
-        Debug.Log($"[RoomManager] Room environment {(lightsEnabled ? "enabled" : "disabled")}");
-    }
     #endregion
 
     public void PlaySelectedAudio()
