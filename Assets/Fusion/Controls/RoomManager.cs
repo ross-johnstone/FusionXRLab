@@ -16,8 +16,8 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private bool enableVoice = true;
     [SerializeField] private bool forceFacilitatorMode = false;
     [SerializeField] private bool forceUserMode = false;
-    [SerializeField] private AudioSource roomAudioSource; // Audio source for playing sounds
-    [SerializeField] private AudioClip[] availableAudioClips; // Array of available audio clips
+    [SerializeField] private AudioSource roomAudioSource;
+    [SerializeField] private AudioClip[] availableAudioClips;
     #endregion
 
     #region Private Fields
@@ -27,17 +27,17 @@ public class RoomManager : MonoBehaviour
     private ExperimentLogEmitter experimentLogger;
     private VoipPeerConnectionManager voipManager;
     private List<VoipPeerConnection> peerConnections = new List<VoipPeerConnection>();
-    private float lastPingTime = 0f;
-    private const float PING_INTERVAL = 1f;
     private AvatarManager avatarManager;
-    private bool isAvatarHidden = true;
-    private float lastDiscoveryTime = 0f;
-    private const float DISCOVERY_INTERVAL = 2f;
+    private DarknessController darknessController;
     private bool isFacilitator;
+    private bool isAvatarHidden = true;
     private int selectedAudioClipIndex = 0;
     private bool isPlaying = false;
     private bool isExperimentRunning = false;
-    private DarknessController darknessController;
+    private float lastPingTime = 0f;
+    private float lastDiscoveryTime = 0f;
+    private const float PING_INTERVAL = 1f;
+    private const float DISCOVERY_INTERVAL = 2f;
     #endregion
 
     #region Unity Lifecycle Methods
@@ -63,13 +63,9 @@ public class RoomManager : MonoBehaviour
         {
             MaintainConnection();
         }
-        else
+        else if (!roomClient.JoinedRoom && Time.time - lastDiscoveryTime > DISCOVERY_INTERVAL)
         {
-            // User mode: Periodically try to discover rooms if we haven't joined one
-            if (!roomClient.JoinedRoom && Time.time - lastDiscoveryTime > DISCOVERY_INTERVAL)
-            {
-                StartRoomDiscovery();
-            }
+            StartRoomDiscovery();
         }
 
         // Check if audio has finished playing
@@ -179,14 +175,10 @@ public class RoomManager : MonoBehaviour
 
     private void ConfigureAvatarVisibility()
     {
-        if (avatarManager != null)
+        if (avatarManager != null && isFacilitator)
         {
-            if (isFacilitator)
-            {
-                // Set the avatar prefab to null to prevent avatar creation for facilitator
-                avatarManager.avatarPrefab = null;
-                isAvatarHidden = true;
-            }
+            avatarManager.avatarPrefab = null;
+            isAvatarHidden = true;
         }
     }
 
@@ -195,7 +187,7 @@ public class RoomManager : MonoBehaviour
         if (roomAudioSource == null)
         {
             roomAudioSource = gameObject.AddComponent<AudioSource>();
-            roomAudioSource.spatialBlend = 1f; // Make it 3D audio
+            roomAudioSource.spatialBlend = 1f;
             roomAudioSource.minDistance = 1f;
             roomAudioSource.maxDistance = 20f;
             roomAudioSource.rolloffMode = AudioRolloffMode.Linear;
@@ -248,7 +240,6 @@ public class RoomManager : MonoBehaviour
     {
         appEvents.Log($"RoomManager: Discovered {rooms.Count} rooms");
         
-        // Look for the facilitator's room
         foreach (var room in rooms)
         {
             if (room.Name == roomName)
@@ -294,7 +285,6 @@ public class RoomManager : MonoBehaviour
     {
         if (isFacilitator && avatar.IsLocal)
         {
-            // Ensure local avatar stays hidden for facilitator
             avatar.gameObject.SetActive(false);
         }
     }
@@ -312,11 +302,9 @@ public class RoomManager : MonoBehaviour
     {
         if (avatarManager != null && isFacilitator)
         {
-            // Ensure avatar prefab is null to prevent avatar creation
             avatarManager.avatarPrefab = null;
             isAvatarHidden = true;
 
-            // Hide any existing avatars
             foreach (var avatar in avatarManager.Avatars)
             {
                 if (avatar.IsLocal)
@@ -333,12 +321,10 @@ public class RoomManager : MonoBehaviour
         {
             if (isAvatarHidden)
             {
-                // Show avatar by setting the default prefab
                 appEvents.Log("Facilitator avatar shown");
             }
             else
             {
-                // Hide avatar by setting prefab to null
                 avatarManager.avatarPrefab = null;
                 appEvents.Log("Facilitator avatar hidden");
             }
@@ -485,7 +471,6 @@ public class RoomManager : MonoBehaviour
             AudioClip selectedClip = availableAudioClips[selectedAudioClipIndex];
             if (selectedClip != null)
             {
-                // Stop any currently playing audio
                 if (roomAudioSource.isPlaying)
                 {
                     roomAudioSource.Stop();

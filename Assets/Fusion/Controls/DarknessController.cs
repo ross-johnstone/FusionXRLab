@@ -92,27 +92,20 @@ public class DarknessController : MonoBehaviour
         GameObject linesParent = GameObject.Find("Lines");
         if (linesParent != null)
         {
-            var roomLines = new GameObject[linesParent.transform.childCount];
-            for (int i = 0; i < linesParent.transform.childCount; i++)
-            {
-                roomLines[i] = linesParent.transform.GetChild(i).gameObject;
-            }
-
-            Color targetColor = lightsEnabled ? Color.white : new Color(0.2f, 0.2f, 0.2f);
-            foreach (GameObject line in roomLines)
-            {
+            ProcessChildObjects(linesParent, line => {
                 if (line != null)
                 {
                     foreach (Renderer renderer in line.GetComponentsInChildren<Renderer>())
                     {
                         if (renderer != null)
                         {
+                            Color targetColor = lightsEnabled ? Color.white : new Color(0.2f, 0.2f, 0.2f);
                             renderer.material.color = targetColor;
                             totalObjectsChanged++;
                         }
                     }
                 }
-            }
+            });
         }
 
         // Handle specific objects with their materials
@@ -135,20 +128,14 @@ public class DarknessController : MonoBehaviour
         GameObject cleanBoxsParent = GameObject.Find("CleanBoxs");
         if (cleanBoxsParent != null)
         {
-            var hololensObjects = new List<GameObject>();
             foreach (Transform child in cleanBoxsParent.GetComponentsInChildren<Transform>())
             {
                 if (child.gameObject.name == "Hololens")
                 {
-                    hololensObjects.Add(child.gameObject);
+                    HandleEmissiveMaterial(child.gameObject, "M_General_ORM",
+                        Color.white, new Color(0.2f, 0.2f, 0.2f));
+                    totalObjectsChanged++;
                 }
-            }
-
-            foreach (GameObject hololens in hololensObjects)
-            {
-                HandleEmissiveMaterial(hololens, "M_General_ORM",
-                    Color.white, new Color(0.2f, 0.2f, 0.2f));
-                totalObjectsChanged++;
             }
         }
 
@@ -156,11 +143,10 @@ public class DarknessController : MonoBehaviour
         GameObject switchesParent = GameObject.Find("Switches");
         if (switchesParent != null)
         {
-            foreach (Transform child in switchesParent.transform)
-            {
-                HandleSwitchMaterials(child.gameObject, lightsEnabled);
+            ProcessChildObjects(switchesParent, switchObj => {
+                HandleSwitchMaterials(switchObj, lightsEnabled);
                 totalObjectsChanged++;
-            }
+            });
         }
 
         Debug.Log($"[DarknessController] Changed {totalObjectsChanged} objects to {(lightsEnabled ? "light" : "dark")} mode");
@@ -234,6 +220,8 @@ public class DarknessController : MonoBehaviour
 
     private void HandleEmissiveMaterial(GameObject obj, string materialName, Color enabledColor, Color disabledColor)
     {
+        if (obj == null) return;
+        
         Renderer renderer = obj.GetComponent<Renderer>();
         if (renderer != null)
         {
@@ -253,6 +241,8 @@ public class DarknessController : MonoBehaviour
 
     private void HandleSpecificMaterial(GameObject obj, string materialName, Color enabledColor, Color disabledColor)
     {
+        if (obj == null) return;
+        
         Renderer renderer = obj.GetComponent<Renderer>();
         if (renderer != null)
         {
@@ -283,6 +273,8 @@ public class DarknessController : MonoBehaviour
 
     private void HandleSwitchMaterials(GameObject obj, bool enable)
     {
+        if (obj == null) return;
+        
         Renderer renderer = obj.GetComponent<Renderer>();
         if (renderer != null)
         {
@@ -325,6 +317,8 @@ public class DarknessController : MonoBehaviour
 
     private void HandleBasicWhiteMaterial(GameObject obj, bool enable)
     {
+        if (obj == null) return;
+        
         Renderer renderer = obj.GetComponent<Renderer>();
         if (renderer != null)
         {

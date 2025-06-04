@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2592011007710657933, guid: 2e62b01f42067844d8004b554a90dedf, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2592011007710657933, guid: 2e62b01f42067844d8004b554a90dedf, type: 3}
       propertyPath: m_TagString
@@ -350,8 +350,6 @@ MonoBehaviour:
   enableVoice: 1
   forceFacilitatorMode: 0
   forceUserMode: 0
-  roomLights: []
-  roomLines: []
   roomAudioSource: {fileID: 925029182}
   availableAudioClips:
   - {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
@@ -1224,7 +1222,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 23a574ff75cb9fd4294f289b834e95bf, type: 2}
+  - {fileID: 2100000, guid: 8c1362fa82b091c4d809e596d5a6b6eb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
