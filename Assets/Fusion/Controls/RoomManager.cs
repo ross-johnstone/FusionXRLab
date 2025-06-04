@@ -16,8 +16,8 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private bool enableVoice = true;
     [SerializeField] private bool forceFacilitatorMode = false;
     [SerializeField] private bool forceUserMode = false;
-    [SerializeField] private AudioSource roomAudioSource;
     [SerializeField] private AudioClip[] availableAudioClips;
+    [SerializeField] private GameObject facilitatorAvatarPrefab;
     #endregion
 
     #region Private Fields
@@ -29,11 +29,11 @@ public class RoomManager : MonoBehaviour
     private List<VoipPeerConnection> peerConnections = new List<VoipPeerConnection>();
     private AvatarManager avatarManager;
     private DarknessController darknessController;
+    private AudioController audioController;
     private bool isFacilitator;
     private bool isAvatarHidden = true;
-    private int selectedAudioClipIndex = 0;
-    private bool isPlaying = false;
     private bool isExperimentRunning = false;
+    private int selectedAudioClipIndex = 0;
     private float lastPingTime = 0f;
     private float lastDiscoveryTime = 0f;
     private const float PING_INTERVAL = 1f;
@@ -47,13 +47,25 @@ public class RoomManager : MonoBehaviour
         DetermineRole();
         SetupEventListeners();
         ConfigureAvatarVisibility();
-        SetupAudioSource();
         
         // Get or add DarknessController
         darknessController = GetComponent<DarknessController>();
         if (darknessController == null)
         {
             darknessController = gameObject.AddComponent<DarknessController>();
+        }
+
+        // Get or add AudioController
+        audioController = GetComponent<AudioController>();
+        if (audioController == null)
+        {
+            audioController = gameObject.AddComponent<AudioController>();
+        }
+
+        // Initialize audio controller with clips
+        if (availableAudioClips != null && availableAudioClips.Length > 0)
+        {
+            audioController.InitializeAudio(availableAudioClips);
         }
     }
 
@@ -66,13 +78,6 @@ public class RoomManager : MonoBehaviour
         else if (!roomClient.JoinedRoom && Time.time - lastDiscoveryTime > DISCOVERY_INTERVAL)
         {
             StartRoomDiscovery();
-        }
-
-        // Check if audio has finished playing
-        if (isPlaying && roomAudioSource != null && !roomAudioSource.isPlaying)
-        {
-            isPlaying = false;
-            Debug.Log("[RoomManager] Audio clip finished playing");
         }
     }
 
@@ -177,22 +182,20 @@ public class RoomManager : MonoBehaviour
     {
         if (avatarManager != null && isFacilitator)
         {
+            // Store the current avatar prefab if it exists
+            if (avatarManager.avatarPrefab != null)
+            {
+                facilitatorAvatarPrefab = avatarManager.avatarPrefab;
+                Debug.Log($"[RoomManager] Stored facilitator avatar prefab: {facilitatorAvatarPrefab.name}");
+            }
+            else
+            {
+                Debug.LogWarning("[RoomManager] No avatar prefab found to store for facilitator");
+            }
+            
+            // Set avatar prefab to null to prevent avatar creation
             avatarManager.avatarPrefab = null;
             isAvatarHidden = true;
-        }
-    }
-
-    private void SetupAudioSource()
-    {
-        if (roomAudioSource == null)
-        {
-            roomAudioSource = gameObject.AddComponent<AudioSource>();
-            roomAudioSource.spatialBlend = 1f;
-            roomAudioSource.minDistance = 1f;
-            roomAudioSource.maxDistance = 20f;
-            roomAudioSource.rolloffMode = AudioRolloffMode.Linear;
-            roomAudioSource.playOnAwake = false;
-            roomAudioSource.loop = false;
         }
     }
     #endregion
@@ -321,10 +324,13 @@ public class RoomManager : MonoBehaviour
         {
             if (isAvatarHidden)
             {
+                // Show avatar by restoring the stored prefab
+                avatarManager.avatarPrefab = facilitatorAvatarPrefab;
                 appEvents.Log("Facilitator avatar shown");
             }
             else
             {
+                // Hide avatar by setting prefab to null
                 avatarManager.avatarPrefab = null;
                 appEvents.Log("Facilitator avatar hidden");
             }
@@ -426,7 +432,7 @@ public class RoomManager : MonoBehaviour
                 UnityEditor.EditorGUILayout.Space();
                 UnityEditor.EditorGUILayout.LabelField("Audio Controls", UnityEditor.EditorStyles.boldLabel);
                 
-                if (manager.availableAudioClips != null && manager.availableAudioClips.Length > 0)
+                if (manager.audioController != null && manager.availableAudioClips != null && manager.availableAudioClips.Length > 0)
                 {
                     string[] clipNames = new string[manager.availableAudioClips.Length];
                     for (int i = 0; i < manager.availableAudioClips.Length; i++)
@@ -441,9 +447,16 @@ public class RoomManager : MonoBehaviour
                         clipNames
                     );
 
-                    if (GUILayout.Button(manager.isPlaying ? "Playing..." : "Play Audio"))
+                    if (GUILayout.Button(manager.audioController.IsPlaying ? "Stop Audio" : "Play Audio"))
                     {
-                        manager.PlaySelectedAudio();
+                        if (manager.audioController.IsPlaying)
+                        {
+                            manager.audioController.StopAudio();
+                        }
+                        else
+                        {
+                            manager.PlaySelectedAudio();
+                        }
                     }
                 }
                 else
@@ -458,29 +471,10 @@ public class RoomManager : MonoBehaviour
 
     public void PlaySelectedAudio()
     {
-        if (roomAudioSource == null)
+        if (audioController != null && availableAudioClips != null && 
+            selectedAudioClipIndex >= 0 && selectedAudioClipIndex < availableAudioClips.Length)
         {
-            SetupAudioSource();
-        }
-
-        if (availableAudioClips != null && 
-            availableAudioClips.Length > 0 && 
-            selectedAudioClipIndex >= 0 && 
-            selectedAudioClipIndex < availableAudioClips.Length)
-        {
-            AudioClip selectedClip = availableAudioClips[selectedAudioClipIndex];
-            if (selectedClip != null)
-            {
-                if (roomAudioSource.isPlaying)
-                {
-                    roomAudioSource.Stop();
-                }
-
-                roomAudioSource.clip = selectedClip;
-                roomAudioSource.Play();
-                isPlaying = true;
-                Debug.Log($"[RoomManager] Playing audio clip: {selectedClip.name}");
-            }
+            audioController.PlayClip(selectedAudioClipIndex);
         }
     }
 } 
