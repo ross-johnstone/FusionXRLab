@@ -13,7 +13,7 @@ public class RemoteAvatarConfig
 
 public class DynamicAvatarLoader : MonoBehaviour
 {
-    [Tooltip("URL to JSON config. Leave empty to read from avatarconfig.txt.")]
+    [Tooltip("URL to JSON config. Leave empty to read from Assets/Fusion/Avatar/avatarconfig.txt.")]
     public string configUrl = "";
 
     void Start()
@@ -26,15 +26,17 @@ public class DynamicAvatarLoader : MonoBehaviour
         // Determine final config URL
         if (string.IsNullOrWhiteSpace(configUrl))
         {
-            string path = Path.Combine(Application.persistentDataPath, "avatarconfig.txt");
+            string path = Path.Combine(Application.dataPath, "Fusion/Avatar/avatarconfig.txt");
+
             if (File.Exists(path))
             {
                 string color = File.ReadAllText(path).Trim();
                 configUrl = $"https://ross-johnstone.github.io/avatar-configs/{color}.json";
+                Debug.Log($"Loaded config from text file: {color} ? {configUrl}");
             }
             else
             {
-                Debug.LogError("No avatarconfig.txt found and no configUrl set.");
+                Debug.LogError("No avatarconfig.txt found at Assets/Fusion/Avatar/ and no configUrl set.");
                 yield break;
             }
         }
