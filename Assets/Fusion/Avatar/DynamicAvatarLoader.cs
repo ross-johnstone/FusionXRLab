@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -26,6 +26,7 @@ public class DynamicAvatarLoader : MonoBehaviour
     IEnumerator LoadAvatarConfig()
     {
         string finalUrl = configUrl;
+        string source = "inspector";
 
         if (string.IsNullOrWhiteSpace(finalUrl))
         {
@@ -35,14 +36,19 @@ public class DynamicAvatarLoader : MonoBehaviour
             {
                 string color = File.ReadAllText(path).Trim();
                 finalUrl = $"https://ross-johnstone.github.io/avatar-configs/{color}.json";
-                Debug.Log($"Loaded config from text file: {color} ? {finalUrl}");
+                source = "text file";
+                Debug.Log($"📄 Loaded config from text file: {color} → {finalUrl}");
             }
             else
             {
-                Debug.LogWarning("avatarconfig.txt not found. Using fallback avatar.");
-                yield return LoadAvatarDirect(fallbackAvatarUrl);
+                Debug.LogWarning("⚠️ avatarconfig.txt not found. Using fallback avatar.");
+                yield return LoadAvatarDirect(fallbackAvatarUrl, "fallback");
                 yield break;
             }
+        }
+        else
+        {
+            Debug.Log($"🔧 Using configUrl from inspector: {finalUrl}");
         }
 
         UnityWebRequest request = UnityWebRequest.Get(finalUrl);
@@ -50,8 +56,8 @@ public class DynamicAvatarLoader : MonoBehaviour
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Failed to fetch avatar config: " + request.error);
-            yield return LoadAvatarDirect(fallbackAvatarUrl);
+            Debug.LogError($"❌ Failed to fetch avatar config from {finalUrl}: {request.error}");
+            yield return LoadAvatarDirect(fallbackAvatarUrl, "fallback");
             yield break;
         }
 
@@ -64,21 +70,22 @@ public class DynamicAvatarLoader : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("Invalid JSON format in config file.");
+            Debug.LogError("❌ Invalid JSON format in config file.");
             jsonFailed = true;
         }
 
         if (jsonFailed || config == null || string.IsNullOrEmpty(config.avatarUrl))
         {
-            Debug.LogWarning("Falling back to default avatar.");
-            yield return LoadAvatarDirect(fallbackAvatarUrl);
+            Debug.LogWarning("⚠️ avatarUrl missing or bad JSON. Using fallback avatar.");
+            yield return LoadAvatarDirect(fallbackAvatarUrl, "fallback");
             yield break;
         }
 
-        yield return LoadAvatarDirect(config.avatarUrl);
+        Debug.Log($"✅ Avatar loaded from JSON ({source}): {config.avatarUrl}");
+        yield return LoadAvatarDirect(config.avatarUrl, "json");
     }
 
-    IEnumerator LoadAvatarDirect(string avatarUrl)
+    IEnumerator LoadAvatarDirect(string avatarUrl, string source)
     {
         Component loader = null;
         float timeout = 10f;
@@ -96,7 +103,7 @@ public class DynamicAvatarLoader : MonoBehaviour
 
         if (loader == null)
         {
-            Debug.LogError("UbiqReadyPlayerMeLoader not found in scene.");
+            Debug.LogError("❌ UbiqReadyPlayerMeLoader not found in scene.");
             yield break;
         }
 
@@ -113,7 +120,7 @@ public class DynamicAvatarLoader : MonoBehaviour
                 {
                     Destroy(existingAvatar);
                     avatarField.SetValue(loader, null);
-                    Debug.Log("Destroyed previous avatar.");
+                    Debug.Log("🧹 Destroyed previous avatar.");
                 }
             }
 
@@ -121,27 +128,35 @@ public class DynamicAvatarLoader : MonoBehaviour
             var avatarUrlField = type.GetField("avatarUrl", BindingFlags.NonPublic | BindingFlags.Instance);
             if (avatarUrlField == null)
             {
-                Debug.LogError("avatarUrl field not found.");
+                Debug.LogError("❌ avatarUrl field not found.");
                 yield break;
             }
 
             avatarUrlField.SetValue(loader, avatarUrl);
-            Debug.Log($"Set avatarUrl: {avatarUrl}");
+
+            if (source == "fallback")
+            {
+                Debug.LogWarning($"⚠️ Fallback avatar loaded: {avatarUrl}");
+            }
+            else
+            {
+                Debug.Log($"🎯 Avatar URL injected: {avatarUrl}");
+            }
 
             // Load avatar
             var loadMethod = type.GetMethod("Load", new[] { typeof(string), typeof(bool) });
             if (loadMethod == null)
             {
-                Debug.LogError("Load(string, bool) method not found.");
+                Debug.LogError("❌ Load(string, bool) method not found.");
                 yield break;
             }
 
             loadMethod.Invoke(loader, new object[] { avatarUrl, false });
-            Debug.Log("Avatar load triggered.");
+            Debug.Log("🚀 Avatar load triggered.");
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to load avatar: " + e.Message);
+            Debug.LogError("❌ Failed to load avatar: " + e.Message);
         }
     }
 }
