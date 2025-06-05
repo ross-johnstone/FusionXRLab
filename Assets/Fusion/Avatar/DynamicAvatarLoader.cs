@@ -16,6 +16,8 @@ public class DynamicAvatarLoader : MonoBehaviour
     [Tooltip("URL to JSON config. Leave empty to read from Assets/Fusion/Avatar/avatarconfig.txt.")]
     public string configUrl = "";
 
+    private string fallbackAvatarUrl = "https://models.readyplayer.me/6628f7fe3f0967a5dea78574.glb";
+
     void Start()
     {
         StartCoroutine(LoadAvatarConfig());
@@ -23,42 +25,61 @@ public class DynamicAvatarLoader : MonoBehaviour
 
     IEnumerator LoadAvatarConfig()
     {
-        // Determine final config URL
-        if (string.IsNullOrWhiteSpace(configUrl))
+        string finalUrl = configUrl;
+
+        if (string.IsNullOrWhiteSpace(finalUrl))
         {
             string path = Path.Combine(Application.dataPath, "Fusion/Avatar/avatarconfig.txt");
 
             if (File.Exists(path))
             {
                 string color = File.ReadAllText(path).Trim();
-                configUrl = $"https://ross-johnstone.github.io/avatar-configs/{color}.json";
-                Debug.Log($"Loaded config from text file: {color} ? {configUrl}");
+                finalUrl = $"https://ross-johnstone.github.io/avatar-configs/{color}.json";
+                Debug.Log($"Loaded config from text file: {color} ? {finalUrl}");
             }
             else
             {
-                Debug.LogError("No avatarconfig.txt found at Assets/Fusion/Avatar/ and no configUrl set.");
+                Debug.LogWarning("avatarconfig.txt not found. Using fallback avatar.");
+                yield return LoadAvatarDirect(fallbackAvatarUrl);
                 yield break;
             }
         }
 
-        // Download the JSON config
-        UnityWebRequest request = UnityWebRequest.Get(configUrl);
+        UnityWebRequest request = UnityWebRequest.Get(finalUrl);
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.LogError("Failed to fetch avatar config: " + request.error);
+            yield return LoadAvatarDirect(fallbackAvatarUrl);
             yield break;
         }
 
-        RemoteAvatarConfig config = JsonUtility.FromJson<RemoteAvatarConfig>(request.downloadHandler.text);
-        if (string.IsNullOrEmpty(config.avatarUrl))
+        RemoteAvatarConfig config = null;
+        bool jsonFailed = false;
+
+        try
         {
-            Debug.LogError("avatarUrl missing from JSON config.");
+            config = JsonUtility.FromJson<RemoteAvatarConfig>(request.downloadHandler.text);
+        }
+        catch
+        {
+            Debug.LogError("Invalid JSON format in config file.");
+            jsonFailed = true;
+        }
+
+        if (jsonFailed || config == null || string.IsNullOrEmpty(config.avatarUrl))
+        {
+            Debug.LogWarning("Falling back to default avatar.");
+            yield return LoadAvatarDirect(fallbackAvatarUrl);
             yield break;
         }
 
-        // Wait until Ubiq has spawned the avatar with the loader
+        yield return LoadAvatarDirect(config.avatarUrl);
+    }
+
+    IEnumerator LoadAvatarDirect(string avatarUrl)
+    {
         Component loader = null;
         float timeout = 10f;
         float timer = 0f;
@@ -81,46 +102,46 @@ public class DynamicAvatarLoader : MonoBehaviour
 
         var type = loader.GetType();
 
-        // Destroy the default avatar GameObject if already spawned
-        var avatarField = type.GetField("avatar", BindingFlags.NonPublic | BindingFlags.Instance);
-        if (avatarField != null)
-        {
-            GameObject existingAvatar = avatarField.GetValue(loader) as GameObject;
-            if (existingAvatar != null)
-            {
-                Destroy(existingAvatar);
-                avatarField.SetValue(loader, null);
-                Debug.Log("Destroyed default avatar that was already spawned.");
-            }
-        }
-
-        // Inject your custom avatar URL
-        var avatarUrlField = type.GetField("avatarUrl", BindingFlags.NonPublic | BindingFlags.Instance);
-        if (avatarUrlField == null)
-        {
-            Debug.LogError("avatarUrl field not found via reflection.");
-            yield break;
-        }
-
-        avatarUrlField.SetValue(loader, config.avatarUrl);
-        Debug.Log($"Injected avatarUrl: {config.avatarUrl}");
-
-        // Call Load(string, bool)
-        var loadMethod = type.GetMethod("Load", new[] { typeof(string), typeof(bool) });
-        if (loadMethod == null)
-        {
-            Debug.LogError("Load(string, bool) method not found via reflection.");
-            yield break;
-        }
-
         try
         {
-            loadMethod.Invoke(loader, new object[] { config.avatarUrl, false });
-            Debug.Log("Correct avatar loading triggered.");
+            // Destroy existing avatar
+            var avatarField = type.GetField("avatar", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (avatarField != null)
+            {
+                GameObject existingAvatar = avatarField.GetValue(loader) as GameObject;
+                if (existingAvatar != null)
+                {
+                    Destroy(existingAvatar);
+                    avatarField.SetValue(loader, null);
+                    Debug.Log("Destroyed previous avatar.");
+                }
+            }
+
+            // Set avatar URL
+            var avatarUrlField = type.GetField("avatarUrl", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (avatarUrlField == null)
+            {
+                Debug.LogError("avatarUrl field not found.");
+                yield break;
+            }
+
+            avatarUrlField.SetValue(loader, avatarUrl);
+            Debug.Log($"Set avatarUrl: {avatarUrl}");
+
+            // Load avatar
+            var loadMethod = type.GetMethod("Load", new[] { typeof(string), typeof(bool) });
+            if (loadMethod == null)
+            {
+                Debug.LogError("Load(string, bool) method not found.");
+                yield break;
+            }
+
+            loadMethod.Invoke(loader, new object[] { avatarUrl, false });
+            Debug.Log("Avatar load triggered.");
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to invoke Load method: " + e);
+            Debug.LogError("Failed to load avatar: " + e.Message);
         }
     }
 }
