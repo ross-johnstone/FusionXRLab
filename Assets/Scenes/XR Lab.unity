@@ -7335,19 +7335,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 598599760031752051, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 2.2e-44
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 598599760031752051, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 2.2e-44
+      value: 4.572e-42
       objectReference: {fileID: 0}
     - target: {fileID: 598599760031752051, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 4.591775e-39
+      value: 2.524355e-29
       objectReference: {fileID: 0}
     - target: {fileID: 598599760031752051, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.z
-      value: 2.2227777e-38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2586560393701729604, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_Name
@@ -7415,19 +7415,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8155490847655001419, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 9.1858e-41
+      value: -2.4405384e-30
       objectReference: {fileID: 0}
     - target: {fileID: 8155490847655001419, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 9.1858e-41
+      value: 3.837e-41
       objectReference: {fileID: 0}
     - target: {fileID: 8155490847655001419, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 4.591775e-39
+      value: 2.524355e-29
       objectReference: {fileID: 0}
     - target: {fileID: 8155490847655001419, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_BoundingSphereOverride.z
-      value: 2.2227777e-38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9050058769666210058, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       propertyPath: m_Enabled
