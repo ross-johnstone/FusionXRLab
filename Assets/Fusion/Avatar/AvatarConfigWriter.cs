@@ -1,6 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 using System.IO;
+
+#if UNITY_EDITOR
 
 public class AvatarConfigWriter : EditorWindow
 {
@@ -54,3 +57,5 @@ public class AvatarConfigWriter : EditorWindow
         }
     }
 }
+
+#endif // UNITY_EDITOR

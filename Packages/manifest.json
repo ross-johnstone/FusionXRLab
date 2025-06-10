@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.meta.xr.sdk.avatars": "35.2.0",
-    "com.meta.xr.sdk.core": "76.0.0",
+    "com.meta.xr.sdk.core": "77.0.0",
     "com.meta.xr.sdk.sharedassets": "68.0.0",
     "com.readyplayerme.avatarloader": "https://github.com/readyplayerme/rpm-unity-sdk-avatar-loader.git#v1.3.4",
     "com.readyplayerme.core-ubiq-fork": "https://github.com/UCL-VR/readyplayerme-core-ubiq-fork.git",
