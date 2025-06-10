@@ -18,6 +18,18 @@ public class TableVisibilityManager : MonoBehaviour
     public GameObject[] objects1to10;
     public GameObject[] objects11to20;
 
+    private void Start()
+    {
+        ApplyState();
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        ApplyState();
+    }
+#endif
+
     public void ApplyState()
     {
         // Turn everything off by default
@@ -47,18 +59,24 @@ public class TableVisibilityManager : MonoBehaviour
         }
     }
 
-    void SetActiveVisuals(GameObject obj, bool active)
+    private void SetActiveVisuals(GameObject obj, bool active)
     {
         if (obj == null) return;
 
-        foreach (var renderer in obj.GetComponentsInChildren<MeshRenderer>())
+        // Enable/disable all renderers
+        foreach (var renderer in obj.GetComponentsInChildren<Renderer>(true))
+        {
             renderer.enabled = active;
+        }
 
-        foreach (var collider in obj.GetComponentsInChildren<Collider>())
+        // Enable/disable all colliders
+        foreach (var collider in obj.GetComponentsInChildren<Collider>(true))
+        {
             collider.enabled = active;
+        }
     }
 
-    void SetActiveVisuals(GameObject[] objs, bool active)
+    private void SetActiveVisuals(GameObject[] objs, bool active)
     {
         if (objs == null) return;
 
