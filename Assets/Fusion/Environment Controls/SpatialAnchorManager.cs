@@ -15,12 +15,15 @@ public class SpatialAnchorManager : MonoBehaviour
     private bool rightTriggerLastFrame = false;
     private bool leftTriggerLastFrame = false;
     private bool rightPrimaryButtonLastFrame = false;
+    private bool rightSecondaryButtonLastFrame = false;
     private bool leftPrimaryButtonLastFrame = false;
     private bool anchorsVisible = true;
+    private ComponentLogEmitter events;
     public static SpatialAnchorManager Instance { get; private set; }
 
     void Start()
     {
+        events = new ComponentLogEmitter(this);
         anchorPlacer = FindFirstObjectByType<AnchorPlacer>();
         anchorAlignmentManager = FindFirstObjectByType<AnchorAlignmentManager>();
         anchorVisual = FindFirstObjectByType<AnchorVisual>();
@@ -47,6 +50,7 @@ public class SpatialAnchorManager : MonoBehaviour
             if (rightTrigger && !rightTriggerLastFrame && anchorPlacer.getAnchorTransforms().Count < 3)
             {
                 anchorPlacer.PlaceAnchor(rightControllerTransform.position, rightControllerTransform.rotation);
+                events.Log("[SpatialAnchorManager] Anchor placed");
             }
             rightTriggerLastFrame = rightTrigger;
         }
@@ -56,18 +60,30 @@ public class SpatialAnchorManager : MonoBehaviour
         {
             if (primaryButton && !rightPrimaryButtonLastFrame)
             {
-                Debug.Log("Primary button pressed");
+                Debug.Log("[SpatialAnchorManager] Primary button pressed");
 
                 List<Transform> anchors = new List<Transform>();
                 foreach (Transform anchor in anchorPlacer.getAnchorTransforms())
                 {
                     anchors.Add(anchor);
                 }
-                    anchorAlignmentManager.AlignEnvironment(anchors);
+                // anchorAlignmentManager.AlignEnvironment(anchors);
+                anchorAlignmentManager.RelocateRepere(anchors);
+                events.Log("[SpatialAnchorManager] Environment aligned");
             }
             rightPrimaryButtonLastFrame = primaryButton;
         }
 
+        // --- RIGHT HAND: Reset Environment ---
+        if (rightHand.TryGetFeatureValue(CommonUsages.secondaryButton, out bool secondaryButton))
+        {
+            if (secondaryButton && !rightSecondaryButtonLastFrame)
+            {
+                anchorAlignmentManager.ResetEnvironment();
+                events.Log("[SpatialAnchorManager] Environment reset");
+            }
+            rightSecondaryButtonLastFrame = secondaryButton;
+        }
 
         // --- LEFT HAND: Delete Anchor ---
         if (leftHand.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTrigger))
@@ -75,10 +91,12 @@ public class SpatialAnchorManager : MonoBehaviour
             if (leftTrigger && !leftTriggerLastFrame)
             {
                 anchorPlacer.DeleteLastAnchor();
+                events.Log("[SpatialAnchorManager] Anchor deleted");
             }
             leftTriggerLastFrame = leftTrigger;
         }
 
+        // --- LEFT HAND: Toggle Anchors Visibility ---
         if (leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool leftPrimaryButton))
         {
             if (leftPrimaryButton && !leftPrimaryButtonLastFrame)
@@ -87,11 +105,13 @@ public class SpatialAnchorManager : MonoBehaviour
                 {
                     anchorVisual.HideVisuals();
                     anchorsVisible = false;
+                    events.Log("[SpatialAnchorManager] Anchors hidden");
                 }
                 else
                 {
                     anchorVisual.ShowVisuals();
                     anchorsVisible = true;
+                    events.Log("[SpatialAnchorManager] Anchors shown");
                 }
             }
             leftPrimaryButtonLastFrame = leftPrimaryButton;

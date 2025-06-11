@@ -1511,6 +1511,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentRoot: {fileID: 312045685}
+  environmentRootPosition: {x: 0, y: 0, z: 0}
+  environmentRootRotation: {x: 0, y: 0, z: 0}
+  rootPosition: {fileID: 312045685}
+  rootAngle: {fileID: 312045685}
 --- !u!114 &483804877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1523,7 +1527,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b4f6425a6611946a895c5159d680f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightControllerTransform: {fileID: 907649439}
   anchorPrefab: {fileID: 3105173346702953323, guid: d675ca738ca229f41a80c9105cacfb75, type: 3}
 --- !u!1001 &526704043
 PrefabInstance:
@@ -2302,7 +2305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1081141707
 Transform:
   m_ObjectHideFlags: 0
