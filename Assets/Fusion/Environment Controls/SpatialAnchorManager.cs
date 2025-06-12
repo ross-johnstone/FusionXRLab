@@ -68,7 +68,7 @@ public class SpatialAnchorManager : MonoBehaviour
                     anchors.Add(anchor);
                 }
                 // anchorAlignmentManager.AlignEnvironment(anchors);
-                anchorAlignmentManager.RelocateRepere(anchors);
+                anchorAlignmentManager.RelocateRootAnchors(anchors);
                 events.Log("[SpatialAnchorManager] Environment aligned");
             }
             rightPrimaryButtonLastFrame = primaryButton;

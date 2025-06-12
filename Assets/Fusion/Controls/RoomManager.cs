@@ -427,6 +427,7 @@ public class RoomManager : MonoBehaviour
                 if (GUILayout.Button("Toggle Room Environment"))
                 {
                     manager.darknessController.ToggleDarkness();
+                    manager.experimentLogger.Log("[RoomManager] Room Environment Toggled");
                 }
 
                 UnityEditor.EditorGUILayout.Space();
@@ -452,10 +453,12 @@ public class RoomManager : MonoBehaviour
                         if (manager.audioController.IsPlaying)
                         {
                             manager.audioController.StopAudio();
+                            manager.experimentLogger.Log("[RoomManager] Audio Stopped");
                         }
                         else
                         {
                             manager.PlaySelectedAudio();
+                            manager.experimentLogger.Log("[RoomManager] Audio Playing...");
                         }
                     }
                 }

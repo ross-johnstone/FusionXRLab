@@ -13,6 +13,7 @@ public class AnchorAlignmentManager : MonoBehaviour
     [SerializeField] private Vector3 environmentRootRotation; // Original rotation of the virtual environment
     [SerializeField] private Transform rootPosition;
     [SerializeField] private Transform rootAngle;
+    [SerializeField] private Transform rootDirection;
     private ComponentLogEmitter events;
     private bool isAligned = false;
     private bool start = true;
@@ -84,60 +85,94 @@ public class AnchorAlignmentManager : MonoBehaviour
         environmentRoot.rotation = Quaternion.Euler(environmentRootRotation);
         events.Log("[AnchorAlignmentManager] Environment reset");
     }
-
-    public void RelocateRepere(List<Transform> anchors)
+    public void RelocateRootAnchors(List<Transform> anchors)
     {
-        // Si le client et le serveur ne sont pas actifs, ne rien faire
-        //if (!networkManager.IsClient &&  !networkManager.IsServer)
-        //    return;
+        // Get the three anchor positions
+        // reperePos = rootPosition
+        // repereAngle = rootAngle
+        // repereDir = rootDirection
+        // vecteurRepere = rootVector
+        // vecteurAnchor = anchorVector   
 
-        // GetRelocateObjectsList();
-        // AssigneGameObj();
+        // Validate we have enough anchors
+        if (anchors == null || anchors.Count < 2)
+        {
+            Debug.LogWarning("[AnchorAlignmentManager] Not enough anchors to relocate root. Need at least 2 anchors.");
+            return;
+        }
 
-        if (anchors.Count <= 0) return; 
+        environmentRoot.SetParent(rootPosition);
 
-        // Calculer la nouvelle position du repère
-        Vector3 newPosition = new Vector3(anchors.Average(t => t.position.x), anchors.Average(t => t.position.y), anchors.Average(t => t.position.z));
+        // Calculate the new position of the root
+        Vector3 newPosition = new Vector3(
+            anchors.Average(t => t.position.x),
+            anchors.Average(t => t.position.y),
+            anchors.Average(t => t.position.z)
+        );
+
+        Debug.Log("[AnchorAlignmentManager] New position: " + newPosition);
+
+        // Keep the y position from current rootPosition to avoid vertical snapping
         rootPosition.position = new Vector3(newPosition.x, rootPosition.position.y, newPosition.z);
 
-        // Calculer les vecteurs pour le repère et les ancres
+        Debug.Log("[AnchorAlignmentManager] Root position: " + rootPosition.position);
+
+        // Calculate the vectors for the root and the anchors
         Vector3 rootVector = rootPosition.position - rootAngle.position;
         Vector3 anchorVector = anchors[1].position - anchors[0].position;
 
-        // Calculer le nouvel angle entre le repère et les ancres
-        //float direction = rootVector - anchorVector;
+        Debug.Log("[AnchorAlignmentManager] Root vector: " + rootVector);
+        Debug.Log("[AnchorAlignmentManager] Anchor vector: " + anchorVector);
 
-
-        //reperePos.Rotate(Vector3.up, newAngle);
-
-        //float AngleSigne = Vector3.Angle(anchorsList[2].position - reperePos.position, rootVector);
+        // Calculate the angle between rootVector and anchorVector
         float newAngle = Vector3.Angle(rootVector, anchorVector);
 
-        //Debug.Log("Angle newAngle: " + newAngle);
+        Debug.Log("[AnchorAlignmentManager] New angle: " + newAngle);
 
-        // Mettre à jour la rotation du repère
+        // Update the rotation of the rootPosition to align with the anchorVector
         rootPosition.localRotation = Quaternion.FromToRotation(rootVector, anchorVector) * rootPosition.localRotation;
+
+        Debug.Log("[AnchorAlignmentManager] New rotation: " + rootPosition.localRotation);
+
+        // Lock rotation only around Y axis
         rootPosition.localEulerAngles = new Vector3(0, rootPosition.localEulerAngles.y, 0);
 
-        // Ajuster la rotation initiale au démarrage
+        Debug.Log("[AnchorAlignmentManager] New euler angles: " + rootPosition.localEulerAngles);
+
+        // Adjust the initial rotation on the first run
         if (start)
         {
             start = false;
-            float rAngle = Vector2.SignedAngle(new Vector2(rootAngle.position.x - anchors[0].position.x, rootAngle.position.z - anchors[0].position.z), new Vector2(anchorVector.x, anchorVector.z));
-            float aAngle = Vector2.SignedAngle(new Vector2(anchors[2].position.x - anchors[0].position.x, anchors[2].position.z - rootAngle.position.z), new Vector2(anchorVector.x, anchorVector.z));
 
-            //Debug.Log("Angle rAngle: " + rAngle);
-            //Debug.Log("Angle aAngle: " + aAngle);
-
-            // Inverser la position du repère si nécessaire
-            if (rAngle > 0 && aAngle < 0 || rAngle < 0 && aAngle > 0)
+            // Only proceed with angle calculations if we have 3 anchors
+            if (anchors.Count >= 3)
             {
-                rootAngle.localPosition = -rootAngle.localPosition;
-                rootVector = rootPosition.position - rootAngle.position;
-            }
-            rootPosition.localRotation = Quaternion.FromToRotation(rootVector, anchorVector) * rootPosition.localRotation;
-            rootPosition.localEulerAngles = new Vector3(0, rootPosition.localEulerAngles.y, 0);
-        }
+                float rAngle = Vector2.SignedAngle(
+                    new Vector2(rootAngle.position.x - anchors[0].position.x, rootAngle.position.z - anchors[0].position.z),
+                    new Vector2(anchorVector.x, anchorVector.z)
+                );
 
+                Debug.Log("[AnchorAlignmentManager] Root angle: " + rAngle);
+
+                float aAngle = Vector2.SignedAngle(
+                    new Vector2(anchors[2].position.x - anchors[0].position.x, anchors[2].position.z - rootAngle.position.z),
+                    new Vector2(anchorVector.x, anchorVector.z)
+                );
+
+                Debug.Log("[AnchorAlignmentManager] Anchor angle: " + aAngle);
+
+                // Invert rootAngle position if necessary
+                if ((rAngle > 0 && aAngle < 0) || (rAngle < 0 && aAngle > 0))
+                {
+                    rootAngle.localPosition = -rootAngle.localPosition;
+                    rootVector = rootPosition.position - rootAngle.position;
+                    Debug.Log("[AnchorAlignmentManager] Root vector: " + rootVector);
+                }
+
+                rootPosition.localRotation = Quaternion.FromToRotation(rootVector, anchorVector) * rootPosition.localRotation;
+                rootPosition.localEulerAngles = new Vector3(0, rootPosition.localEulerAngles.y, 0);
+            }
+        }
     }
+
 } 
