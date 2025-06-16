@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - SceneObject
+  - Grabbable
   layers:
   - Default
   - TransparentFX
