@@ -7,7 +7,10 @@ public class TableVisibilityManager : MonoBehaviour
         None,
         TableOnly,
         TableWithObjects1To10,
-        TableWithObjects11To20
+        TableWithObjects11To20,
+        TableTokyo,
+        TableParis,
+        TableNewYork
     }
 
     [Header("State Control")]
@@ -17,6 +20,11 @@ public class TableVisibilityManager : MonoBehaviour
     public GameObject table;
     public GameObject[] objects1to10;
     public GameObject[] objects11to20;
+
+    [Header("Location Objects")]
+    public GameObject[] tokyoObjects;
+    public GameObject[] parisObjects;
+    public GameObject[] newYorkObjects;
 
     private void Start()
     {
@@ -36,6 +44,9 @@ public class TableVisibilityManager : MonoBehaviour
         SetActiveVisuals(table, false);
         SetActiveVisuals(objects1to10, false);
         SetActiveVisuals(objects11to20, false);
+        SetActiveVisuals(tokyoObjects, false);
+        SetActiveVisuals(parisObjects, false);
+        SetActiveVisuals(newYorkObjects, false);
 
         switch (currentState)
         {
@@ -51,6 +62,21 @@ public class TableVisibilityManager : MonoBehaviour
             case TableState.TableWithObjects11To20:
                 SetActiveVisuals(table, true);
                 SetActiveVisuals(objects11to20, true);
+                break;
+
+            case TableState.TableTokyo:
+                SetActiveVisuals(table, true);
+                SetActiveVisuals(tokyoObjects, true);
+                break;
+
+            case TableState.TableParis:
+                SetActiveVisuals(table, true);
+                SetActiveVisuals(parisObjects, true);
+                break;
+
+            case TableState.TableNewYork:
+                SetActiveVisuals(table, true);
+                SetActiveVisuals(newYorkObjects, true);
                 break;
 
             case TableState.None:

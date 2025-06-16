@@ -7,15 +7,17 @@ using Ubiq.Voip;
 using Ubiq.Logging;
 using Ubiq.Avatars;
 using System.Collections.Generic;
-using UnityEngine.XR;
 
-public class RoomManager : MonoBehaviour
+/// <summary>
+/// Replaced by the RoomManager component. 
+/// Facilitator component that manages room creation and connection maintenance.
+/// Provides functionality to create rooms and handle participant connections.
+/// </summary>
+public class Facilitator : MonoBehaviour
 {
     #region Inspector Fields
     [SerializeField] private string roomName = "Experiment Room";
     [SerializeField] private bool enableVoice = true;
-    [SerializeField] private bool forceFacilitatorMode = false;
-    [SerializeField] private bool forceUserMode = false;
     #endregion
 
     #region Private Fields
@@ -28,34 +30,19 @@ public class RoomManager : MonoBehaviour
     private const float PING_INTERVAL = 1f;
     private AvatarManager avatarManager;
     private bool isAvatarHidden = true;
-    private float lastDiscoveryTime = 0f;
-    private const float DISCOVERY_INTERVAL = 2f;
-    private bool isFacilitator;
     #endregion
 
     #region Unity Lifecycle Methods
     void Start()
     {
         InitializeComponents();
-        DetermineRole();
         SetupEventListeners();
         ConfigureAvatarVisibility();
     }
 
     void Update()
     {
-        if (isFacilitator)
-        {
-            MaintainConnection();
-        }
-        else
-        {
-            // User mode: Periodically try to discover rooms if we haven't joined one
-            if (!roomClient.JoinedRoom && Time.time - lastDiscoveryTime > DISCOVERY_INTERVAL)
-            {
-                StartRoomDiscovery();
-            }
-        }
+        MaintainConnection();
     }
 
     void OnDestroy()
@@ -76,46 +63,10 @@ public class RoomManager : MonoBehaviour
         voipManager = networkScene.GetComponent<VoipPeerConnectionManager>();
         avatarManager = AvatarManager.Find(this);
 
-        if (roomClient == null)
-        {
-            Debug.LogError("RoomManager: RoomClient component not found!");
-            return;
-        }
-
         // Configure RoomClient for connection maintenance
-        roomClient.timeoutBehaviour = RoomClient.TimeoutBehaviour.Reconnect;
-    }
-
-    private void DetermineRole()
-    {
-        // Check for forced modes first
-        if (forceFacilitatorMode)
+        if (roomClient != null)
         {
-            isFacilitator = true;
-        }
-        else if (forceUserMode)
-        {
-            isFacilitator = false;
-        }
-        else
-        {
-            // Auto-detect based on platform
-            #if UNITY_EDITOR
-            isFacilitator = true;
-            #else
-            isFacilitator = false;
-            #endif
-        }
-
-        appEvents.Log($"RoomManager: Running in {(isFacilitator ? "Facilitator" : "User")} mode");
-
-        if (isFacilitator)
-        {
-            CreateRoom();
-        }
-        else
-        {
-            StartRoomDiscovery();
+            roomClient.timeoutBehaviour = RoomClient.TimeoutBehaviour.Reconnect;
         }
     }
 
@@ -123,10 +74,8 @@ public class RoomManager : MonoBehaviour
     {
         if (roomClient != null)
         {
-            roomClient.OnRooms.AddListener(OnRoomsDiscovered);
-            roomClient.OnJoinedRoom.AddListener(OnJoinedRoom);
-            roomClient.OnJoinRejected.AddListener(OnJoinRejected);
             roomClient.OnRoomUpdated.AddListener(OnRoomUpdated);
+            roomClient.OnJoinedRoom.AddListener(OnJoinedRoom);
         }
 
         if (voipManager != null)
@@ -144,12 +93,9 @@ public class RoomManager : MonoBehaviour
     {
         if (avatarManager != null)
         {
-            if (isFacilitator)
-            {
-                // Set the avatar prefab to null to prevent avatar creation for facilitator
-                avatarManager.avatarPrefab = null;
-                isAvatarHidden = true;
-            }
+            // Set the avatar prefab to null to prevent avatar creation
+            avatarManager.avatarPrefab = null;
+            isAvatarHidden = true;
         }
     }
     #endregion
@@ -159,7 +105,7 @@ public class RoomManager : MonoBehaviour
     {
         if (!roomClient.JoinedRoom)
         {
-            appEvents.Log("RoomManager: Creating room", roomName);
+            appEvents.Log("Facilitator creating room", roomName);
             roomClient.Join(roomName, true);
             roomClient.Ping();
         }
@@ -176,53 +122,20 @@ public class RoomManager : MonoBehaviour
             }
         }
     }
-
-    private void StartRoomDiscovery()
-    {
-        lastDiscoveryTime = Time.time;
-        appEvents.Log("RoomManager: Starting room discovery");
-        roomClient.DiscoverRooms();
-    }
     #endregion
 
     #region Event Handlers
-    private void OnRoomsDiscovered(List<IRoom> rooms, RoomsDiscoveredRequest request)
-    {
-        appEvents.Log($"RoomManager: Discovered {rooms.Count} rooms");
-        
-        // Look for the facilitator's room
-        foreach (var room in rooms)
-        {
-            if (room.Name == roomName)
-            {
-                appEvents.Log($"RoomManager: Found room '{room.Name}', attempting to join");
-                roomClient.Join(room.JoinCode);
-                return;
-            }
-        }
-
-        appEvents.Log("RoomManager: Room not found, will retry");
-    }
-
     private void OnJoinedRoom(IRoom room)
     {
-        appEvents.Log($"RoomManager: Successfully joined room '{room.Name}'");
-        if (isFacilitator)
-        {
-            ConfigureFacilitatorComponents();
-        }
-    }
-
-    private void OnJoinRejected(Rejection rejection)
-    {
-        appEvents.Log($"RoomManager: Join rejected - {rejection.reason}");
+        appEvents.Log("Facilitator joined room", room.Name);
+        ConfigureFacilitatorComponents();
     }
 
     private void OnRoomUpdated(IRoom room)
     {
         if (roomClient.Room == room)
         {
-            appEvents.Log("RoomManager: Room updated", room.Name);
+            appEvents.Log("Facilitator room updated", room.Name);
         }
     }
 
@@ -234,9 +147,9 @@ public class RoomManager : MonoBehaviour
 
     private void OnAvatarCreated(Ubiq.Avatars.Avatar avatar)
     {
-        if (isFacilitator && avatar.IsLocal)
+        if (avatar.IsLocal)
         {
-            // Ensure local avatar stays hidden for facilitator
+            // Ensure local avatar stays hidden
             avatar.gameObject.SetActive(false);
         }
     }
@@ -252,7 +165,7 @@ public class RoomManager : MonoBehaviour
 
     private void ConfigureAvatars()
     {
-        if (avatarManager != null && isFacilitator)
+        if (avatarManager != null)
         {
             // Ensure avatar prefab is null to prevent avatar creation
             avatarManager.avatarPrefab = null;
@@ -271,11 +184,13 @@ public class RoomManager : MonoBehaviour
 
     public void ToggleFacilitatorAvatar()
     {
-        if (avatarManager != null && isFacilitator)
+        if (avatarManager != null)
         {
             if (isAvatarHidden)
             {
                 // Show avatar by setting the default prefab
+                // Note: You'll need to assign the default avatar prefab in the inspector
+                // or get it from somewhere in your project
                 appEvents.Log("Facilitator avatar shown");
             }
             else
@@ -315,10 +230,8 @@ public class RoomManager : MonoBehaviour
     {
         if (roomClient != null)
         {
-            roomClient.OnRooms.RemoveListener(OnRoomsDiscovered);
-            roomClient.OnJoinedRoom.RemoveListener(OnJoinedRoom);
-            roomClient.OnJoinRejected.RemoveListener(OnJoinRejected);
             roomClient.OnRoomUpdated.RemoveListener(OnRoomUpdated);
+            roomClient.OnJoinedRoom.RemoveListener(OnJoinedRoom);
         }
         if (voipManager != null)
         {
@@ -333,31 +246,28 @@ public class RoomManager : MonoBehaviour
 
     #region Editor Integration
     #if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(RoomManager))]
-    public class RoomManagerEditor : UnityEditor.Editor
+    [UnityEditor.CustomEditor(typeof(Facilitator))]
+    public class FacilitatorEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
-            RoomManager manager = (RoomManager)target;
+            Facilitator facilitator = (Facilitator)target;
             
             UnityEditor.EditorGUILayout.Space();
             if (GUILayout.Button("Create Room"))
             {
-                manager.CreateRoom();
+                facilitator.CreateRoom();
             }
 
-            if (manager.isFacilitator)
+            UnityEditor.EditorGUILayout.Space();
+            if (GUILayout.Button("Toggle Facilitator Avatar"))
             {
-                UnityEditor.EditorGUILayout.Space();
-                if (GUILayout.Button("Toggle Facilitator Avatar"))
-                {
-                    manager.ToggleFacilitatorAvatar();
-                }
+                facilitator.ToggleFacilitatorAvatar();
             }
         }
     }
     #endif
     #endregion
-} 
+}

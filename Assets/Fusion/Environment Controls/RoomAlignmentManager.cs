@@ -10,9 +10,6 @@ public class RoomAlignmentManager : MonoBehaviour
 
     private Vector3[] boundaryPoints;
     private bool isConfigured = false;
-    private Vector3 storedPosition;
-    private Quaternion storedRotation;
-    private bool hasStoredTransform = false;
 
     void Start()
     {
@@ -99,31 +96,5 @@ public class RoomAlignmentManager : MonoBehaviour
     public void ForceRealignment()
     {
         UpdateRoomAlignment();
-    }
-
-    public void StoreCurrentTransform()
-    {
-        if (worldContainer != null)
-        {
-            storedPosition = worldContainer.position;
-            storedRotation = worldContainer.rotation;
-            hasStoredTransform = true;
-            Debug.Log("[RoomAlignmentManager] Stored room transform");
-        }
-    }
-
-    public void RestoreStoredTransform()
-    {
-        if (worldContainer != null && hasStoredTransform)
-        {
-            worldContainer.position = storedPosition;
-            worldContainer.rotation = storedRotation;
-            Debug.Log("[RoomAlignmentManager] Restored room transform");
-        }
-    }
-
-    public bool IsConfigured()
-    {
-        return isConfigured;
     }
 } 

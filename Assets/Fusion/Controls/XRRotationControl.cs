@@ -1,11 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR;
 using System.Collections.Generic;
-using System.Linq;
-#if OCULUS_INTEGRATION
-using Oculus.Platform;
-using Oculus.Platform.Models;
-#endif
 
 public class XRRotationControl : MonoBehaviour
 {
@@ -13,31 +8,19 @@ public class XRRotationControl : MonoBehaviour
     public Transform xrRig; // The XR Origin/Rig transform
     public Transform vrEnvironment; // The VR Environment object transform
     public Transform networkScene; // The networked scene transform
-    public Transform xrCamera; // Assign this in the inspector to your XR camera (e.g., CenterEyeAnchor)
 
     [Header("Control Settings")]
     public float maxRotationSpeed = 90f;
     public float exponentialFactor = 2f;
 
-    [Header("Room Center (auto-calculated from OVRBoundary)")]
-    [Tooltip("Automatically calculated from OVRBoundary PlayArea")] 
-    public Vector3 roomCenter = Vector3.zero;
-    public float moveSpeed = 2f; // Units per second
-
-    [Header("Control Modes")]
-    public bool RotationMode = true; // True = rotate with left/right, False = move with thumbstick
-
     private InputDevice leftHand;
     private InputDevice rightHand;
-
-    private bool xButtonWasPressed = false;
 
     void Start()
     {
         InputDevices.deviceConnected += OnDeviceConnected;
         InputDevices.deviceDisconnected += OnDeviceDisconnected;
         RefreshControllers();
-        RefreshRoomCenter();
     }
 
     void Update()
@@ -46,133 +29,71 @@ public class XRRotationControl : MonoBehaviour
 
         if (ControlsManager.Instance.AreControlsEnabled())
         {
-            HandleModeToggle();
-            HandleThumbstickControls();
+            HandleThumbstickRotation();
         }
     }
 
-    private void HandleModeToggle()
+    private void HandleThumbstickRotation()
     {
-        // Toggle RotationMode when X (secondary button) on left controller is pressed
-        if (leftHand.TryGetFeatureValue(CommonUsages.secondaryButton, out bool xPressed) && xPressed)
+        // Left thumbstick controls XR Rig rotation
+        if (leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 leftThumbstickValue) && 
+            leftThumbstickValue != Vector2.zero)
         {
-            // Only toggle on button down, not every frame while held
-            if (!xButtonWasPressed)
+            float horizontalInput = leftThumbstickValue.x;
+            float scaledInput = Mathf.Sign(horizontalInput) * Mathf.Pow(Mathf.Abs(horizontalInput), exponentialFactor);
+            float rotationAmount = scaledInput * Time.deltaTime * maxRotationSpeed;
+            
+            if (Mathf.Abs(rotationAmount) > 0.01f)
             {
-                RotationMode = !RotationMode;
-                Debug.Log($"[XRRotationControl] RotationMode set to {RotationMode}");
+                RotateXRRig(rotationAmount);
             }
-            xButtonWasPressed = true;
         }
-        else
-        {
-            xButtonWasPressed = false;
-        }
-    }
 
-    private void HandleThumbstickControls()
-    {
-        // Left thumbstick: XR Rig
-        if (leftHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 leftThumbstickValue))
+        // Right thumbstick controls VR Environment rotation
+        if (rightHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 rightThumbstickValue) && 
+            rightThumbstickValue != Vector2.zero)
         {
-            if (RotationMode)
+            float horizontalInput = rightThumbstickValue.x;
+            float scaledInput = Mathf.Sign(horizontalInput) * Mathf.Pow(Mathf.Abs(horizontalInput), exponentialFactor);
+            float rotationAmount = scaledInput * Time.deltaTime * maxRotationSpeed;
+            
+            if (Mathf.Abs(rotationAmount) > 0.01f)
             {
-                // Rotation mode: left/right rotates XR Rig
-                HandleRotation(leftThumbstickValue.x, xrRig);
-            }
-            else
-            {
-                // Movement mode: move XR Rig
-                HandleMovement(leftThumbstickValue, xrRig);
-            }
-        }
-        // Right thumbstick: VR Environment
-        if (rightHand.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 rightThumbstickValue))
-        {
-            if (RotationMode)
-            {
-                // Rotation mode: left/right rotates VR Environment
-                HandleRotation(rightThumbstickValue.x, vrEnvironment);
-            }
-            else
-            {
-                // Movement mode: move VR Environment
-                HandleMovement(rightThumbstickValue, vrEnvironment);
+                RotateVREnvironment(rotationAmount);
             }
         }
     }
 
-    private void HandleRotation(float horizontalInput, Transform target)
+    private void RotateXRRig(float rotationAmount)
     {
-        float scaledInput = Mathf.Sign(horizontalInput) * Mathf.Pow(Mathf.Abs(horizontalInput), exponentialFactor);
-        float rotationAmount = scaledInput * Time.deltaTime * maxRotationSpeed;
-        if (Mathf.Abs(rotationAmount) > 0.01f)
-        {
-            RotateTransform(rotationAmount, target);
-        }
+        if (xrRig == null) return;
+
+        // Store original position
+        Vector3 originalPosition = xrRig.position;
+
+        // Rotate the XR Rig around its current position
+        xrRig.Rotate(Vector3.up, rotationAmount, Space.World);
+
+        // Restore position to prevent any drift
+        xrRig.position = originalPosition;
+
+        LogRotation("XR Rig", rotationAmount);
     }
 
-    private void HandleMovement(Vector2 thumbstickValue, Transform target)
+    private void RotateVREnvironment(float rotationAmount)
     {
-        // Forward/back
-        if (Mathf.Abs(thumbstickValue.y) > 0.01f)
-        {
-            MoveTransform(thumbstickValue.y, xrCamera != null ? xrCamera.forward : Camera.main.transform.forward, target);
-        }
-        // Left/right
-        if (Mathf.Abs(thumbstickValue.x) > 0.01f)
-        {
-            MoveTransform(thumbstickValue.x, xrCamera != null ? xrCamera.right : Camera.main.transform.right, target);
-        }
-    }
+        if (vrEnvironment == null) return;
 
-    private void MoveTransform(float thumbstickDirection, Vector3 moveDirectionVector, Transform target)
-    {
-        moveDirectionVector.y = 0f;
-        moveDirectionVector.Normalize();
-        target.position += moveDirectionVector * thumbstickDirection * moveSpeed * Time.deltaTime;
-    }
+        // Store original position
+        Vector3 originalPosition = vrEnvironment.position;
 
-    private void RotateTransform(float rotationAmount, Transform target)
-    {
-        if (target == null) return;
-        Vector3 originalPosition = target.position;
-        target.Rotate(Vector3.up, rotationAmount, Space.World);
-        target.position = originalPosition;
-        LogRotation(target.name, rotationAmount);
-    }
+        // Rotate the VR Environment around its current position
+        vrEnvironment.Rotate(Vector3.up, rotationAmount, Space.World);
 
-    /// <summary>
-    /// Refreshes the room center by averaging the OVRBoundary PlayArea points.
-    /// Call this after realignment.
-    /// </summary>
-    public void RefreshRoomCenter()
-    {
-#if !UNITY_EDITOR
-        if (OVRManager.boundary != null && OVRManager.boundary.GetConfigured())
-        {
-            var boundaryPoints = OVRManager.boundary.GetGeometry(OVRBoundary.BoundaryType.PlayArea);
-            if (boundaryPoints != null && boundaryPoints.Length > 0)
-            {
-                Vector3 center = Vector3.zero;
-                foreach (var pt in boundaryPoints)
-                {
-                    center += new Vector3(pt.x, 0, pt.z);
-                }
-                center /= boundaryPoints.Length;
-                roomCenter = center;
-                Debug.Log($"[XRRotationControl] Room center updated to {roomCenter}");
-            }
-            else
-            {
-                Debug.LogWarning("[XRRotationControl] No boundary points found for PlayArea.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[XRRotationControl] OVRBoundary not configured or not available.");
-        }
-#endif
+        // Restore position to prevent any drift
+        vrEnvironment.position = originalPosition;
+
+        LogRotation("VR Environment", rotationAmount);
     }
 
     private void LogRotation(string target, float rotationAmount)

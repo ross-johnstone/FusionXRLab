@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using Ubiq.Logging;
 using UnityEngine.XR.Hands;
 using UnityEngine.XR.Management;
-using System.Net.NetworkInformation;
-using System.Linq;
 
 public class DeviceLogger : MonoBehaviour
 {
@@ -28,34 +26,6 @@ public class DeviceLogger : MonoBehaviour
     // Track hand states
     private bool leftHandWasTracked = false;
     private bool rightHandWasTracked = false;
-
-    private string GetMACAddress()
-    {
-        string macAddress = "Unknown";
-        try
-        {
-            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (NetworkInterface adapter in nics)
-            {
-                if (adapter.OperationalStatus == OperationalStatus.Up)
-                {
-                    macAddress = adapter.GetPhysicalAddress().ToString();
-                    if (!string.IsNullOrEmpty(macAddress))
-                    {
-                        // Format MAC address with colons
-                        macAddress = string.Join(":", Enumerable.Range(0, 6)
-                            .Select(i => macAddress.Substring(i * 2, 2)));
-                        break;
-                    }
-                }
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogWarning($"Error getting MAC address: {e.Message}");
-        }
-        return macAddress;
-    }
 
     void Start()
     {
@@ -83,25 +53,15 @@ public class DeviceLogger : MonoBehaviour
                 appEvents.Log("No headset found. Gaze tracking will be limited.");
             }
 
-            appEvents.Log("Device Info",
-                "Unique ID: " + SystemInfo.deviceUniqueIdentifier,
-                "Device Model: " + SystemInfo.deviceModel,
-                "Device Name: " + SystemInfo.deviceName,
-                "Device Type: " + SystemInfo.deviceType,
-                "Operating System: " + SystemInfo.operatingSystem,
-                "System Memory Size: " + SystemInfo.systemMemorySize,
-                "MAC Address: " + GetMACAddress());
-                
+            appEvents.Log("Unique ID: " + SystemInfo.deviceUniqueIdentifier, 
+                            "Device Model: " + SystemInfo.deviceModel, 
+                            "Device Name: " + SystemInfo.deviceName, 
+                            "Device Type: " + SystemInfo.deviceType, 
+                            "Operating System: " + SystemInfo.operatingSystem, 
+                            "Processor Type: " + SystemInfo.processorType, 
+                            "Processor Count: " + SystemInfo.processorCount, 
+                            "System Memory Size: " + SystemInfo.systemMemorySize);
 
-            Debug.Log("Unique ID: " + SystemInfo.deviceUniqueIdentifier + 
-                " Device Model: " + SystemInfo.deviceModel + 
-                " Device Name: " + SystemInfo.deviceName + 
-                " Device Type: " + SystemInfo.deviceType + 
-                " Operating System: " + SystemInfo.operatingSystem + 
-                " Processor Type: " + SystemInfo.processorType + 
-                " Processor Count: " + SystemInfo.processorCount + 
-                " System Memory Size: " + SystemInfo.systemMemorySize + 
-                " MAC Address: " + GetMACAddress());
 
             // Initialize hand tracking subsystem
             var subsystems = new List<XRHandSubsystem>();
@@ -163,7 +123,7 @@ public class DeviceLogger : MonoBehaviour
                      Quaternion.Angle(rotation, lastGazeRotation) > gazeRotationThreshold))
                 {
                     // Log detailed gaze information
-                    gazeEvents.Log("GazeData (Headset)", 
+                    gazeEvents.Log("GazeData", 
                         position, // Headset position
                         rotation, // Headset rotation
                         gazeDirection, // Gaze direction vector
@@ -199,7 +159,7 @@ public class DeviceLogger : MonoBehaviour
                 (Vector3.Distance(gazePosition, lastGazePosition) > gazePositionThreshold ||
                  Quaternion.Angle(mainCamera.transform.rotation, lastGazeRotation) > gazeRotationThreshold))
             {
-                gazeEvents.Log("GazeData (Camera)", 
+                gazeEvents.Log("GazeData", 
                     gazePosition,
                     mainCamera.transform.rotation,
                     gazeDirection,
