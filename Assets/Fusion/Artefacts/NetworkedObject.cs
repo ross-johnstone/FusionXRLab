@@ -6,20 +6,19 @@ public class NetworkedObject : MonoBehaviour
     private NetworkContext context;
     public NetworkId Id { get; private set; }
 
-    private bool isOwner;
+    [Tooltip("Set to true if this instance should control the object")]
+    public bool isOwner = false;
 
     private void Start()
     {
-        // Register this object on the network
         context = NetworkScene.Register(this);
         Id = NetworkId.Unique();
-        isOwner = true; // You can implement ownership logic if needed
     }
 
     private void Update()
     {
-        // Only send if we're the owner
-        if (isOwner)
+        // Send transform only if we're the owner and context is valid
+        if (isOwner && context.Id.Valid)
         {
             var msg = new TransformMessage(transform.position, transform.rotation);
             context.SendJson(msg);
@@ -28,12 +27,12 @@ public class NetworkedObject : MonoBehaviour
 
     public void ProcessMessage(ReferenceCountedSceneGraphMessage message)
     {
-        // Deserialize transform update
-        var msg = message.FromJson<TransformMessage>();
-
-        // Apply the received transform
-        transform.position = msg.position;
-        transform.rotation = msg.rotation;
+        if (!isOwner) // Only apply remote messages if not owner
+        {
+            var msg = message.FromJson<TransformMessage>();
+            transform.position = msg.position;
+            transform.rotation = msg.rotation;
+        }
     }
 
     [System.Serializable]
