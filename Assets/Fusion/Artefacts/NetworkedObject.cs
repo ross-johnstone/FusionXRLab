@@ -6,34 +6,41 @@ public class NetworkedObject : MonoBehaviour
     private NetworkContext context;
     public NetworkId Id { get; private set; }
 
-    private bool isOwner;
+    private bool isOwner = false;
+
+    // Use a session-unique ID instead of PeerUuid (not accessible in this Ubiq version)
+    private static string localPeerId = System.Guid.NewGuid().ToString();
 
     private void Start()
     {
-        // Register this object on the network
         context = NetworkScene.Register(this);
         Id = NetworkId.Unique();
-        isOwner = true; // You can implement ownership logic if needed
     }
 
     private void Update()
     {
-        // Only send if we're the owner
         if (isOwner)
         {
-            var msg = new TransformMessage(transform.position, transform.rotation);
+            var msg = new TransformMessage(transform.position, transform.rotation, localPeerId);
             context.SendJson(msg);
         }
     }
 
     public void ProcessMessage(ReferenceCountedSceneGraphMessage message)
     {
-        // Deserialize transform update
         var msg = message.FromJson<TransformMessage>();
 
-        // Apply the received transform
-        transform.position = msg.position;
-        transform.rotation = msg.rotation;
+        if (msg.ownerId != localPeerId)
+        {
+            isOwner = false;
+            transform.position = msg.position;
+            transform.rotation = msg.rotation;
+        }
+    }
+
+    public void TakeOwnership()
+    {
+        isOwner = true;
     }
 
     [System.Serializable]
@@ -41,11 +48,13 @@ public class NetworkedObject : MonoBehaviour
     {
         public Vector3 position;
         public Quaternion rotation;
+        public string ownerId;
 
-        public TransformMessage(Vector3 pos, Quaternion rot)
+        public TransformMessage(Vector3 pos, Quaternion rot, string owner)
         {
             position = pos;
             rotation = rot;
+            ownerId = owner;
         }
     }
 }

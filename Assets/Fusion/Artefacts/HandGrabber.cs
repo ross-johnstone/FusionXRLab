@@ -4,7 +4,6 @@ using UnityEngine.XR;
 using System.Collections.Generic;
 using Ubiq.Logging;
 
-
 public class HandGrabber : MonoBehaviour
 {
     public Transform handTransform;
@@ -16,7 +15,6 @@ public class HandGrabber : MonoBehaviour
     private Quaternion grabRotationOffset;
 
     XRHandSubsystem handSubsystem;
-
     private ExperimentLogEmitter logEmitter;
 
     void Start()
@@ -66,7 +64,7 @@ public class HandGrabber : MonoBehaviour
             return false;
 
         float pinchDistance = Vector3.Distance(thumbPose.position, indexPose.position);
-        return pinchDistance < 0.03f; // You can adjust this threshold
+        return pinchDistance < 0.03f; // Adjust this threshold as needed
     }
 
     void TryGrab()
@@ -80,6 +78,14 @@ public class HandGrabber : MonoBehaviour
                 grabOffset = Quaternion.Inverse(handTransform.rotation) * (heldObject.transform.position - handTransform.position);
                 grabRotationOffset = Quaternion.Inverse(handTransform.rotation) * heldObject.transform.rotation;
                 heldObject.GetComponent<Rigidbody>().isKinematic = true;
+
+                // Take ownership if networked
+                var netObj = heldObject.GetComponent<NetworkedObject>();
+                if (netObj != null)
+                {
+                    netObj.TakeOwnership();
+                }
+
                 break;
             }
         }
