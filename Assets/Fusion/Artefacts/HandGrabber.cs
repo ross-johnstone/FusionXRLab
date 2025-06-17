@@ -4,6 +4,7 @@ using UnityEngine.XR;
 using System.Collections.Generic;
 using Ubiq.Logging;
 
+
 public class HandGrabber : MonoBehaviour
 {
     public Transform handTransform;
@@ -15,6 +16,7 @@ public class HandGrabber : MonoBehaviour
     private Quaternion grabRotationOffset;
 
     XRHandSubsystem handSubsystem;
+
     private ExperimentLogEmitter logEmitter;
 
     void Start()
@@ -49,7 +51,11 @@ public class HandGrabber : MonoBehaviour
 
     bool IsGrabbing()
     {
+        if (handSubsystem == null)
+            return false;
+
         XRHand hand = handNode == XRNode.LeftHand ? handSubsystem.leftHand : handSubsystem.rightHand;
+
         if (hand == null || !hand.isTracked)
             return false;
 
@@ -60,7 +66,7 @@ public class HandGrabber : MonoBehaviour
             return false;
 
         float pinchDistance = Vector3.Distance(thumbPose.position, indexPose.position);
-        return pinchDistance < 0.03f;
+        return pinchDistance < 0.03f; // You can adjust this threshold
     }
 
     void TryGrab()
@@ -70,25 +76,10 @@ public class HandGrabber : MonoBehaviour
         {
             if (hit.CompareTag(grabTag))
             {
-                var candidate = hit.gameObject;
-
-                if (candidate == heldObject) return;
-
-                Release();
-
-                heldObject = candidate;
+                heldObject = hit.gameObject;
                 grabOffset = Quaternion.Inverse(handTransform.rotation) * (heldObject.transform.position - handTransform.position);
                 grabRotationOffset = Quaternion.Inverse(handTransform.rotation) * heldObject.transform.rotation;
-
-                var rb = heldObject.GetComponent<Rigidbody>();
-                if (rb) rb.isKinematic = true;
-
-                var networked = heldObject.GetComponent<NetworkedObject>();
-                if (networked != null)
-                {
-                    networked.SetOwner(true);
-                }
-
+                heldObject.GetComponent<Rigidbody>().isKinematic = true;
                 break;
             }
         }
@@ -98,15 +89,7 @@ public class HandGrabber : MonoBehaviour
     {
         if (heldObject != null)
         {
-            var rb = heldObject.GetComponent<Rigidbody>();
-            if (rb) rb.isKinematic = false;
-
-            var networked = heldObject.GetComponent<NetworkedObject>();
-            if (networked != null)
-            {
-                networked.SetOwner(false);
-            }
-
+            heldObject.GetComponent<Rigidbody>().isKinematic = false;
             heldObject = null;
         }
     }
