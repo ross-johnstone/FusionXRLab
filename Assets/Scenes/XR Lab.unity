@@ -2237,6 +2237,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VR Environment
       objectReference: {fileID: 0}
+    - target: {fileID: 4816068046588857005, guid: a669fc7a591030240b548c45d545b500, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c139f26cc4afa964194288b09475a8a6, type: 2}
     - target: {fileID: 9220361333982526368, guid: a669fc7a591030240b548c45d545b500, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

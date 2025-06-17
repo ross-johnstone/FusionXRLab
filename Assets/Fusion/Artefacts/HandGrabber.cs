@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.XR.Hands;
 using UnityEngine.XR;
 using System.Collections.Generic;
+using Ubiq.Logging;
 
 
 public class HandGrabber : MonoBehaviour
@@ -16,12 +17,16 @@ public class HandGrabber : MonoBehaviour
 
     XRHandSubsystem handSubsystem;
 
+    private ExperimentLogEmitter logEmitter;
+
     void Start()
     {
         var subsystems = new List<XRHandSubsystem>();
         SubsystemManager.GetSubsystems(subsystems);
         if (subsystems.Count > 0)
             handSubsystem = subsystems[0];
+
+        logEmitter = new ExperimentLogEmitter(this);
     }
 
     void Update()
@@ -38,6 +43,7 @@ public class HandGrabber : MonoBehaviour
 
         if (heldObject)
         {
+            logEmitter.Log("Holding object: " + heldObject.name, heldObject.transform.position, heldObject.transform.rotation);
             heldObject.transform.position = handTransform.position + handTransform.rotation * grabOffset;
             heldObject.transform.rotation = handTransform.rotation * grabRotationOffset;
         }
