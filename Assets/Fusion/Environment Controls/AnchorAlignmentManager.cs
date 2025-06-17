@@ -81,8 +81,33 @@ public class AnchorAlignmentManager : MonoBehaviour
 
     public void ResetEnvironment()
     {
+        // Store original parent (Anchors object)
+        Transform originalParent = rootPosition.parent;
+
+        // Store world positions before parenting
+        Vector3 rootPosWorld = rootPosition.position;
+        Vector3 rootAngleWorld = rootAngle.position;
+        Vector3 rootDirWorld = rootDirection.position;
+
+        // Parent anchor references to environment root
+        rootPosition.SetParent(environmentRoot);
+        rootAngle.SetParent(environmentRoot);
+        rootDirection.SetParent(environmentRoot);
+
+        // Reset environment position and rotation
         environmentRoot.position = environmentRootPosition;
         environmentRoot.rotation = Quaternion.Euler(environmentRootRotation);
+
+        // Restore original parent while maintaining world positions
+        rootPosition.SetParent(originalParent);
+        rootAngle.SetParent(originalParent);
+        rootDirection.SetParent(originalParent);
+
+        // Restore world positions
+        rootPosition.position = rootPosWorld;
+        rootAngle.position = rootAngleWorld;
+        rootDirection.position = rootDirWorld;
+
         events.Log("[AnchorAlignmentManager] Environment reset");
     }
     public void RelocateRootAnchors(List<Transform> anchors)
@@ -138,6 +163,12 @@ public class AnchorAlignmentManager : MonoBehaviour
         rootPosition.localEulerAngles = new Vector3(0, rootPosition.localEulerAngles.y, 0);
 
         Debug.Log("[AnchorAlignmentManager] New euler angles: " + rootPosition.localEulerAngles);
+
+
+        //debug lines
+        Debug.DrawLine(rootPosition.position, rootAngle.position, Color.green, 5f);
+        Debug.DrawLine(anchors[0].position, anchors[1].position, Color.red, 5f);
+        Debug.DrawLine(anchors[0].position, anchors[2].position, Color.blue, 5f);
 
         // Adjust the initial rotation on the first run
         if (start)
