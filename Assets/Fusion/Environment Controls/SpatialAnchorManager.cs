@@ -5,20 +5,32 @@ using Ubiq.Logging;
 
 public class SpatialAnchorManager : MonoBehaviour
 {
-
+    // --- Device State ---
     private InputDevice rightHand;
     private InputDevice leftHand;
     public Transform rightControllerTransform;
+
+    // --- Components ---
     private AnchorPlacer anchorPlacer;
     private AnchorAlignmentManager anchorAlignmentManager;
     private AnchorVisual anchorVisual;
+    private ComponentLogEmitter events;
+    private AvatarAligner avatarAligner;
+    private GameObject xrRig;
+    private Transform userHead;
+    private Transform anchor;
+
+
+    // --- Input State ---
     private bool rightTriggerLastFrame = false;
     private bool leftTriggerLastFrame = false;
     private bool rightPrimaryButtonLastFrame = false;
     private bool rightSecondaryButtonLastFrame = false;
     private bool leftPrimaryButtonLastFrame = false;
     private bool anchorsVisible = true;
-    private ComponentLogEmitter events;
+
+
+    // --- Singleton ---    
     public static SpatialAnchorManager Instance { get; private set; }
 
     void Start()

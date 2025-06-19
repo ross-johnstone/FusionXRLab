@@ -82,7 +82,7 @@ public class DarknessController : MonoBehaviour
             ProcessChildObjects(xrLabRoom, obj => {
                 if (obj.name != "SM_XR_DividerEnds_01_10") // Skip divider ends as they're handled separately
                 {
-                    ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.2f);
+                    ScaleMaterialColor(obj, lightsEnabled ? 1f : 0.05f); // 95% darker
                     totalObjectsChanged++;
                 }
             });
@@ -99,7 +99,7 @@ public class DarknessController : MonoBehaviour
                     {
                         if (renderer != null)
                         {
-                            Color targetColor = lightsEnabled ? Color.white : new Color(0.2f, 0.2f, 0.2f);
+                            Color targetColor = lightsEnabled ? Color.white : new Color(0.05f, 0.05f, 0.05f); // 95% darker
                             renderer.material.color = targetColor;
                             totalObjectsChanged++;
                         }
@@ -116,12 +116,12 @@ public class DarknessController : MonoBehaviour
 
         GameObject floor = GameObject.Find("SM_XR_Floor_01_44");
         HandleSpecificMaterial(floor, "M_Floor",
-            new Color(188f/255f, 190f/255f, 190f/255f), new Color(0.18f, 0.2f, 0.2f));
+            new Color(188f/255f, 190f/255f, 190f/255f), new Color(0.05f, 0.05f, 0.05f)); // 95% darker
         if (floor != null) totalObjectsChanged++;
 
         GameObject wall = GameObject.Find("SM_XR_Walls_01_52");
         HandleSpecificMaterial(wall, "M_Wall",
-            new Color(255f/255f, 254f/255f, 242f/255f), new Color(0.25f, 0.254f, 0.242f));
+            new Color(255f/255f, 254f/255f, 242f/255f), new Color(0.05f, 0.05f, 0.05f)); // 95% darker
         if (wall != null) totalObjectsChanged++;
 
         // Process Hololens objects
@@ -133,7 +133,7 @@ public class DarknessController : MonoBehaviour
                 if (child.gameObject.name == "Hololens")
                 {
                     HandleEmissiveMaterial(child.gameObject, "M_General_ORM",
-                        Color.white, new Color(0.2f, 0.2f, 0.2f));
+                        Color.white, new Color(0.05f, 0.05f, 0.05f)); // 95% darker
                     totalObjectsChanged++;
                 }
             }
@@ -147,6 +147,14 @@ public class DarknessController : MonoBehaviour
                 HandleSwitchMaterials(switchObj, lightsEnabled);
                 totalObjectsChanged++;
             });
+        }
+
+        // Process Sticker object
+        GameObject sticker = GameObject.Find("Sticker");
+        if (sticker != null)
+        {
+            ScaleMaterialColor(sticker, lightsEnabled ? 1f : 0.05f); // 95% darker
+            totalObjectsChanged++;
         }
 
         Debug.Log($"[DarknessController] Changed {totalObjectsChanged} objects to {(lightsEnabled ? "light" : "dark")} mode");
