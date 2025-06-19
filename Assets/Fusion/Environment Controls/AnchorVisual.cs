@@ -3,10 +3,12 @@ using UnityEngine;
 public class AnchorVisual : MonoBehaviour
 {
     private AnchorPlacer anchorPlacer;
+    private AnchorAlignmentManager anchorAlignmentManager;
 
     void Start()
     {
         anchorPlacer = FindFirstObjectByType<AnchorPlacer>();
+        anchorAlignmentManager = FindFirstObjectByType<AnchorAlignmentManager>();
     }
 
     public void HideVisuals()
@@ -35,6 +37,32 @@ public class AnchorVisual : MonoBehaviour
                 }
             }
         }
+
+        // Hide root reference objects
+        if (anchorAlignmentManager != null)
+        {
+            var rootPosition = anchorAlignmentManager.transform.Find("rootPosition");
+            var rootDirection = anchorAlignmentManager.transform.Find("rootDirection");
+            var rootAngle = anchorAlignmentManager.transform.Find("rootAngle");
+
+            if (rootPosition != null)
+            {
+                var renderer = rootPosition.GetComponent<MeshRenderer>();
+                if (renderer != null) renderer.enabled = false;
+            }
+
+            if (rootDirection != null)
+            {
+                var renderer = rootDirection.GetComponent<MeshRenderer>();
+                if (renderer != null) renderer.enabled = false;
+            }
+
+            if (rootAngle != null)
+            {
+                var renderer = rootAngle.GetComponent<MeshRenderer>();
+                if (renderer != null) renderer.enabled = false;
+            }
+        }
     }
 
     public void ShowVisuals()
@@ -58,6 +86,31 @@ public class AnchorVisual : MonoBehaviour
                 canvas.enabled = true;
             }
         }
-    }
 
+        // Show root reference objects
+        if (anchorAlignmentManager != null)
+        {
+            var rootPosition = anchorAlignmentManager.transform.Find("rootPosition");
+            var rootDirection = anchorAlignmentManager.transform.Find("rootDirection");
+            var rootAngle = anchorAlignmentManager.transform.Find("rootAngle");
+
+            if (rootPosition != null)
+            {
+                var renderer = rootPosition.GetComponent<MeshRenderer>();
+                if (renderer != null) renderer.enabled = true;
+            }
+
+            if (rootDirection != null)
+            {
+                var renderer = rootDirection.GetComponent<MeshRenderer>();
+                if (renderer != null) renderer.enabled = true;
+            }
+
+            if (rootAngle != null)
+            {
+                var renderer = rootAngle.GetComponent<MeshRenderer>();
+                if (renderer != null) renderer.enabled = true;
+            }
+        }
+    }
 } 
