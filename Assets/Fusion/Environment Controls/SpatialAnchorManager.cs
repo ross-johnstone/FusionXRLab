@@ -18,7 +18,7 @@ public class SpatialAnchorManager : MonoBehaviour
     private AvatarAligner avatarAligner;
     private GameObject xrRig;
     private Transform userHead;
-    private Transform anchor;
+    private Transform anchor;       
 
 
     // --- Input State ---
