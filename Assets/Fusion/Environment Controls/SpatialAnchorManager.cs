@@ -51,27 +51,36 @@ public class SpatialAnchorManager : MonoBehaviour
     void Update()
     {
         // Reinitialize if devices have become invalid
-        if (!rightHand.isValid || !leftHand.isValid)
+        if (!rightHand.isValid)
         {
-            TryInitializeDevices();
+            rightHand = default;
+            List<InputDevice> devices = new List<InputDevice>();
+            InputDevices.GetDevicesAtXRNode(XRNode.RightHand, devices);
+            if (devices.Count > 0)
+                rightHand = devices[0];
+        }
+        if (!leftHand.isValid)
+        {
+            leftHand = default;
+            List<InputDevice> devices = new List<InputDevice>();
+            InputDevices.GetDevicesAtXRNode(XRNode.LeftHand, devices);
+            if (devices.Count > 0)
+                leftHand = devices[0];
         }
 
         // --- RIGHT HAND: Place Anchor ---
-        if (rightHand.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTrigger))
+        if (rightHand.isValid && rightHand.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTrigger))
         {
             if (rightTrigger && !rightTriggerLastFrame && anchorPlacer.getAnchorTransforms().Count < 3)
             {
-                // Show preview when trigger is first pressed
                 anchorPlacer.ShowPreview(rightControllerTransform.position, rightControllerTransform.rotation);
             }
             else if (rightTrigger && anchorPlacer.getAnchorTransforms().Count < 3)
             {
-                // Update preview position while trigger is held
                 anchorPlacer.ShowPreview(rightControllerTransform.position, rightControllerTransform.rotation);
             }
             else if (!rightTrigger && rightTriggerLastFrame)
             {
-                // Place anchor and hide preview when trigger is released
                 if (anchorPlacer.getAnchorTransforms().Count < 3)
                 {
                     anchorPlacer.PlaceAnchor(rightControllerTransform.position, rightControllerTransform.rotation);
@@ -81,9 +90,13 @@ public class SpatialAnchorManager : MonoBehaviour
             }
             rightTriggerLastFrame = rightTrigger;
         }
+        else
+        {
+            rightTriggerLastFrame = false;
+        }
 
         // --- RIGHT HAND: Align Environment ---    
-        if (rightHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButton))
+        if (rightHand.isValid && rightHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButton))
         {
             if (primaryButton && !rightPrimaryButtonLastFrame)
             {
@@ -93,9 +106,13 @@ public class SpatialAnchorManager : MonoBehaviour
             }
             rightPrimaryButtonLastFrame = primaryButton;
         }
+        else
+        {
+            rightPrimaryButtonLastFrame = false;
+        }
 
         // --- RIGHT HAND: Reset Environment ---
-        if (rightHand.TryGetFeatureValue(CommonUsages.secondaryButton, out bool secondaryButton))
+        if (rightHand.isValid && rightHand.TryGetFeatureValue(CommonUsages.secondaryButton, out bool secondaryButton))
         {
             if (secondaryButton && !rightSecondaryButtonLastFrame)
             {
@@ -105,9 +122,13 @@ public class SpatialAnchorManager : MonoBehaviour
             }
             rightSecondaryButtonLastFrame = secondaryButton;
         }
+        else
+        {
+            rightSecondaryButtonLastFrame = false;
+        }
 
         // --- LEFT HAND: Delete Anchor ---
-        if (leftHand.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTrigger))
+        if (leftHand.isValid && leftHand.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTrigger))
         {
             if (leftTrigger && !leftTriggerLastFrame)
             {
@@ -117,9 +138,13 @@ public class SpatialAnchorManager : MonoBehaviour
             }
             leftTriggerLastFrame = leftTrigger;
         }
+        else
+        {
+            leftTriggerLastFrame = false;
+        }
 
         // --- LEFT HAND: Toggle Anchors Visibility ---
-        if (leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool leftPrimaryButton))
+        if (leftHand.isValid && leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool leftPrimaryButton))
         {
             if (leftPrimaryButton && !leftPrimaryButtonLastFrame)
             {
@@ -137,6 +162,10 @@ public class SpatialAnchorManager : MonoBehaviour
                 }
             }
             leftPrimaryButtonLastFrame = leftPrimaryButton;
+        }
+        else
+        {
+            leftPrimaryButtonLastFrame = false;
         }
     }
 

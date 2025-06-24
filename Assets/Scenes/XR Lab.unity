@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5718651ca0731c543a11eb7cf816b36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Iain
+  roomName: Experiment Room
   enableVoice: 1
   forceFacilitatorMode: 0
   forceUserMode: 0
@@ -1959,6 +1959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkSpawnManager: {fileID: 1106883966}
   anchorPrefab: {fileID: 3105173346702953323, guid: fd3e0ef811fe2ca4c988acc5d40b1304, type: 3}
+  previewAnchorPrefab: {fileID: 3105173346702953323, guid: ef28dac3b3da9ae409eba099e6c32bd7, type: 3}
 --- !u!114 &483804878
 MonoBehaviour:
   m_ObjectHideFlags: 0

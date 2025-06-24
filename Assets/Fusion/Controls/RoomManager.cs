@@ -198,6 +198,7 @@ public class RoomManager : MonoBehaviour
             isAvatarHidden = true;
         }
     }
+
     #endregion
 
     #region Room Management Methods
@@ -205,11 +206,19 @@ public class RoomManager : MonoBehaviour
     {
         try
         {
-            if (!roomClient.JoinedRoom)
+            if (roomClient != null && !roomClient.JoinedRoom)
             {
                 Debug.Log($"[RoomManager] Creating room: {roomName}");
                 roomClient.Join(roomName, true);
-                roomClient.Ping();
+                // Only ping if Join succeeded and roomClient is still valid
+                if (roomClient.JoinedRoom)
+                {
+                    roomClient.Ping();
+                }
+            }
+            else if (roomClient == null)
+            {
+                Debug.LogError("[RoomManager] Cannot create room: RoomClient is null.");
             }
         }
         catch (System.Exception e)

@@ -6,6 +6,7 @@ public class AnchorPlacer : MonoBehaviour
 {
     public NetworkSpawnManager networkSpawnManager;
     public GameObject anchorPrefab;
+    public GameObject previewAnchorPrefab;
 
     private GameObject previewAnchor;
     private Stack<GameObject> anchorStack = new Stack<GameObject>();
@@ -14,7 +15,7 @@ public class AnchorPlacer : MonoBehaviour
     void Start()
     {
         // Create preview object but keep it inactive
-        previewAnchor = Instantiate(anchorPrefab);
+        previewAnchor = Instantiate(previewAnchorPrefab);
         previewAnchor.SetActive(false);
 
         // Make preview semi-transparent
