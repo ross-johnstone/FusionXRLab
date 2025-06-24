@@ -37,37 +37,6 @@ public class AnchorAlignmentManager : MonoBehaviour
         }
     }
 
-    public void AlignEnvironment(List<Transform> anchors)
-    {
-        if (anchors.Count != 3 || environmentRoot == null) return;
-
-        // Get the three anchor positions
-        Vector3 anchor1 = anchors[0].position;
-        Vector3 anchor2 = anchors[1].position;
-        Vector3 anchor3 = anchors[2].position;
-
-        // Calculate the forward direction (from anchor1 to anchor2)
-        Vector3 forward = (anchor2 - anchor1).normalized;
-        
-        // Calculate the right direction using anchor3
-        Vector3 right = Vector3.Cross(forward, Vector3.up).normalized;
-        
-        // Recalculate up to ensure orthogonality
-        Vector3 up = Vector3.Cross(right, forward).normalized;
-
-        // Create the rotation matrix
-        Quaternion rotation = Quaternion.LookRotation(forward, up);
-
-        // Apply the transformation
-        environmentRoot.position = anchor1;
-        environmentRoot.rotation = rotation;
-
-        isAligned = true;
-        events.Log("[AnchorAlignmentManager] Environment alignment completed");
-
-        Debug.Log("[AnchorAlignmentManager] Environment aligned");
-    }
-
     public bool IsAligned()
     {
         return isAligned;
@@ -112,7 +81,7 @@ public class AnchorAlignmentManager : MonoBehaviour
     }
     public void RelocateRootAnchors(List<Transform> anchors)
     {
-        // Get the three anchor positions
+        // Get the three anchor positions adapted from aurelien scripts
         // reperePos = rootPosition
         // repereAngle = rootAngle
         // repereDir = rootDirection
@@ -135,40 +104,21 @@ public class AnchorAlignmentManager : MonoBehaviour
             anchors.Average(t => t.position.z)
         );
 
-        Debug.Log("[AnchorAlignmentManager] New position: " + newPosition);
-
         // Keep the y position from current rootPosition to avoid vertical snapping
         rootPosition.position = new Vector3(newPosition.x, rootPosition.position.y, newPosition.z);
-
-        Debug.Log("[AnchorAlignmentManager] Root position: " + rootPosition.position);
 
         // Calculate the vectors for the root and the anchors
         Vector3 rootVector = rootPosition.position - rootAngle.position;
         Vector3 anchorVector = anchors[1].position - anchors[0].position;
 
-        Debug.Log("[AnchorAlignmentManager] Root vector: " + rootVector);
-        Debug.Log("[AnchorAlignmentManager] Anchor vector: " + anchorVector);
-
         // Calculate the angle between rootVector and anchorVector
         float newAngle = Vector3.Angle(rootVector, anchorVector);
-
-        Debug.Log("[AnchorAlignmentManager] New angle: " + newAngle);
 
         // Update the rotation of the rootPosition to align with the anchorVector
         rootPosition.localRotation = Quaternion.FromToRotation(rootVector, anchorVector) * rootPosition.localRotation;
 
-        Debug.Log("[AnchorAlignmentManager] New rotation: " + rootPosition.localRotation);
-
         // Lock rotation only around Y axis
         rootPosition.localEulerAngles = new Vector3(0, rootPosition.localEulerAngles.y, 0);
-
-        Debug.Log("[AnchorAlignmentManager] New euler angles: " + rootPosition.localEulerAngles);
-
-
-        //debug lines
-        Debug.DrawLine(rootPosition.position, rootAngle.position, Color.green, 5f);
-        Debug.DrawLine(anchors[0].position, anchors[1].position, Color.red, 5f);
-        Debug.DrawLine(anchors[0].position, anchors[2].position, Color.blue, 5f);
 
         // Adjust the initial rotation on the first run
         if (start)

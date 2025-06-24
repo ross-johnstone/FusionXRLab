@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Ubiq.Spawning;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class AnchorPlacer : MonoBehaviour
 {
+    public NetworkSpawnManager networkSpawnManager;
     public GameObject anchorPrefab;
+
     private GameObject previewAnchor;
     private Stack<GameObject> anchorStack = new Stack<GameObject>();
     private bool isPreviewActive = false;
@@ -14,19 +16,17 @@ public class AnchorPlacer : MonoBehaviour
         // Create preview object but keep it inactive
         previewAnchor = Instantiate(anchorPrefab);
         previewAnchor.SetActive(false);
-        
+
         // Make preview semi-transparent
         var renderers = previewAnchor.GetComponentsInChildren<Renderer>();
         foreach (var renderer in renderers)
         {
-            var materials = renderer.materials;
-            foreach (var material in materials)
+            foreach (var material in renderer.materials)
             {
-                Color color = material.color;
+                var color = material.color;
                 color.a = 0.5f;
                 material.color = color;
             }
-            renderer.materials = materials;
         }
     }
 
@@ -37,8 +37,8 @@ public class AnchorPlacer : MonoBehaviour
             previewAnchor.SetActive(true);
             isPreviewActive = true;
         }
-        previewAnchor.transform.position = position;
-        previewAnchor.transform.rotation = rotation;
+
+        previewAnchor.transform.SetPositionAndRotation(position, rotation);
     }
 
     public void HidePreview()
@@ -52,18 +52,30 @@ public class AnchorPlacer : MonoBehaviour
 
     public void PlaceAnchor(Vector3 position, Quaternion rotation)
     {
-        anchorStack.Push(Instantiate(anchorPrefab, position, rotation));
+        // Spawn the prefab *via* NetworkSpawnManager, not Instantiate
+        var anchor = networkSpawnManager.SpawnWithPeerScope(anchorPrefab);
+
+        if (anchor != null)
+        {
+            anchor.transform.SetPositionAndRotation(position, rotation);
+            anchorStack.Push(anchor);
+        }
+        else
+        {
+            Debug.LogWarning("[AnchorPlacer] Failed to spawn networked anchor.");
+        }
+
         HidePreview();
     }
 
     public List<Transform> getAnchorTransforms()
     {
-        List<Transform> anchors = new List<Transform>();
-        foreach (GameObject anchor in anchorStack)
+        var list = new List<Transform>();
+        foreach (var anchor in anchorStack)
         {
-            anchors.Add(anchor.transform);
+            list.Add(anchor.transform);
         }
-        return anchors;
+        return list;
     }
 
     public List<GameObject> getAnchors()
@@ -75,7 +87,8 @@ public class AnchorPlacer : MonoBehaviour
     {
         if (anchorStack.Count > 0)
         {
-            Destroy(anchorStack.Pop());
+            var last = anchorStack.Pop();
+            Destroy(last);
         }
     }
 }

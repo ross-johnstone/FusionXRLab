@@ -448,12 +448,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56748608}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.61266, y: 0, z: 9.88901}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 112484760}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &56748610
 MonoBehaviour:
@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5718651ca0731c543a11eb7cf816b36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Experiment Room
+  roomName: Iain
   enableVoice: 1
   forceFacilitatorMode: 0
   forceUserMode: 0
@@ -475,38 +475,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   - {fileID: 8300000, guid: 59e05642b94ec654494569d6fd543569, type: 3}
   facilitatorAvatarPrefab: {fileID: 0}
---- !u!1 &112484759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 112484760}
-  m_Layer: 0
-  m_Name: Experiment Profiles
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &112484760
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112484759}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.61266, y: 0, z: 9.88901}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 56748609}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &221942198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1911,6 +1879,7 @@ GameObject:
   - component: {fileID: 483804876}
   - component: {fileID: 483804875}
   - component: {fileID: 483804877}
+  - component: {fileID: 483804878}
   m_Layer: 0
   m_Name: Spatial Anchor Manager
   m_TagString: Untagged
@@ -1988,7 +1957,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b4f6425a6611946a895c5159d680f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchorPrefab: {fileID: 3105173346702953323, guid: d675ca738ca229f41a80c9105cacfb75, type: 3}
+  networkSpawnManager: {fileID: 1106883966}
+  anchorPrefab: {fileID: 3105173346702953323, guid: fd3e0ef811fe2ca4c988acc5d40b1304, type: 3}
+--- !u!114 &483804878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483804872}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a7e9591eac376d4cbc91b99240198eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchorPrefab: {fileID: 3105173346702953323, guid: fd3e0ef811fe2ca4c988acc5d40b1304, type: 3}
+  networkSpawnManager: {fileID: 1106883966}
 --- !u!1 &503119567
 GameObject:
   m_ObjectHideFlags: 0
@@ -3074,6 +3058,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68f10fd2adc5c1f478ed959353b50c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1106883966 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1969530087210779678, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
+  m_PrefabInstance: {fileID: 8839457145026391851}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a8236d1040c2b439f6933935477a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1143026325
@@ -4870,8 +4865,8 @@ SceneRoots:
   - {fileID: 2143800817}
   - {fileID: 318005864}
   - {fileID: 729614229}
+  - {fileID: 56748609}
   - {fileID: 1080755764}
-  - {fileID: 112484760}
   - {fileID: 8839457145026391851}
   - {fileID: 1143026329}
   - {fileID: 1758894322}
