@@ -89,6 +89,16 @@ public class AnchorPlacer : MonoBehaviour
         if (anchorStack.Count > 0)
         {
             var last = anchorStack.Pop();
+            var networkedAnchor = last.GetComponent<NetworkedAnchor>();
+            if (networkedAnchor != null)
+            {
+                //networkedAnchor.DestroyNetworkedAnchor();
+                networkSpawnManager.Despawn(last);
+            }
+            else
+            {
+                Debug.LogWarning("[AnchorPlacer] Last anchor does not have a NetworkedAnchor component.");
+            }
             Destroy(last);
         }
     }

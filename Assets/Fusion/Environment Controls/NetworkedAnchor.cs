@@ -32,17 +32,15 @@ public class NetworkedAnchor : MonoBehaviour, INetworkSpawnable
     private struct Message
     {
         public Vector3 position;
+        public bool destroyed;
     }
 
     public void ProcessMessage(ReferenceCountedSceneGraphMessage message)
     {
-        // Parse the message
         var m = message.FromJson<Message>();
 
-        // Use the message to update the Component
         transform.localPosition = m.position;
 
-        // Make sure the logic in Update doesn't trigger as a result of this message
         anchorPosition = transform.localPosition;
     }
 
