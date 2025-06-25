@@ -37,6 +37,8 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         }
         grab = GetComponent<XRGrabInteractable>();
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false; // Always start as non-kinematic
+        grab.enabled = true;
 
         targetPosition = transform.position;
         targetRotation = transform.rotation;
@@ -55,6 +57,16 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         grab.trackRotation = true;
 
         rb.isKinematic = false;
+
+        StartCoroutine(EnableGrabAfterDelay());
+    }
+
+    private System.Collections.IEnumerator EnableGrabAfterDelay()
+    {
+        grab.enabled = false;
+        yield return new WaitForSeconds(0.2f); // Wait a short time
+        grab.enabled = true;
+        Debug.Log($"[{name}] Grab enabled after delay");
     }
 
     private void OnDestroy()
@@ -67,12 +79,17 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     {
         isOwner = true;
         rb.isKinematic = true; // Freeze physics; follow hand
+        Debug.Log($"[{name}] Grabbed by local peer {localPeerId}, ownership set to true");
+        ForceNetworkUpdate(); // Immediately broadcast new ownership and state
     }
 
     private void OnReleased(SelectExitEventArgs args)
     {
+        // Keep ownership so physics continues to be simulated and broadcast
         isOwner = true;
         rb.isKinematic = false; // Enable physics
+        Debug.Log($"[{name}] Released by local peer {localPeerId}, ownership remains true");
+        ForceNetworkUpdate();
     }
 
     private void FixedUpdate()
@@ -118,7 +135,12 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         var worldPose = Transforms.ToWorld(msg.pose, context.Scene.transform);
 
         // Ownership logic
+        bool wasOwner = isOwner;
         isOwner = (msg.ownerId == localPeerId);
+        if (wasOwner != isOwner)
+        {
+            Debug.Log($"[{name}] Ownership changed: now isOwner={isOwner} (msg.ownerId={msg.ownerId}, localPeerId={localPeerId})");
+        }
 
         // Immediately set position, rotation, and velocity
         transform.position = worldPose.position;
@@ -135,6 +157,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     {
         isOwner = owner;
         rb.isKinematic = owner;
+        Debug.Log($"[{name}] SetOwner({owner}) called by local peer {localPeerId}");
     }
 
     public void ForceNetworkUpdate()
