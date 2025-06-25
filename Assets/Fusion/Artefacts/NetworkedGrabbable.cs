@@ -26,6 +26,9 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     private Quaternion targetRotation;
     private Vector3 targetVelocity;
 
+    private float ownershipCooldown = 0f;
+    private const float OwnershipCooldownDuration = 0.2f; // 200ms cooldown
+
     private void Awake()
     {
         // Set position/rotation from spawner static variables if set
@@ -75,12 +78,27 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         grab.selectExited.RemoveListener(OnReleased);
     }
 
+    private void Update()
+    {
+        if (ownershipCooldown > 0f)
+        {
+            ownershipCooldown -= Time.deltaTime;
+        }
+    }
+
     private void OnGrabbed(SelectEnterEventArgs args)
     {
         isOwner = true;
-        rb.isKinematic = true; // Freeze physics; follow hand
+        rb.isKinematic = true;
+        ownershipCooldown = OwnershipCooldownDuration;
         Debug.Log($"[{name}] Grabbed by local peer {localPeerId}, ownership set to true");
-        ForceNetworkUpdate(); // Immediately broadcast new ownership and state
+        StartCoroutine(ForceNetworkUpdateNextFrame());
+    }
+
+    private System.Collections.IEnumerator ForceNetworkUpdateNextFrame()
+    {
+        yield return null; // Wait one frame so XR system moves the object
+        ForceNetworkUpdate();
     }
 
     private void OnReleased(SelectExitEventArgs args)
@@ -96,10 +114,8 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     {
         if (isOwner)
         {
-            // Broadcast current state
+            Debug.Log($"[{name}] {localPeerId} sending update (owner)");
             SendMessage();
-
-            // Record for next snapshot
             targetVelocity = rb.linearVelocity;
         }
         else
@@ -132,16 +148,19 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     public void ProcessMessage(ReferenceCountedSceneGraphMessage msgSrc)
     {
         var msg = msgSrc.FromJson<Message>();
+        Debug.Log($"[{name}] Received message from ownerId={msg.ownerId}, localPeerId={localPeerId}, isOwner={isOwner}");
         var worldPose = Transforms.ToWorld(msg.pose, context.Scene.transform);
 
-        // Ownership logic
         bool wasOwner = isOwner;
-        isOwner = (msg.ownerId == localPeerId);
-        if (wasOwner != isOwner)
+        // Only allow ownership change if not in cooldown
+        if (ownershipCooldown <= 0f)
         {
-            Debug.Log($"[{name}] Ownership changed: now isOwner={isOwner} (msg.ownerId={msg.ownerId}, localPeerId={localPeerId})");
+            isOwner = (msg.ownerId == localPeerId);
+            if (wasOwner != isOwner)
+            {
+                Debug.Log($"[{name}] Ownership changed: now isOwner={isOwner} (msg.ownerId={msg.ownerId}, localPeerId={localPeerId})");
+            }
         }
-
         // Immediately set position, rotation, and velocity
         transform.position = worldPose.position;
         transform.rotation = worldPose.rotation;
