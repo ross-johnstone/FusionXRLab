@@ -159,6 +159,12 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
             if (wasOwner != isOwner)
             {
                 Debug.Log($"[{name}] Ownership changed: now isOwner={isOwner} (msg.ownerId={msg.ownerId}, localPeerId={localPeerId})");
+                // If we lost ownership and are still grabbing, force release
+                if (!isOwner && wasOwner && grab.isSelected && grab.firstInteractorSelecting != null)
+                {
+                    Debug.Log($"[{name}] Forcing local release due to ownership transfer");
+                    grab.interactionManager.SelectExit(grab.firstInteractorSelecting, grab);
+                }
             }
         }
         // Immediately set position, rotation, and velocity
