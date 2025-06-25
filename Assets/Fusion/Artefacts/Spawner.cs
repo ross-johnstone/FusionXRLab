@@ -1,9 +1,13 @@
 using UnityEngine;
 using Ubiq.Spawning;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class Spawner : MonoBehaviour
 {
+    public static Vector3 PendingPosition;
+    public static Quaternion PendingRotation;
+
     public GameObject objectPrefab;
     private NetworkSpawnManager spawnManager;
 
@@ -28,8 +32,23 @@ public class Spawner : MonoBehaviour
             return;
         }
 
+        PendingPosition = transform.position;
+        PendingRotation = transform.rotation;
         GameObject spawned = spawnManager.SpawnWithPeerScope(objectPrefab);
-        spawned.transform.position = transform.position;
-        Debug.Log("Spawned object at " + spawned.transform.position);
+        Debug.Log("Spawned object at " + PendingPosition);
+
+        // Set initial ownership if the component exists
+        var grabbable = spawned.GetComponent<NetworkedGrabbableWithVelocity>();
+        if (grabbable != null)
+        {
+            grabbable.SetOwner(true);
+            StartCoroutine(ForceNetworkUpdateNextFrame(grabbable));
+        }
+    }
+
+    private System.Collections.IEnumerator ForceNetworkUpdateNextFrame(NetworkedGrabbableWithVelocity grabbable)
+    {
+        yield return null; // Wait one frame so Start() runs
+        grabbable.ForceNetworkUpdate();
     }
 }

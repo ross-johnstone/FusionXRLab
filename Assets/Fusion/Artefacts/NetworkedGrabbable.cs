@@ -15,6 +15,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
 {
     public NetworkId NetworkId { get; set; }
 
+    private static string localPeerId = System.Guid.NewGuid().ToString();
     private NetworkContext context;
     private bool isOwner;
 
@@ -27,6 +28,13 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
 
     private void Awake()
     {
+        // Set position/rotation from spawner static variables if set
+        if (Spawner.PendingPosition != Vector3.zero)
+        {
+            transform.position = Spawner.PendingPosition;
+            transform.rotation = Spawner.PendingRotation;
+            Spawner.PendingPosition = Vector3.zero;
+        }
         grab = GetComponent<XRGrabInteractable>();
         rb = GetComponent<Rigidbody>();
 
@@ -90,6 +98,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     {
         public Pose pose;
         public Vector3 velocity;
+        public string ownerId;
     }
 
     private void SendMessage()
@@ -97,20 +106,39 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         var message = new Message
         {
             pose = Transforms.ToLocal(transform, context.Scene.transform),
-            velocity = rb.linearVelocity
+            velocity = rb.linearVelocity,
+            ownerId = localPeerId
         };
         context.SendJson(message);
     }
 
     public void ProcessMessage(ReferenceCountedSceneGraphMessage msgSrc)
     {
-        if (isOwner) return;
-
         var msg = msgSrc.FromJson<Message>();
         var worldPose = Transforms.ToWorld(msg.pose, context.Scene.transform);
 
+        // Ownership logic
+        isOwner = (msg.ownerId == localPeerId);
+
+        // Immediately set position, rotation, and velocity
+        transform.position = worldPose.position;
+        transform.rotation = worldPose.rotation;
+        rb.linearVelocity = msg.velocity;
+
+        // Also update targets for interpolation
         targetPosition = worldPose.position;
         targetRotation = worldPose.rotation;
         targetVelocity = msg.velocity;
+    }
+
+    public void SetOwner(bool owner)
+    {
+        isOwner = owner;
+        rb.isKinematic = owner;
+    }
+
+    public void ForceNetworkUpdate()
+    {
+        SendMessage();
     }
 }
