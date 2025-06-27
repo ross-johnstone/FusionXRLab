@@ -69,7 +69,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         grab.enabled = false;
         yield return new WaitForSeconds(0.2f); // Wait a short time
         grab.enabled = true;
-        Debug.Log($"[{name}] Grab enabled after delay");
+        //Debug.Log($"[{name}] Grab enabled after delay");
     }
 
     private void OnDestroy()
@@ -91,7 +91,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         isOwner = true;
         rb.isKinematic = true;
         ownershipCooldown = OwnershipCooldownDuration;
-        Debug.Log($"[{name}] Grabbed by local peer {localPeerId}, ownership set to true");
+        //Debug.Log($"[{name}] Grabbed by local peer {localPeerId}, ownership set to true");
         StartCoroutine(ForceNetworkUpdateNextFrame());
     }
 
@@ -106,7 +106,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         // Keep ownership so physics continues to be simulated and broadcast
         isOwner = true;
         rb.isKinematic = false; // Enable physics
-        Debug.Log($"[{name}] Released by local peer {localPeerId}, ownership remains true");
+        //Debug.Log($"[{name}] Released by local peer {localPeerId}, ownership remains true");
         ForceNetworkUpdate();
     }
 
@@ -114,7 +114,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     {
         if (isOwner)
         {
-            Debug.Log($"[{name}] {localPeerId} sending update (owner)");
+            //Debug.Log($"[{name}] {localPeerId} sending update (owner)");
             SendMessage();
             targetVelocity = rb.linearVelocity;
         }
@@ -148,7 +148,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     public void ProcessMessage(ReferenceCountedSceneGraphMessage msgSrc)
     {
         var msg = msgSrc.FromJson<Message>();
-        Debug.Log($"[{name}] Received message from ownerId={msg.ownerId}, localPeerId={localPeerId}, isOwner={isOwner}");
+        //Debug.Log($"[{name}] Received message from ownerId={msg.ownerId}, localPeerId={localPeerId}, isOwner={isOwner}");
         var worldPose = Transforms.ToWorld(msg.pose, context.Scene.transform);
 
         bool wasOwner = isOwner;
@@ -158,11 +158,11 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
             isOwner = (msg.ownerId == localPeerId);
             if (wasOwner != isOwner)
             {
-                Debug.Log($"[{name}] Ownership changed: now isOwner={isOwner} (msg.ownerId={msg.ownerId}, localPeerId={localPeerId})");
+                //Debug.Log($"[{name}] Ownership changed: now isOwner={isOwner} (msg.ownerId={msg.ownerId}, localPeerId={localPeerId})");
                 // If we lost ownership and are still grabbing, force release
                 if (!isOwner && wasOwner && grab.isSelected && grab.firstInteractorSelecting != null)
                 {
-                    Debug.Log($"[{name}] Forcing local release due to ownership transfer");
+                    //Debug.Log($"[{name}] Forcing local release due to ownership transfer");
                     grab.interactionManager.SelectExit(grab.firstInteractorSelecting, grab);
                 }
             }
@@ -182,7 +182,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     {
         isOwner = owner;
         rb.isKinematic = owner;
-        Debug.Log($"[{name}] SetOwner({owner}) called by local peer {localPeerId}");
+        //Debug.Log($"[{name}] SetOwner({owner}) called by local peer {localPeerId}");
     }
 
     public void ForceNetworkUpdate()
