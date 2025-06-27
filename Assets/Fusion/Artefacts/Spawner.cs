@@ -8,9 +8,12 @@ public class Spawner : MonoBehaviour
     public static Vector3 PendingPosition;
     public static Quaternion PendingRotation;
 
-    public GameObject objectPrefab;
+    public GameObject objectPrefabA;
+    public GameObject objectPrefabB;
     private NetworkSpawnManager spawnManager;
     private GameObject currentSpawnedObject;
+    private enum SpawnType { None, A, B }
+    private SpawnType currentType = SpawnType.None;
 
     void Start()
     {
@@ -22,22 +25,26 @@ public class Spawner : MonoBehaviour
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
             DespawnCurrentObject();
-            SpawnObject();
+            SpawnObject(objectPrefabA, SpawnType.A);
+        }
+        else if (Keyboard.current.bKey.wasPressedThisFrame)
+        {
+            DespawnCurrentObject();
+            SpawnObject(objectPrefabB, SpawnType.B);
         }
     }
 
-    private void SpawnObject()
+    private void SpawnObject(GameObject prefab, SpawnType type)
     {
-        if (objectPrefab == null || spawnManager == null)
+        if (prefab == null || spawnManager == null)
         {
             Debug.LogError("Prefab or spawn manager is not set.");
             return;
         }
 
         PendingPosition = transform.position;
-        //PendingRotation = transform.rotation; //TEST
-        currentSpawnedObject = spawnManager.SpawnWithPeerScope(objectPrefab);
-        //Debug.Log("Spawned object at " + PendingPosition);
+        currentSpawnedObject = spawnManager.SpawnWithPeerScope(prefab);
+        currentType = type;
 
         // Set initial ownership if the component exists
         var grabbable = currentSpawnedObject.GetComponent<NetworkedGrabbableWithVelocity>();
