@@ -35,7 +35,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         if (Spawner.PendingPosition != Vector3.zero)
         {
             transform.position = Spawner.PendingPosition;
-            transform.rotation = Spawner.PendingRotation;
+            //transform.rotation = Spawner.PendingRotation; //TEST
             Spawner.PendingPosition = Vector3.zero;
         }
         grab = GetComponent<XRGrabInteractable>();

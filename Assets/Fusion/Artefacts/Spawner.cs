@@ -33,9 +33,9 @@ public class Spawner : MonoBehaviour
         }
 
         PendingPosition = transform.position;
-        PendingRotation = transform.rotation;
+        //PendingRotation = transform.rotation; //TEST
         GameObject spawned = spawnManager.SpawnWithPeerScope(objectPrefab);
-        Debug.Log("Spawned object at " + PendingPosition);
+        //Debug.Log("Spawned object at " + PendingPosition);
 
         // Set initial ownership if the component exists
         var grabbable = spawned.GetComponent<NetworkedGrabbableWithVelocity>();
