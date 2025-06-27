@@ -10,6 +10,7 @@ public class Spawner : MonoBehaviour
 
     public GameObject objectPrefab;
     private NetworkSpawnManager spawnManager;
+    private GameObject currentSpawnedObject;
 
     void Start()
     {
@@ -20,6 +21,7 @@ public class Spawner : MonoBehaviour
     {
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
+            DespawnCurrentObject();
             SpawnObject();
         }
     }
@@ -34,15 +36,24 @@ public class Spawner : MonoBehaviour
 
         PendingPosition = transform.position;
         //PendingRotation = transform.rotation; //TEST
-        GameObject spawned = spawnManager.SpawnWithPeerScope(objectPrefab);
+        currentSpawnedObject = spawnManager.SpawnWithPeerScope(objectPrefab);
         //Debug.Log("Spawned object at " + PendingPosition);
 
         // Set initial ownership if the component exists
-        var grabbable = spawned.GetComponent<NetworkedGrabbableWithVelocity>();
+        var grabbable = currentSpawnedObject.GetComponent<NetworkedGrabbableWithVelocity>();
         if (grabbable != null)
         {
             grabbable.SetOwner(true);
             StartCoroutine(ForceNetworkUpdateNextFrame(grabbable));
+        }
+    }
+
+    private void DespawnCurrentObject()
+    {
+        if (currentSpawnedObject != null && spawnManager != null)
+        {
+            spawnManager.Despawn(currentSpawnedObject);
+            currentSpawnedObject = null;
         }
     }
 
