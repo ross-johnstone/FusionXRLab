@@ -43,6 +43,9 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         rb.isKinematic = false; // Always start as non-kinematic
         grab.enabled = true;
 
+        // Minimal setup for dynamic attach in XRITK 3.0.7
+        grab.useDynamicAttach = true;
+
         targetPosition = transform.position;
         targetRotation = transform.rotation;
         targetVelocity = Vector3.zero;
@@ -91,7 +94,6 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         isOwner = true;
         rb.isKinematic = true;
         ownershipCooldown = OwnershipCooldownDuration;
-        //Debug.Log($"[{name}] Grabbed by local peer {localPeerId}, ownership set to true");
         StartCoroutine(ForceNetworkUpdateNextFrame());
     }
 
@@ -103,10 +105,8 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
 
     private void OnReleased(SelectExitEventArgs args)
     {
-        // Keep ownership so physics continues to be simulated and broadcast
         isOwner = true;
         rb.isKinematic = false; // Enable physics
-        //Debug.Log($"[{name}] Released by local peer {localPeerId}, ownership remains true");
         ForceNetworkUpdate();
     }
 
