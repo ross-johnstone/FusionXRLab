@@ -47,7 +47,7 @@ public class RoomManager : MonoBehaviour
         DetermineRole();
         SetupEventListeners();
         ConfigureAvatarVisibility();
-        
+
         // Get or add DarknessController
         darknessController = GetComponent<DarknessController>();
         if (darknessController == null)
@@ -138,18 +138,18 @@ public class RoomManager : MonoBehaviour
         else
         {
             // Auto-detect based on platform
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             isFacilitator = true;
-            #else
+#else
             isFacilitator = false;
-            #endif
+#endif
         }
 
         appEvents.Log($"RoomManager: Running in {(isFacilitator ? "Facilitator" : "User")} mode");
 
         if (isFacilitator)
         {
-            CreateRoom();
+            //CreateRoom();
         }
         else
         {
@@ -192,7 +192,7 @@ public class RoomManager : MonoBehaviour
             {
                 Debug.LogWarning("[RoomManager] No avatar prefab found to store for facilitator");
             }
-            
+
             // Set avatar prefab to null to prevent avatar creation
             avatarManager.avatarPrefab = null;
             isAvatarHidden = true;
@@ -251,7 +251,7 @@ public class RoomManager : MonoBehaviour
     private void OnRoomsDiscovered(List<IRoom> rooms, RoomsDiscoveredRequest request)
     {
         appEvents.Log($"RoomManager: Discovered {rooms.Count} rooms");
-        
+
         foreach (var room in rooms)
         {
             if (room.Name == roomName)
@@ -343,7 +343,7 @@ public class RoomManager : MonoBehaviour
                 avatarManager.avatarPrefab = null;
                 appEvents.Log("Facilitator avatar hidden");
             }
-            
+
             isAvatarHidden = !isAvatarHidden;
         }
     }
@@ -391,7 +391,7 @@ public class RoomManager : MonoBehaviour
     #endregion
 
     #region Editor Integration
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [UnityEditor.CustomEditor(typeof(RoomManager))]
     public class RoomManagerEditor : UnityEditor.Editor
     {
@@ -400,7 +400,7 @@ public class RoomManager : MonoBehaviour
             DrawDefaultInspector();
 
             RoomManager manager = (RoomManager)target;
-            
+
             UnityEditor.EditorGUILayout.Space();
             if (GUILayout.Button("Create Room"))
             {
@@ -410,7 +410,7 @@ public class RoomManager : MonoBehaviour
             UnityEditor.EditorGUILayout.Space();
 
             if (GUILayout.Button(manager.isExperimentRunning ? "Stop Experiment" : "Start Experiment"))
-            {   
+            {
                 manager.isExperimentRunning = !manager.isExperimentRunning;
                 if (manager.isExperimentRunning)
                 {
@@ -441,19 +441,19 @@ public class RoomManager : MonoBehaviour
 
                 UnityEditor.EditorGUILayout.Space();
                 UnityEditor.EditorGUILayout.LabelField("Audio Controls", UnityEditor.EditorStyles.boldLabel);
-                
+
                 if (manager.audioController != null && manager.availableAudioClips != null && manager.availableAudioClips.Length > 0)
                 {
                     string[] clipNames = new string[manager.availableAudioClips.Length];
                     for (int i = 0; i < manager.availableAudioClips.Length; i++)
                     {
-                        clipNames[i] = manager.availableAudioClips[i] != null ? 
+                        clipNames[i] = manager.availableAudioClips[i] != null ?
                             manager.availableAudioClips[i].name : "None";
                     }
 
                     manager.selectedAudioClipIndex = UnityEditor.EditorGUILayout.Popup(
-                        "Select Audio Clip", 
-                        manager.selectedAudioClipIndex, 
+                        "Select Audio Clip",
+                        manager.selectedAudioClipIndex,
                         clipNames
                     );
 
@@ -478,15 +478,15 @@ public class RoomManager : MonoBehaviour
             }
         }
     }
-    #endif
+#endif
     #endregion
 
     public void PlaySelectedAudio()
     {
-        if (audioController != null && availableAudioClips != null && 
+        if (audioController != null && availableAudioClips != null &&
             selectedAudioClipIndex >= 0 && selectedAudioClipIndex < availableAudioClips.Length)
         {
             audioController.PlayClip(selectedAudioClipIndex);
         }
     }
-} 
+}
