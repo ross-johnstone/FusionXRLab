@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 //Add to avatar prefab RPM Body object if not already present
 
-=======
->>>>>>> despoina_pilot
 using Ubiq.Rooms;
 using Ubiq.ReadyPlayerMe;
 using UnityEngine;
@@ -12,11 +9,8 @@ public class ReadyPlayerMeSyncUrlAvatar : MonoBehaviour
     private Ubiq.Avatars.Avatar avatar;
     private UbiqReadyPlayerMeLoader loader;
 
-<<<<<<< HEAD
     private const string KEY = "avatars.readyplayerme.url";
-=======
-    private const string KEY = "https://models.readyplayer.me/68404f5bacc881432d8445d8.glb";
->>>>>>> despoina_pilot
+
 
     private void Start()
     {
