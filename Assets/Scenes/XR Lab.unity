@@ -368,7 +368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4970683434405281724, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -595,11 +595,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4185675743113982831, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
---- !u!1 &115368467 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
-  m_PrefabInstance: {fileID: 115368464}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &115368468 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
@@ -1605,6 +1600,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VR Environment
       objectReference: {fileID: 0}
+    - target: {fileID: 4808702007026702742, guid: a669fc7a591030240b548c45d545b500, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4816068046588857005, guid: a669fc7a591030240b548c45d545b500, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2321,77 +2320,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 318005864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &580039624
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 580039626}
-  - component: {fileID: 580039625}
-  - component: {fileID: 580039627}
-  m_Layer: 0
-  m_Name: TableManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &580039625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580039624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d018fb1804a55dc4491cf2a044a849ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 2
-  table: {fileID: 115368467}
-  objects1to10:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  objects11to20: []
---- !u!4 &580039626
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580039624}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4099, y: -0, z: 0.23874}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &580039627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580039624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68a91d40049d8e248995fe72b8b47781, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &632732499
 GameObject:
   m_ObjectHideFlags: 0
@@ -3520,7 +3448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3856,7 +3784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2291423821876231778, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8432149616316641771, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
       propertyPath: m_Enabled
@@ -5513,4 +5441,3 @@ SceneRoots:
   - {fileID: 2039512547}
   - {fileID: 1143026329}
   - {fileID: 1317088581}
-  - {fileID: 580039626}
