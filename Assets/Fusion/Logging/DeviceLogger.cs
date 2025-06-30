@@ -132,9 +132,9 @@ public class DeviceLogger : MonoBehaviour
 
     void Update()
     {
-        #if !UNITY_EDITOR
-        TrackGaze();
+#if !UNITY_EDITOR
         TrackHead();
+        TrackEyes();
         
         // Only log hand data if we have valid subsystem and events
         if (handSubsystem != null && handEvents != null)
@@ -142,76 +142,7 @@ public class DeviceLogger : MonoBehaviour
             CheckAndLogHandTrackingState(handSubsystem.leftHand, "Left");
             CheckAndLogHandTrackingState(handSubsystem.rightHand, "Right");
         }
-        #endif
-    }
-
-    private void TrackGaze()
-    {
-        // Enhanced gaze tracking with throttling
-        if (headset.isValid)
-        {
-            // Get headset position and rotation
-            if (headset.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position) &&
-                headset.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation))
-            {
-                // Get the forward direction from the rotation
-                Vector3 gazeDirection = rotation * Vector3.forward;
-                
-                // Check if enough time has passed and if position/rotation has changed significantly
-                if (Time.time - lastGazeLogTime >= gazeLogInterval &&
-                    (Vector3.Distance(position, lastGazePosition) > gazePositionThreshold ||
-                     Quaternion.Angle(rotation, lastGazeRotation) > gazeRotationThreshold))
-                {
-                    // Log detailed gaze information
-                    gazeEvents.Log("GazeData (Headset)", 
-                        position, // Headset position
-                        rotation, // Headset rotation
-                        gazeDirection, // Gaze direction vector
-                        Time.time // Timestamp
-                    );
-
-                    // Optional: Cast a ray to see what the user is looking at
-                    RaycastHit hit;
-                    if (Physics.Raycast(position, gazeDirection, out hit))
-                    {
-                        gazeEvents.Log("GazeTarget", 
-                            hit.point, // Where the gaze ray hits
-                            hit.distance, // How far the user is looking
-                            hit.collider.gameObject.name // What they're looking at
-                        );
-                    }
-
-                    // Update last logged values
-                    lastGazeLogTime = Time.time;
-                    lastGazePosition = position;
-                    lastGazeRotation = rotation;
-                }
-            }
-        }
-        else if (mainCamera != null)
-        {
-            // Fallback to camera-based tracking if headset is not available
-            Vector3 gazePosition = mainCamera.transform.position;
-            Vector3 gazeDirection = mainCamera.transform.forward;
-            
-            // Check if enough time has passed and if position/rotation has changed significantly
-            if (Time.time - lastGazeLogTime >= gazeLogInterval &&
-                (Vector3.Distance(gazePosition, lastGazePosition) > gazePositionThreshold ||
-                 Quaternion.Angle(mainCamera.transform.rotation, lastGazeRotation) > gazeRotationThreshold))
-            {
-                gazeEvents.Log("GazeData (Camera)", 
-                    gazePosition,
-                    mainCamera.transform.rotation,
-                    gazeDirection,
-                    Time.time
-                );
-
-                // Update last logged values
-                lastGazeLogTime = Time.time;
-                lastGazePosition = gazePosition;
-                lastGazeRotation = mainCamera.transform.rotation;
-            }
-        }
+#endif
     }
 
     private void TrackHead()
@@ -228,6 +159,36 @@ public class DeviceLogger : MonoBehaviour
                 if (nodeState.TryGetPosition(out headPosition) && nodeState.TryGetRotation(out headRotation))
                 {
                     headEvents.Log("HeadData", headPosition, headRotation, Time.time);
+                }
+            }
+        }
+    }
+
+    private void TrackEyes()
+    {
+        // Get left and right eye position and rotation
+        List<XRNodeState> nodeStates = new List<XRNodeState>();
+        InputTracking.GetNodeStates(nodeStates);
+        foreach (XRNodeState nodeState in nodeStates)
+        {
+            if (nodeState.nodeType == XRNode.LeftEye || nodeState.nodeType == XRNode.RightEye)
+            {
+                Vector3 eyePosition;
+                Quaternion eyeRotation;
+                if (nodeState.TryGetPosition(out eyePosition) && nodeState.TryGetRotation(out eyeRotation))
+                {
+                    string label = nodeState.nodeType == XRNode.LeftEye ? "LeftEye" : "RightEye";
+                    headEvents.Log($"{label}Data", eyePosition, eyeRotation, Time.time);
+                }
+            }
+
+            if (nodeState.nodeType == XRNode.CenterEye)
+            {
+                Vector3 centerEyePosition;
+                Quaternion centerEyeRotation;
+                if (nodeState.TryGetPosition(out centerEyePosition) && nodeState.TryGetRotation(out centerEyeRotation))
+                {
+                    headEvents.Log("CenterEyeData", centerEyePosition, centerEyeRotation, Time.time);
                 }
             }
         }
@@ -293,4 +254,121 @@ public class DeviceLogger : MonoBehaviour
             handSubsystem.Stop();
         }
     }
+
+
+
+
+
+
+
+
+
+    //XR Gaze Tracking with Debugging using non deprecated methods. Current XRNode states are going to be deprecated in the future. However it does not work with the current XR SDK.
+
+    private void TrackGazeDebug()
+    {
+        if (mainCamera == null)
+        {
+            Debug.LogWarning("TrackGaze: mainCamera is null, cannot log gaze data.");
+            return;
+        }
+
+        Vector3 gazePosition = mainCamera.transform.position;
+        Quaternion gazeRotation = mainCamera.transform.rotation;
+        float timeNow = Time.time;
+
+        float positionDelta = Vector3.Distance(gazePosition, lastGazePosition);
+        float rotationDelta = Quaternion.Angle(gazeRotation, lastGazeRotation);
+
+        Debug.Log($"TrackGaze: time={timeNow}, position={gazePosition}, rotation={gazeRotation.eulerAngles}");
+        Debug.Log($"TrackGaze: positionDelta={positionDelta}, rotationDelta={rotationDelta}, timeSinceLastLog={timeNow - lastGazeLogTime}");
+
+        // Log if enough time has passed and the change exceeds thresholds
+        if ((timeNow - lastGazeLogTime) >= gazeLogInterval &&
+            (positionDelta > gazePositionThreshold || rotationDelta > gazeRotationThreshold))
+        {
+            Debug.Log("TrackGaze: Logging GazeData (Camera)");
+            gazeEvents.Log("GazeData (Debug Camera)", gazePosition, gazeRotation, timeNow);
+            lastGazeLogTime = timeNow;
+            lastGazePosition = gazePosition;
+            lastGazeRotation = gazeRotation;
+        }
+        else
+        {
+            Debug.Log("TrackGaze: Not logging this frame (thresholds or interval not met).");
+        }
+    }
+
+    private void TrackGaze()
+    {
+        // Enhanced gaze tracking with throttling
+        if (headset.isValid)
+        {
+            // Get headset position and rotation
+            if (headset.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position) &&
+                headset.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation))
+            {
+                // Get the forward direction from the rotation
+                Vector3 gazeDirection = rotation * Vector3.forward;
+
+                // Check if enough time has passed and if position/rotation has changed significantly
+                if ((Vector3.Distance(position, lastGazePosition) > gazePositionThreshold ||
+                     Quaternion.Angle(rotation, lastGazeRotation) > gazeRotationThreshold))
+                {
+                    // Log detailed gaze information
+                    gazeEvents.Log("GazeData (Headset)",
+                        position, // Headset position
+                        rotation, // Headset rotation
+                        gazeDirection, // Gaze direction vector
+                        Time.time // Timestamp
+                    );
+
+                    // Optional: Cast a ray to see what the user is looking at
+                    RaycastHit hit;
+                    if (Physics.Raycast(position, gazeDirection, out hit))
+                    {
+                        gazeEvents.Log("GazeTarget",
+                            hit.point, // Where the gaze ray hits
+                            hit.distance, // How far the user is looking
+                            hit.collider.gameObject.name // What they're looking at
+                        );
+                    }
+
+                    // Update last logged values
+                    lastGazeLogTime = Time.time;
+                    lastGazePosition = position;
+                    lastGazeRotation = rotation;
+                }
+            }
+        }
+        else if (mainCamera != null)
+        {
+            // Fallback to camera-based tracking if headset is not available
+            Vector3 gazePosition = mainCamera.transform.position;
+            Vector3 gazeDirection = mainCamera.transform.forward;
+
+            // Check if enough time has passed and if position/rotation has changed significantly
+            if ((Vector3.Distance(gazePosition, lastGazePosition) > gazePositionThreshold ||
+                 Quaternion.Angle(mainCamera.transform.rotation, lastGazeRotation) > gazeRotationThreshold))
+            {
+                gazeEvents.Log("GazeData (Camera)",
+                    gazePosition,
+                    mainCamera.transform.rotation,
+                    gazeDirection,
+                    Time.time
+                );
+
+                // Update last logged values
+                lastGazeLogTime = Time.time;
+                lastGazePosition = gazePosition;
+                lastGazeRotation = mainCamera.transform.rotation;
+            }
+        }
+        else
+        {
+            appEvents.Log("Gaze tracking not available",
+                "No valid headset or camera found for gaze tracking.");
+        }
+    }
+
 }
