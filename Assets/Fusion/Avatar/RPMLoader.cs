@@ -10,6 +10,12 @@ public class RPMLoader : MonoBehaviour
 
     void Start()
     {
+        var avatar = GetComponentInParent<Ubiq.Avatars.Avatar>();
+        if (avatar == null || !avatar.IsLocal)
+        {
+            return; // Don't load prefs or set URLs for remote peers
+        }
+
         Debug.Log("[RPMLoader] Start called. Path: " + Application.persistentDataPath);
 
         string path = Path.Combine(Application.persistentDataPath, PREFS_FILE_NAME);
@@ -57,4 +63,3 @@ public class RPMLoader : MonoBehaviour
         }
     }
 }
-    
