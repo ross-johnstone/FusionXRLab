@@ -11,6 +11,8 @@ public class AnchorPlacer : MonoBehaviour
     private GameObject previewAnchor;
     private Stack<GameObject> anchorStack = new Stack<GameObject>();
     private bool isPreviewActive = false;
+    private Vector3 pendingAnchorPosition;
+    private Quaternion pendingAnchorRotation;
 
     void Start()
     {
@@ -29,6 +31,9 @@ public class AnchorPlacer : MonoBehaviour
                 material.color = color;
             }
         }
+
+        // Subscribe to OnSpawned event for room-scoped anchors
+        networkSpawnManager.OnSpawned.AddListener(OnAnchorSpawned);
     }
 
     public void ShowPreview(Vector3 position, Quaternion rotation)
@@ -53,18 +58,12 @@ public class AnchorPlacer : MonoBehaviour
 
     public void PlaceAnchor(Vector3 position, Quaternion rotation)
     {
-        // Spawn the prefab *via* NetworkSpawnManager, not Instantiate
-        var anchor = networkSpawnManager.SpawnWithPeerScope(anchorPrefab);
+        // Store the desired transform for the next anchor
+        pendingAnchorPosition = position;
+        pendingAnchorRotation = rotation;
 
-        if (anchor != null)
-        {
-            anchor.transform.SetPositionAndRotation(position, rotation);
-            anchorStack.Push(anchor);
-        }
-        else
-        {
-            Debug.LogWarning("[AnchorPlacer] Failed to spawn networked anchor.");
-        }
+        // Request a room-scoped spawn
+        networkSpawnManager.SpawnWithRoomScope(anchorPrefab);
 
         HidePreview();
     }
@@ -100,6 +99,16 @@ public class AnchorPlacer : MonoBehaviour
                 Debug.LogWarning("[AnchorPlacer] Last anchor does not have a NetworkedAnchor component.");
             }
             Destroy(last);
+        }
+    }
+
+    private void OnAnchorSpawned(GameObject obj, Ubiq.Rooms.IRoom room, Ubiq.Rooms.IPeer peer, Ubiq.Spawning.NetworkSpawnOrigin origin)
+    {
+        // Only handle room-scoped spawns and only for objects with the AnchorVisual tag
+        if (room != null && obj.CompareTag("AnchorVisual"))
+        {
+            obj.transform.SetPositionAndRotation(pendingAnchorPosition, pendingAnchorRotation);
+            anchorStack.Push(obj);
         }
     }
 }
