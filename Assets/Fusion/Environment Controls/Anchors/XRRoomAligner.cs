@@ -32,7 +32,10 @@ public class XRRoomAligner : MonoBehaviour
         // Apply to the XR Rig's parent
         if (xrRig.parent != null)
         {
-            xrRig.parent.SetPositionAndRotation(m.GetPosition(), m.rotation);
+            Vector3 newPosition = m.GetPosition();
+            newPosition.y = xrRig.parent.position.y; // Keep the Y position of the parent
+            //xrRig.parent.SetPositionAndRotation(newPosition, m.rotation);
+            xrRig.parent.position = newPosition;
         }
         else
         {

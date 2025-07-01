@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SceneObject
   - Grabbable
+  - AnchorVisual
   layers:
   - Default
   - TransparentFX
