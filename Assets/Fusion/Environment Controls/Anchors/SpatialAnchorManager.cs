@@ -19,6 +19,7 @@ public class SpatialAnchorManager : MonoBehaviour
     private GameObject xrRig;
     private Transform userHead;
     private Transform anchor;       
+    private XRRoomAligner xrRoomAligner;
 
 
     // --- Input State ---
@@ -39,6 +40,7 @@ public class SpatialAnchorManager : MonoBehaviour
         anchorPlacer = FindFirstObjectByType<AnchorPlacer>();
         anchorAlignmentManager = FindFirstObjectByType<AnchorAlignmentManager>();
         anchorVisual = FindFirstObjectByType<AnchorVisual>();
+        xrRoomAligner = FindFirstObjectByType<XRRoomAligner>();
         TryInitializeDevices();
         InputDevices.deviceConnected += OnDeviceConnected;
     }
@@ -188,6 +190,7 @@ public class SpatialAnchorManager : MonoBehaviour
         if (anchors.Count > 0)
         {
             anchorAlignmentManager.RelocateRootAnchors(anchors);
+            xrRoomAligner.AlignXRRig(anchors[0], anchors[1]);
         }
     }
 

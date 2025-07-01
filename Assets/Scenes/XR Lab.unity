@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5718651ca0731c543a11eb7cf816b36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Experiment Room
+  roomName: Iain
   enableVoice: 1
   forceFacilitatorMode: 0
   forceUserMode: 0
@@ -2629,13 +2629,14 @@ GameObject:
   - component: {fileID: 483804875}
   - component: {fileID: 483804877}
   - component: {fileID: 483804878}
+  - component: {fileID: 483804879}
   m_Layer: 0
   m_Name: Spatial Anchor Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &483804873
 Transform:
   m_ObjectHideFlags: 0
@@ -2723,6 +2724,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anchorPrefab: {fileID: 3105173346702953323, guid: fd3e0ef811fe2ca4c988acc5d40b1304, type: 3}
   networkSpawnManager: {fileID: 1106883966}
+--- !u!114 &483804879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483804872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08751e98fe66db949a22c56b09efeb7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchor1: {fileID: 0}
+  anchor2: {fileID: 0}
+  xrRig: {fileID: 991322266}
 --- !u!1 &503119567
 GameObject:
   m_ObjectHideFlags: 0
