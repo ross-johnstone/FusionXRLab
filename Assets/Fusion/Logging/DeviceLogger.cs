@@ -135,14 +135,37 @@ public class DeviceLogger : MonoBehaviour
 #if !UNITY_EDITOR
         TrackHead();
         TrackEyes();
-        
-        // Only log hand data if we have valid subsystem and events
-        if (handSubsystem != null && handEvents != null)
-        {
-            CheckAndLogHandTrackingState(handSubsystem.leftHand, "Left");
-            CheckAndLogHandTrackingState(handSubsystem.rightHand, "Right");
-        }
+
+        //// Only log hand data if we have valid subsystem and events
+        /// Not tracking hands in this version, but keeping the code for future use
+
+        //if (handSubsystem != null && handEvents != null)
+        //{
+        //    CheckAndLogHandTrackingState(handSubsystem.leftHand, "Left");
+        //    CheckAndLogHandTrackingState(handSubsystem.rightHand, "Right");
+        //}
+
+        TrackControllers();
 #endif
+    }
+
+    private void TrackControllers()
+    {
+        List<XRNodeState> nodeStates = new List<XRNodeState>();
+        InputTracking.GetNodeStates(nodeStates);
+        foreach (XRNodeState nodeState in nodeStates)
+        {
+            if (nodeState.nodeType == XRNode.LeftHand || nodeState.nodeType == XRNode.RightHand)
+            {
+                Vector3 position;
+                Quaternion rotation;
+                if (nodeState.TryGetPosition(out position) && nodeState.TryGetRotation(out rotation))
+                {
+                    string label = nodeState.nodeType == XRNode.LeftHand ? "LeftController" : "RightController";
+                    handEvents.Log($"{label}Data", position, rotation, Time.time);
+                }
+            }
+        }
     }
 
     private void TrackHead()
