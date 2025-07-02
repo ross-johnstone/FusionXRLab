@@ -7,6 +7,7 @@ public class DarknessController : MonoBehaviour
     private bool lightsEnabled = true;
     private Dictionary<Material, Color> originalColors = new Dictionary<Material, Color>();
     private NetworkContext context;
+    private Dictionary<GameObject, Material[]> originalSwitchMaterials = new Dictionary<GameObject, Material[]>();
 
     void Start()
     {
@@ -282,44 +283,46 @@ public class DarknessController : MonoBehaviour
     private void HandleSwitchMaterials(GameObject obj, bool enable)
     {
         if (obj == null) return;
-        
+
         Renderer renderer = obj.GetComponent<Renderer>();
         if (renderer != null)
         {
-            Material[] materials = renderer.materials;
-            for (int i = 0; i < materials.Length; i++)
+            if (!originalSwitchMaterials.ContainsKey(obj))
             {
-                Material mat = materials[i];
-                if (mat != null)
+                // Store a copy of the original materials
+                Material[] originalMats = renderer.materials;
+                Material[] matsCopy = new Material[originalMats.Length];
+                for (int i = 0; i < originalMats.Length; i++)
                 {
-                    // Define the original colors for different switch materials
-                    Color colorToApply;
-                    if (mat.name.Contains("M_Switch_Base"))
-                    {
-                        colorToApply = enable ? new Color(0.8f, 0.8f, 0.8f) : new Color(0.16f, 0.16f, 0.16f);
-                    }
-                    else if (mat.name.Contains("M_Switch_Button"))
-                    {
-                        colorToApply = enable ? new Color(0.2f, 0.2f, 0.2f) : new Color(0.04f, 0.04f, 0.04f);
-                    }
-                    else if (mat.name.Contains("M_Switch_Light"))
-                    {
-                        colorToApply = enable ? new Color(1f, 0.2f, 0.2f) : new Color(0.2f, 0.04f, 0.04f);
-                    }
-                    else
-                    {
-                        // For any other materials, use a default scaling
-                        colorToApply = enable ? Color.white : new Color(0.2f, 0.2f, 0.2f);
-                    }
-
-                    // Create a new material instance
-                    Material newMat = new Material(mat);
-                    newMat.SetColor("_BaseColor", colorToApply);
-                    newMat.SetColor("_Color", colorToApply);
-                    materials[i] = newMat;
+                    matsCopy[i] = new Material(originalMats[i]);
                 }
+                originalSwitchMaterials[obj] = matsCopy;
             }
-            renderer.materials = materials;
+
+            if (enable)
+            {
+                // Restore the original materials
+                renderer.materials = originalSwitchMaterials[obj];
+            }
+            else
+            {
+                // Darken the materials (but do not overwrite the originals)
+                Material[] darkMats = new Material[renderer.materials.Length];
+                for (int i = 0; i < renderer.materials.Length; i++)
+                {
+                    Material mat = new Material(renderer.materials[i]);
+                    if (mat.HasProperty("_BaseColor"))
+                    {
+                        mat.SetColor("_BaseColor", mat.GetColor("_BaseColor") * 0.2f);
+                    }
+                    if (mat.HasProperty("_Color"))
+                    {
+                        mat.SetColor("_Color", mat.GetColor("_Color") * 0.2f);
+                    }
+                    darkMats[i] = mat;
+                }
+                renderer.materials = darkMats;
+            }
         }
     }
 
