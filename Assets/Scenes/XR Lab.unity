@@ -3353,7 +3353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPrefabA: {fileID: 8877535699522551460, guid: 38779c23151ee074496b2b19d47fb806, type: 3}
-  objectPrefabB: {fileID: 6307963326601959286, guid: a38642935eb3b41429ca8a09cbd5ea76, type: 3}
+  objectPrefabB: {fileID: 1072960788656458945, guid: 03b9ad41226657a489f3fad214974aa3, type: 3}
 --- !u!4 &907649439 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 657184242222895506, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
