@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5718651ca0731c543a11eb7cf816b36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Iain
+  roomName: Experiment Room
   enableVoice: 1
   forceFacilitatorMode: 0
   forceUserMode: 0
@@ -553,6 +553,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   - {fileID: 8300000, guid: 59e05642b94ec654494569d6fd543569, type: 3}
   facilitatorAvatarPrefab: {fileID: 0}
+--- !u!1 &103955123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 11649753526877337, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 733962394}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 733962395}
+  - component: {fileID: 733962399}
+  - component: {fileID: 733962398}
+  - component: {fileID: 733962397}
+  - component: {fileID: 733962396}
+  m_Layer: 0
+  m_Name: paper (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1001 &115368464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -640,10 +660,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
       propertyPath: m_Name
       value: Round_Folding_Table_White_Unfolded_obj_base
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2005138512018200555, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
       propertyPath: m_Enabled
@@ -755,6 +771,385 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectPrefabA: {fileID: 4853367296593872856, guid: 598e931566850a04fb25491903c1b350, type: 3}
   objectPrefabB: {fileID: 6307963326601959286, guid: a38642935eb3b41429ca8a09cbd5ea76, type: 3}
+--- !u!1 &168735199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 1823490554950877065, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 844992588}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 168735200}
+  - component: {fileID: 168735202}
+  - component: {fileID: 168735201}
+  m_Layer: 0
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &168735200
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4174477854714695018, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 844992588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168735199}
+  m_LocalRotation: {x: 0.5034159, y: 0.5056716, z: -0.49656385, w: 0.49426016}
+  m_LocalPosition: {x: 0, y: 0, z: -2.19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 844992589}
+  m_LocalEulerAnglesHint: {x: -268.954, y: 0.28100586, z: 270.02}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.64940464, y: 0.5}
+  m_AnchoredPosition: {x: -8.11, y: 0.2}
+  m_SizeDelta: {x: 5.0403633, y: 5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &168735201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 7691809521333302881, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 844992588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168735199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "Tokyo   \r\nVisit to Meiji Shrine \u2013 1.5 hr ($10)   \r\nShibuya Crossing
+    Exploration \u2013 1 hr ($0)   \r\nAsakusa Temple Visit \u2013 1.5 hrs ($10)  
+    \r\nSensoji Temple Tour \u2013 1.5 hr ($10)   \r\nTokyo Skytree Observation Deck
+    \u2013 1 hr ($50)   \r\nRobot Restaurant Show \u2013 1.5 hrs ($75)   \r\nHarajuku
+    Shopping Experience \u2013 1 hrs ($50)   \r\nOdaiba Shopping and Entertainment
+    \u2013 1.5 hrs ($50)   \r\nAkihabara Electric Town Exploration \u2013 1 hr ($10)  
+    \r\nTsukiji Fish Market Visit \u2013 1 hr ($25)   \r\nShinjuku Gyoen National
+    Garden Walk \u2013 1.5 hr ($0) \r\nTokyo Disneyland Visit \u2013 2 hrs ($100)  
+    \r\nTokyo National Museum Tour \u2013 1.5 hrs ($25)   \r\nRoppongi Hills Observation
+    Deck \u2013 1 hr ($25)   \r\nTraditional Samurai and Katana Experience \u2013
+    1.5 hrs ($50) \r\nTokyo Bay Cruise \u2013 1.5 hrs ($30)   \r\nGinza Shopping
+    and Dining \u2013 2 hrs ($30)   \r\nVisit to Ueno Zoo \u2013 1.5 hrs ($25)  
+    \r\nShinjuku Nightlife Tour \u2013 3 hrs ($50)   \r\nVisit to the Imperial Palace
+    \u2013 1 hr ($15)   \r\nTraditional Tea Ceremony Experience \u2013 1 hr ($25)
+    \r\n\r"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4279308563
+  m_fontColor: {r: 0.0754717, g: 0.06493414, b: 0.06493414, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 3.5
+  m_fontSizeBase: 3.5
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 0
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 3.219421, y: -2.7485971, z: 7.5986557, w: -1.830226}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 168735202}
+  m_maskType: 0
+--- !u!23 &168735202
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4472989892163906791, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 844992588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168735199}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &204999788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 1823490554950877065, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 583131814}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 204999789}
+  - component: {fileID: 204999791}
+  - component: {fileID: 204999790}
+  m_Layer: 0
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &204999789
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4174477854714695018, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 583131814}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204999788}
+  m_LocalRotation: {x: 0.5034159, y: 0.5056716, z: -0.49656385, w: 0.49426016}
+  m_LocalPosition: {x: 0, y: 0, z: -2.19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 583131815}
+  m_LocalEulerAnglesHint: {x: -268.954, y: 0.28100586, z: 270.02}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.64940464, y: 0.5}
+  m_AnchoredPosition: {x: -8.11, y: 0.2}
+  m_SizeDelta: {x: 5.0403633, y: 5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &204999790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 7691809521333302881, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 583131814}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204999788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "Paris    \r\nEiffel Tower Visit \u2013 1.5 hrs ($50)  \r\nLouvre Museum
+    Tour \u2013 3 hrs ($100)  \r\nNotre-Dame Cathedral Visit \u2013 1 hr ($10) \r\nMontmartre
+    and Sacr\xE9-C\u0153ur Visit \u2013 1.5 hrs ($10)  \r\nSeine River Cruise \u2013
+    1 hr ($30)  \r\nChamps-\xC9lys\xE9es Shopping \u2013 1.5 hrs ($50)  \r\nArc de
+    Triomphe Climb \u2013 1 hr ($10)  \r\nVisit to the Mus\xE9e d'Orsay \u2013 1.5
+    hrs ($25)  \r\nLe Marais District Exploration \u2013 1.5 hrs ($0)  \r\nVersailles
+    Palace Tour \u2013 2 hrs ($50)  \r\nVisit to Montparnasse Tower \u2013 1 hr ($25) 
+    \r\nStroll through Luxembourg Gardens \u2013 1 hr ($0)  \r\nVisit to the Picasso
+    Museum \u2013 1.5 hrs ($25)  \r\nParisian Cooking Class \u2013 2 hrs ($75)  \r\nWine
+    Tasting Experience \u2013 2 hrs ($50)  \r\nPicnic in the Tuileries Gardens \u2013
+    1 hr ($25)  \r\nCaf\xE9 de Flore Experience \u2013 1 hr ($25)  \r\nVisit to the
+    Mus\xE9e Rodin \u2013 1 hr ($15)  \r\nP\xE8re Lachaise Cemetery Tour \u2013 1.5
+    hrs ($10)  \r\nMoulin Rouge Show \u2013 1.5 hrs ($50)  \r\nParisian Night Tour
+    \u2013 1 hrs ($30) "
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278782223
+  m_fontColor: {r: 0.0603773, g: 0.034631506, b: 0.034631506, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 3.5
+  m_fontSizeBase: 3.5
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 0
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 3.219421, y: -2.5356436, z: 7.5986557, w: -1.830226}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 204999791}
+  m_maskType: 0
+--- !u!23 &204999791
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4472989892163906791, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 583131814}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204999788}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &221942198
 GameObject:
   m_ObjectHideFlags: 0
@@ -2244,7 +2639,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4816068046588857005, guid: a669fc7a591030240b548c45d545b500, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c139f26cc4afa964194288b09475a8a6, type: 2}
     - target: {fileID: 9220361333982526368, guid: a669fc7a591030240b548c45d545b500, type: 3}
@@ -2449,10 +2843,6 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.040000003
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
@@ -2474,7 +2864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0025176639
+      value: 0.0025176636
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2482,7 +2872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0009372882
+      value: -0.00093728816
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2520,17 +2910,6 @@ PrefabInstance:
         de Flore Experience \u2013 1 hr ($25)  \r\nVisit to the Mus\xE9e Rodin \u2013
         1 hr ($15)  \r\nP\xE8re Lachaise Cemetery Tour \u2013 1.5 hrs ($10)  \r\nMoulin
         Rouge Show \u2013 1.5 hrs ($50)  \r\nParisian Night Tour \u2013 1 hrs ($30) "
-        River Cruise \u2013 1 hr ($30)  \r\nChamps-\xC9lys\xE9es Shopping \u2013
-        1.5 hrs ($50)  \r\nArc de Triomphe Climb \u2013 1 hr ($10)  \r\nVisit to
-        the Mus\xE9e d'Orsay \u2013 1.5 hrs ($25)  \r\nLe Marais District Exploration
-        \u2013 1.5 hrs ($0)  \r\nVersailles Palace Tour \u2013 2 hrs ($50)  \r\nVisit
-        to Montparnasse Tower \u2013 1 hr ($25)  \r\nStroll through Luxembourg Gardens
-        \u2013 1 hr ($0)  \r\nVisit to the Picasso Museum \u2013 1.5 hrs ($25)  \r\nParisian
-        Cooking Class \u2013 2 hrs ($75)  \r\nWine Tasting Experience \u2013 2 hrs
-        ($50)  \r\nPicnic in the Tuileries Gardens \u2013 1 hr ($25)  \r\nCaf\xE9
-        de Flore Experience \u2013 1 hr ($25)  \r\nVisit to the Mus\xE9e Rodin \u2013
-        1 hr ($15)  \r\nP\xE8re Lachaise Cemetery Tour \u2013 1.5 hrs ($10)  \r\nMoulin
-        Rouge Show \u2013 1.5 hrs ($50)  \r\nParisian Night Tour \u2013 1 hrs ($30) "
       objectReference: {fileID: 0}
     - target: {fileID: 7691809521333302881, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_margin.y
@@ -2555,7 +2934,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1823490554950877065, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &408713701
 RectTransform:
@@ -2564,13 +2946,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 408713700}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773776666}
-  m_LocalRotation: {x: 0.0025176636, y: 0.8548074, z: -0.00093728816, w: 0.5189384}
+  m_LocalRotation: {x: 0.0025176639, y: 0.8548074, z: -0.0009372882, w: 0.5189384}
   m_LocalPosition: {x: 0, y: 0, z: 0.267}
-  m_LocalScale: {x: 0.04, y: 0.009999997, z: 0.03}
+  m_LocalScale: {x: 0.040000003, y: 0.009999997, z: 0.03}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 611285983}
-  m_Father: {fileID: 312045685}
+  m_Father: {fileID: 412017532}
   m_LocalEulerAnglesHint: {x: 0.242, y: 117.478, z: 0.191}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2725,16 +3107,8 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.040000003
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.009999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.029999997
+      value: 0.009999998
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2794,9 +3168,6 @@ PrefabInstance:
         Shopping and Entertainment \u2013 1.5 hrs ($50)   \r\nAkihabara Electric
         Town Exploration \u2013 1 hr ($10)   \r\nTsukiji Fish Market Visit \u2013
         1 hr ($25)   \r\nShinjuku Gyoen National Garden Walk \u2013 1.5 hr ($0) \r\nTokyo
-        Shopping and Entertainment \u2013 1.5 hrs ($50)   \r\nAkihabara Electric
-        Town Exploration \u2013 1 hr ($10)   \r\nTsukiji Fish Market Visit \u2013
-        1 hr ($25)   \r\nShinjuku Gyoen National Garden Walk \u2013 1.5 hr ($0) \r\nTokyo
         Disneyland Visit \u2013 2 hrs ($100)   \r\nTokyo National Museum Tour \u2013
         1.5 hrs ($25)   \r\nRoppongi Hills Observation Deck \u2013 1 hr ($25)   \r\nTraditional
         Samurai and Katana Experience \u2013 1.5 hrs ($50) \r\nTokyo Bay Cruise \u2013
@@ -2829,7 +3200,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &480756091
 RectTransform:
@@ -2840,11 +3210,11 @@ RectTransform:
   m_GameObject: {fileID: 1942477698}
   m_LocalRotation: {x: 0.004649259, y: -0.53131187, z: -0.013789286, w: -0.8470513}
   m_LocalPosition: {x: 0, y: 0, z: 0.284}
-  m_LocalScale: {x: 0.04, y: 0.009999998, z: 0.029999996}
+  m_LocalScale: {x: 0.040000003, y: 0.009999999, z: 0.029999997}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 296382704}
-  m_Father: {fileID: 312045685}
+  m_Father: {fileID: 412017532}
   m_LocalEulerAnglesHint: {x: -1.291, y: -295.816, z: 1.056}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2865,14 +3235,13 @@ GameObject:
   - component: {fileID: 483804875}
   - component: {fileID: 483804877}
   - component: {fileID: 483804878}
-  - component: {fileID: 483804879}
   m_Layer: 0
   m_Name: Spatial Anchor Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &483804873
 Transform:
   m_ObjectHideFlags: 0
@@ -2953,27 +3322,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 483804872}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a7e9591eac376d4cbc91b99240198eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   anchors: []
---- !u!114 &483804879
-MonoBehaviour:
+  xrRig: {fileID: 0}
+--- !u!1 &494859663
+GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 11649753526877337, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 844992588}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 483804872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08751e98fe66db949a22c56b09efeb7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anchor1: {fileID: 0}
-  anchor2: {fileID: 0}
-  xrRig: {fileID: 991322266}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 844992589}
+  - component: {fileID: 844992593}
+  - component: {fileID: 844992592}
+  - component: {fileID: 844992591}
+  - component: {fileID: 844992590}
+  m_Layer: 0
+  m_Name: paper_tokyo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1 &503119567
 GameObject:
   m_ObjectHideFlags: 0
@@ -3411,12 +3786,8 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.039999995
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.029999997
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3432,19 +3803,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.43970323
+      value: 0.4397032
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0021475803
+      value: -0.00214758
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.8981391
+      value: -0.89813906
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0016140131
+      value: -0.001614013
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -3482,17 +3853,6 @@ PrefabInstance:
         de Flore Experience \u2013 1 hr ($25)  \r\nVisit to the Mus\xE9e Rodin \u2013
         1 hr ($15)  \r\nP\xE8re Lachaise Cemetery Tour \u2013 1.5 hrs ($10)  \r\nMoulin
         Rouge Show \u2013 1.5 hrs ($50)  \r\nParisian Night Tour \u2013 1 hrs ($30) "
-        River Cruise \u2013 1 hr ($30)  \r\nChamps-\xC9lys\xE9es Shopping \u2013
-        1.5 hrs ($50)  \r\nArc de Triomphe Climb \u2013 1 hr ($10)  \r\nVisit to
-        the Mus\xE9e d'Orsay \u2013 1.5 hrs ($25)  \r\nLe Marais District Exploration
-        \u2013 1.5 hrs ($0)  \r\nVersailles Palace Tour \u2013 2 hrs ($50)  \r\nVisit
-        to Montparnasse Tower \u2013 1 hr ($25)  \r\nStroll through Luxembourg Gardens
-        \u2013 1 hr ($0)  \r\nVisit to the Picasso Museum \u2013 1.5 hrs ($25)  \r\nParisian
-        Cooking Class \u2013 2 hrs ($75)  \r\nWine Tasting Experience \u2013 2 hrs
-        ($50)  \r\nPicnic in the Tuileries Gardens \u2013 1 hr ($25)  \r\nCaf\xE9
-        de Flore Experience \u2013 1 hr ($25)  \r\nVisit to the Mus\xE9e Rodin \u2013
-        1 hr ($15)  \r\nP\xE8re Lachaise Cemetery Tour \u2013 1.5 hrs ($10)  \r\nMoulin
-        Rouge Show \u2013 1.5 hrs ($50)  \r\nParisian Night Tour \u2013 1 hrs ($30) "
       objectReference: {fileID: 0}
     - target: {fileID: 7691809521333302881, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_margin.y
@@ -3517,7 +3877,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1823490554950877065, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &583131815
 RectTransform:
@@ -3526,13 +3889,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 583131814}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1719681769}
-  m_LocalRotation: {x: -0.00214758, y: -0.89813906, z: -0.001614013, w: 0.4397032}
+  m_LocalRotation: {x: -0.0021475803, y: -0.8981391, z: -0.0016140131, w: 0.43970323}
   m_LocalPosition: {x: 0, y: 0, z: -0.256}
-  m_LocalScale: {x: 0.04, y: 0.009999997, z: 0.03}
+  m_LocalScale: {x: 0.039999995, y: 0.009999997, z: 0.029999997}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 204999789}
-  m_Father: {fileID: 312045685}
+  m_Father: {fileID: 412017532}
   m_LocalEulerAnglesHint: {x: -0.274, y: -127.83, z: 0.14}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4247,7 +4610,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &733962395
 RectTransform:
@@ -4262,7 +4624,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 973247310}
-  m_Father: {fileID: 312045685}
+  m_Father: {fileID: 412017532}
   m_LocalEulerAnglesHint: {x: 0.081, y: -89.423, z: -0.848}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4421,7 +4783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.03
+      value: 0.029999997
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4491,7 +4853,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &735640998
 RectTransform:
@@ -4502,11 +4863,11 @@ RectTransform:
   m_GameObject: {fileID: 2115523212}
   m_LocalRotation: {x: 0.01916113, y: 0.25204483, z: -0.0074590812, w: 0.9674971}
   m_LocalPosition: {x: 0, y: 0, z: 0.173}
-  m_LocalScale: {x: 0.040000003, y: 0.009999997, z: 0.029999997}
+  m_LocalScale: {x: 0.040000003, y: 0.009999997, z: 0.03}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1253099308}
-  m_Father: {fileID: 312045685}
+  m_Father: {fileID: 412017532}
   m_LocalEulerAnglesHint: {x: 2.34, y: 29.198, z: -0.274}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4807,12 +5168,8 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.040000007
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.009999999
+      value: 0.009999998
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4872,9 +5229,6 @@ PrefabInstance:
         Shopping and Entertainment \u2013 1.5 hrs ($50)   \r\nAkihabara Electric
         Town Exploration \u2013 1 hr ($10)   \r\nTsukiji Fish Market Visit \u2013
         1 hr ($25)   \r\nShinjuku Gyoen National Garden Walk \u2013 1.5 hr ($0) \r\nTokyo
-        Shopping and Entertainment \u2013 1.5 hrs ($50)   \r\nAkihabara Electric
-        Town Exploration \u2013 1 hr ($10)   \r\nTsukiji Fish Market Visit \u2013
-        1 hr ($25)   \r\nShinjuku Gyoen National Garden Walk \u2013 1.5 hr ($0) \r\nTokyo
         Disneyland Visit \u2013 2 hrs ($100)   \r\nTokyo National Museum Tour \u2013
         1.5 hrs ($25)   \r\nRoppongi Hills Observation Deck \u2013 1 hr ($25)   \r\nTraditional
         Samurai and Katana Experience \u2013 1.5 hrs ($50) \r\nTokyo Bay Cruise \u2013
@@ -4907,7 +5261,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &844992589
 RectTransform:
@@ -4918,11 +5271,11 @@ RectTransform:
   m_GameObject: {fileID: 494859663}
   m_LocalRotation: {x: 0.014318309, y: -0.99835044, z: -0.0025972843, w: 0.05554065}
   m_LocalPosition: {x: 0, y: 0, z: -0.031}
-  m_LocalScale: {x: 0.04, y: 0.009999998, z: 0.029999996}
+  m_LocalScale: {x: 0.040000007, y: 0.009999999, z: 0.029999996}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 168735200}
-  m_Father: {fileID: 312045685}
+  m_Father: {fileID: 412017532}
   m_LocalEulerAnglesHint: {x: -0.206, y: -173.629, z: -1.655}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5073,11 +5426,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectPrefabA: {fileID: 6307963326601959286, guid: a38642935eb3b41429ca8a09cbd5ea76, type: 3}
   objectPrefabB: {fileID: 6307963326601959286, guid: a38642935eb3b41429ca8a09cbd5ea76, type: 3}
---- !u!4 &907649439 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 657184242222895506, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
-  m_PrefabInstance: {fileID: 231856688}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &907649439 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 657184242222895506, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
@@ -5500,7 +5848,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1080755763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6156,11 +6504,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.009999995
+      value: 0.009999996
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.02999999
+      value: 0.029999992
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6230,7 +6578,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &1289644166
 RectTransform:
@@ -6238,6 +6585,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
   m_PrefabInstance: {fileID: 1289644165}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992792865}
+  m_LocalRotation: {x: 0.0063148746, y: 0.96336526, z: -0.010356599, w: 0.26791835}
+  m_LocalPosition: {x: 0, y: 0, z: 0.166}
+  m_LocalScale: {x: 0.040000003, y: 0.009999995, z: 0.02999999}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1365719615}
+  m_Father: {fileID: 412017532}
+  m_LocalEulerAnglesHint: {x: 1.337, y: 148.921, z: 0.379}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.31, y: 0.756}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1300288857
 GameObject:
   m_ObjectHideFlags: 0
@@ -6359,6 +6720,256 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1001 &1317088581
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 106.57019
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.91836
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_Name
+      value: XR Device Simulator
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+--- !u!1 &1365719614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 1823490554950877065, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1289644165}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1365719615}
+  - component: {fileID: 1365719617}
+  - component: {fileID: 1365719616}
+  m_Layer: 0
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1365719615
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4174477854714695018, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1289644165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365719614}
+  m_LocalRotation: {x: 0.5034159, y: 0.5056716, z: -0.49656385, w: 0.49426016}
+  m_LocalPosition: {x: 0, y: 0, z: -2.19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1289644166}
+  m_LocalEulerAnglesHint: {x: -268.954, y: 0.28100586, z: 270.02}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.64940464, y: 0.5}
+  m_AnchoredPosition: {x: -8.11, y: 0.2}
+  m_SizeDelta: {x: 5.0403633, y: 5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1365719616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 7691809521333302881, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1289644165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365719614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "New York City   \r\nWalking around Central Park \u2013 1.5 hr ($0)  \r\nBroadway
+    Show Experience \u2013 2 hrs ($50)  \r\nMuseum of Modern Art Visit \u2013 2 hrs
+    ($25)  \r\nWalking Tour of Times Square \u2013 1.5 hr ($10)  \r\nTop of the Rock
+    Observation Deck \u2013 1 hr ($25)  \r\nBrooklyn Bridge Walk \u2013 1 hr ($10) 
+    \r\nStatue of Liberty Tour \u2013 2 hrs ($30)  \r\nBike Ride Through Central
+    Park \u2013 1 hr ($25)  \r\nMuseum of the City of New York \u2013 3 hrs ($25) 
+    \r\nDinner at a Rooftop Restaurant \u2013 1.5 hrs ($75)  \r\nChelsea Market Exploration
+    \u2013 1 hr ($50)  \r\nSoHo Shopping Spree \u2013 1.5 hrs ($50)  \r\nHigh Line
+    Park Stroll \u2013 1 hr ($0)  \r\nShopping at Rockefeller Plaza \u2013 1 hr ($50) 
+    \r\nNew York Public Library Tour \u2013 1 hr ($10)  \r\nNight-time Helicopter
+    Ride \u2013 1 hr ($100)  \r\nEmpire State Building Visit \u2013 1 hr ($50)  \r\nWall
+    Street Tour \u2013 1.5 hr ($15)  \r\nGrand Central Terminal Tour \u2013 1 hr
+    ($10)  \r\nVisit to the 9/11 Memorial & Museum \u2013 1.5 hrs ($30)  \r\nMuseum
+    of Natural History Tour \u2013 2 hrs ($25)  "
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278716429
+  m_fontColor: {r: 0.0528301, g: 0.03329293, b: 0.03329293, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 3.5
+  m_fontSizeBase: 3.5
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 0
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 3.219421, y: -2.0874453, z: 7.5986557, w: -1.830226}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 1365719617}
+  m_maskType: 0
+--- !u!23 &1365719617
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4472989892163906791, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1289644165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365719614}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &1383324379
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7043,16 +7654,8 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.040000003
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.009999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.029999997
+      value: 0.009999998
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7112,9 +7715,6 @@ PrefabInstance:
         Shopping and Entertainment \u2013 1.5 hrs ($50)   \r\nAkihabara Electric
         Town Exploration \u2013 1 hr ($10)   \r\nTsukiji Fish Market Visit \u2013
         1 hr ($25)   \r\nShinjuku Gyoen National Garden Walk \u2013 1.5 hr ($0) \r\nTokyo
-        Shopping and Entertainment \u2013 1.5 hrs ($50)   \r\nAkihabara Electric
-        Town Exploration \u2013 1 hr ($10)   \r\nTsukiji Fish Market Visit \u2013
-        1 hr ($25)   \r\nShinjuku Gyoen National Garden Walk \u2013 1.5 hr ($0) \r\nTokyo
         Disneyland Visit \u2013 2 hrs ($100)   \r\nTokyo National Museum Tour \u2013
         1.5 hrs ($25)   \r\nRoppongi Hills Observation Deck \u2013 1 hr ($25)   \r\nTraditional
         Samurai and Katana Experience \u2013 1.5 hrs ($50) \r\nTokyo Bay Cruise \u2013
@@ -7147,7 +7747,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &1753255511
 RectTransform:
@@ -7155,67 +7754,118 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
   m_PrefabInstance: {fileID: 1753255510}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1758894322
-PrefabInstance:
+  m_GameObject: {fileID: 607700718}
+  m_LocalRotation: {x: 0.009078912, y: -0.42471603, z: 0.011372476, w: 0.9052097}
+  m_LocalPosition: {x: 0, y: 0, z: -0.23800167}
+  m_LocalScale: {x: 0.040000003, y: 0.009999999, z: 0.029999997}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1860978306}
+  m_Father: {fileID: 412017532}
+  m_LocalEulerAnglesHint: {x: 1.495, y: -50.261, z: 0.738}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.15300016, y: 0.761}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!223 &1753255512
+Canvas:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.03723
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.91962
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_Name
-      value: XR Device Simulator
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2981789400956104714, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1753255510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607700718}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!64 &1753255513
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 1549092719175671305, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1753255510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607700718}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1753255514
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 1485050666634805431, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1753255510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607700718}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: fc226930e8fad4c499969204cecfbc05, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1753255515
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 2234656531285945163, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+  m_PrefabInstance: {fileID: 1753255510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607700718}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1759373355
 GameObject:
   m_ObjectHideFlags: 0
@@ -7947,7 +8597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.030000003
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 4704680226544311233, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8013,17 +8663,6 @@ PrefabInstance:
         de Flore Experience \u2013 1 hr ($25)  \r\nVisit to the Mus\xE9e Rodin \u2013
         1 hr ($15)  \r\nP\xE8re Lachaise Cemetery Tour \u2013 1.5 hrs ($10)  \r\nMoulin
         Rouge Show \u2013 1.5 hrs ($50)  \r\nParisian Night Tour \u2013 1 hrs ($30) "
-        River Cruise \u2013 1 hr ($30)  \r\nChamps-\xC9lys\xE9es Shopping \u2013
-        1.5 hrs ($50)  \r\nArc de Triomphe Climb \u2013 1 hr ($10)  \r\nVisit to
-        the Mus\xE9e d'Orsay \u2013 1.5 hrs ($25)  \r\nLe Marais District Exploration
-        \u2013 1.5 hrs ($0)  \r\nVersailles Palace Tour \u2013 2 hrs ($50)  \r\nVisit
-        to Montparnasse Tower \u2013 1 hr ($25)  \r\nStroll through Luxembourg Gardens
-        \u2013 1 hr ($0)  \r\nVisit to the Picasso Museum \u2013 1.5 hrs ($25)  \r\nParisian
-        Cooking Class \u2013 2 hrs ($75)  \r\nWine Tasting Experience \u2013 2 hrs
-        ($50)  \r\nPicnic in the Tuileries Gardens \u2013 1 hr ($25)  \r\nCaf\xE9
-        de Flore Experience \u2013 1 hr ($25)  \r\nVisit to the Mus\xE9e Rodin \u2013
-        1 hr ($15)  \r\nP\xE8re Lachaise Cemetery Tour \u2013 1.5 hrs ($10)  \r\nMoulin
-        Rouge Show \u2013 1.5 hrs ($50)  \r\nParisian Night Tour \u2013 1 hrs ($30) "
       objectReference: {fileID: 0}
     - target: {fileID: 7691809521333302881, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
       propertyPath: m_margin.y
@@ -8048,7 +8687,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1823490554950877065, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 2969684ef543a584a83d9c365fc11723, type: 3}
 --- !u!224 &2033552345
 RectTransform:
@@ -8059,11 +8701,11 @@ RectTransform:
   m_GameObject: {fileID: 1105005691}
   m_LocalRotation: {x: 0.00048702495, y: -0.006926327, z: -0.0026419577, w: 0.99997246}
   m_LocalPosition: {x: 0, y: 0, z: -0.025}
-  m_LocalScale: {x: 0.04, y: 0.009999997, z: 0.03}
+  m_LocalScale: {x: 0.04, y: 0.009999997, z: 0.030000003}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 632194350}
-  m_Father: {fileID: 312045685}
+  m_Father: {fileID: 412017532}
   m_LocalEulerAnglesHint: {x: 0.054, y: -0.794, z: -0.303}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8617,19 +9259,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4266043880562201226, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 260869905}
-    - targetCorrespondingSourceObject: {fileID: 4266043880562201226, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 503119568}
-    - targetCorrespondingSourceObject: {fileID: 4266043880562201226, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 51063489}
-    - targetCorrespondingSourceObject: {fileID: 4266043880562201226, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1300288858}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4266043880562201226, guid: 21c02ea68a13acf4ba4866345fdeb05c, type: 3}
       insertIndex: -1
@@ -9375,4 +10004,5 @@ SceneRoots:
   - {fileID: 1080755764}
   - {fileID: 8839457145026391851}
   - {fileID: 1143026329}
-  - {fileID: 1758894322}
+  - {fileID: 1317088581}
+  - {fileID: 2100920634}
