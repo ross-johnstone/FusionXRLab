@@ -2,6 +2,7 @@ using UnityEngine;
 using Ubiq.Messaging;
 using Ubiq.Spawning;
 using Ubiq.Geometry;
+using Ubiq.Logging;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -29,6 +30,10 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     private float ownershipCooldown = 0f;
     private const float OwnershipCooldownDuration = 0.2f; // 200ms cooldown
 
+
+    private ExperimentLogEmitter experimentLogEmitter;
+    private bool toLog = false;
+
     private void Awake()
     {
         // Set position/rotation from spawner static variables if set
@@ -49,6 +54,9 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         targetPosition = transform.position;
         targetRotation = transform.rotation;
         targetVelocity = Vector3.zero;
+
+        // Initialize log emitter
+        experimentLogEmitter = new ExperimentLogEmitter(this);
     }
 
     private void Start()
@@ -87,12 +95,19 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
         {
             ownershipCooldown -= Time.deltaTime;
         }
+
+        if (toLog)
+        {
+            // Log the peer that is holding the object
+            experimentLogEmitter.Log($"Object grabbed by peer: {localPeerId}, object: {gameObject.name}, position: {transform.position}, rotation: {transform.rotation}");
+        }
     }
 
     private void OnGrabbed(SelectEnterEventArgs args)
     {
         isOwner = true;
         rb.isKinematic = true;
+        toLog = true;
         ownershipCooldown = OwnershipCooldownDuration;
         StartCoroutine(ForceNetworkUpdateNextFrame());
     }
@@ -106,6 +121,7 @@ public class NetworkedGrabbableWithVelocity : MonoBehaviour, INetworkSpawnable
     private void OnReleased(SelectExitEventArgs args)
     {
         isOwner = true;
+        toLog = false;
         rb.isKinematic = false; // Enable physics
         ForceNetworkUpdate();
     }
