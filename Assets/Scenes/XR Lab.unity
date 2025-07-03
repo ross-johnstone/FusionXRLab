@@ -364,7 +364,7 @@ PrefabInstance:
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 570371582257789978, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2034391893161038465, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_Enabled
@@ -372,29 +372,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_text
-      value: "Hellenistic Cnidian Lamp  \r\n\r\nReplica of a Hellenistic oil lamp
-        (2nd\u20131st c. BC) from Cnidus, a key Anatolian ceramic centre. \r\nCnidus,
-        part of the Dorian Hexapolis, was famed for its art and architecture. \r\n\rHellenistic
-        lamps shifted from wheel-made to mould-made production. \r\n\rNew features
-        included closed tops, filling holes, and volute lugs. \r\n\rDecoration evolved
-        into symbolic reliefs made by stamping or engraving. \n\nVenus of Willendorf
-        \r\n\r\nSmall limestone figurine (11.1 cm) from c. 28,000\u201325,000 BCE,
-        found near Willendorf, Austria. \r\n\rDepicts a female form with exaggerated
-        breasts, hips, and belly\u2014linked to fertility or survival. \r\n\rLacks
-        facial features; head shows braided hair or a patterned cap. \r\n\rLikely
-        portable and used in ritual or symbolic fertility contexts. \r\n\rIconic
-        example of Paleolithic \u201CVenus figurines\u201D in prehistoric art. \n\nBaby
-        Feeder\n\nSpouted clay vessels from Bronze and Iron Age infant graves are
-        among the earliest known baby feeding tools. \r\n\rResearch revealed milk
-        residue, indicating use in infant feeding. \r\n\rTheir burial context suggests
-        a primary role in childcare, though they may have served the sick or elderly
-        too. \r\n\rUse during weaning may have enabled earlier breastfeeding cessation
-        and population growth. \r\n\rSimilar items existed in Neolithic Europe, offering
-        insight into prehistoric family life. "
+      value: "Hellenistic Cnidian Lamp\n\nA replica of a 2nd\u20131st century BC
+        oil lamp from Cnidus, a major Anatolian ceramic hub and part of the Dorian
+        Hexapolis, known for its art and architecture. During the Hellenistic period,
+        lamps transitioned from wheel-made to mould-made, introducing closed tops,
+        filling holes, and volute lugs. Decoration featured symbolic reliefs, created
+        by stamping or engraving.\n\nVenus of Willendorf\n\nAn 11.1 cm limestone
+        figurine from around 28,000\u201325,000 BCE, found near Willendorf, Austria.
+        It shows a female form with exaggerated features linked to fertility or survival,
+        lacking facial detail but featuring braided hair or a patterned cap. Likely
+        portable and used in ritual or symbolic contexts, it is a key example of
+        Paleolithic \u201CVenus figurines.\u201D\n\nBaby Feeder\n\nSpouted clay vessels
+        found in Bronze and Iron Age infant graves are among the earliest baby feeding
+        tools, with milk residues confirming their use. While mainly tied to infant
+        care and weaning, they may have also served the sick or elderly. Their presence
+        in burials highlights their role in prehistoric family life, with similar
+        examples found in Neolithic Europe."
       objectReference: {fileID: 0}
     - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_fontSize
-      value: 3.6
+      value: 4.35
       objectReference: {fileID: 0}
     - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_fontAsset
@@ -410,7 +407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_fontSizeBase
-      value: 3.6
+      value: 4.35
       objectReference: {fileID: 0}
     - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_sharedMaterial
@@ -419,6 +416,10 @@ PrefabInstance:
     - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_enableAutoSizing
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4001992850141094269, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -430,7 +431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4970683434405281724, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6804241696700402899, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_LocalScale.x
@@ -438,15 +439,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6804241696700402899, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.94341
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6804241696700402899, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.2106
+      value: 4.61
       objectReference: {fileID: 0}
     - target: {fileID: 6804241696700402899, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1.3297
+      value: -1.33
       objectReference: {fileID: 0}
     - target: {fileID: 6804241696700402899, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -455,7 +456,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 570371582257789978, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 587666a4aa0dfc647b9a4167f48fcf37, type: 3}
 --- !u!4 &45620741 stripped
 Transform:
@@ -4109,13 +4113,49 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 412017532}
     m_Modifications:
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_text
+      value: "Roman Antefix/Tile\n\nReplica of a 2nd\u20133rd century AD roof tile
+        with \u201CLEG XX\u201D and the boar emblem of the 20th Legion, based on
+        a find from Holt, now in the British Museum. Made by the Legion\u2019s tilery
+        in Romano-Britain, these tiles lined roof eaves and marked military presence
+        and authority. The 20th Legion, famed for its fierceness, came to Britain
+        with Claudius in 43 AD.\n\nHembury Bowl\n\nBased on a pottery sherd from
+        Hembury Hillfort, Devon, dated to 3700\u20133400 BCE. The site was a key
+        Neolithic gathering place with signs of communal life. The bowl\u2019s handmade
+        form reflects simple, functional use and a deep connection to land and craft.\n\nGreek
+        Skyphos\n\nReplica of a two-handled Greek wine cup from the Shefton Collection.
+        Used in symposia and casual gatherings, the skyphos blends practicality and
+        elegance, symbolizing the social value of shared drinking and conversation
+        in classical Greece."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSize
+      value: 4.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_lineSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_characterSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -30
+      objectReference: {fileID: 0}
     - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
       propertyPath: m_Name
       value: Artifacts2
       objectReference: {fileID: 0}
     - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4164,7 +4204,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 379052668968870961, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
 --- !u!4 &1383324380 stripped
 Transform:
@@ -4371,7 +4414,62 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2291423821876231778, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599242826584856404, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      propertyPath: m_text
+      value: 'Roman Votive Hand
+
+
+        Replica based on terracotta votive hands
+        from the British Museum. Such offerings were left at healing sanctuaries
+        across the Greco-Roman world, dedicated to gods like Asclepius in prayer
+        or thanks. They reflect ancient beliefs in divine healing and the close ties
+        between religion and medicine.
+
+
+        Bronze Flanged Axe
+
+
+        An
+        Early Bronze Age tool from Britain marking the move from stone to metal.
+        Raised flanges helped secure it to a wooden handle, and it was cast in simple
+        moulds. More than a tool, it symbolised status, access to rare materials,
+        and a major technological shift.
+
+
+        Shabti of Psamtik
+
+
+        Replica
+        of a vivid blue Late Period Egyptian shabti (c. 600 BCE) from the British
+        Museum. With a mummiform body, divine beard, and farming tools, it was inscribed
+        to serve Psamtik in the afterlife. A symbol of resurrection, magical labour,
+        and eternal service.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599242826584856404, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      propertyPath: m_fontSize
+      value: 4.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599242826584856404, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      propertyPath: m_margin.x
+      value: 5.181346
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599242826584856404, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      propertyPath: m_margin.z
+      value: 5.083638
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599242826584856404, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      propertyPath: m_lineSpacing
+      value: -17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599242826584856404, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599242826584856404, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 8432149616316641771, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
       propertyPath: m_Enabled
@@ -4380,7 +4478,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4614323481285332579, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c84a43f4db1fc8a44b263dcca9a3dd1f, type: 3}
 --- !u!4 &1580115816 stripped
 Transform:
