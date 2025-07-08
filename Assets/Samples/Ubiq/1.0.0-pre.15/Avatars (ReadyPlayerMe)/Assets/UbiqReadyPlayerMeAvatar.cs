@@ -145,27 +145,28 @@ namespace Ubiq.ReadyPlayerMe
             var headLocalPos = armature.InverseTransformPoint(head.position);
             var headLocalRot = Quaternion.Inverse(armature.rotation) * head.rotation;
     
-            experimentLogEmitter.Log("HeadAndHandsAvatar", $"HeadLocalPos: {headLocalPos} | HeadLocalRot: {headLocalRot}");
+            experimentLogEmitter.Log("headLocalPos", $"Position: {headLocalPos}");
+            experimentLogEmitter.Log("headLocalRot", $"Rotation: {headLocalRot}");
 
             var localHeadTRS = Matrix4x4.Translate(headLocalPos) 
                                * Matrix4x4.Rotate(headLocalRot);
 
-            experimentLogEmitter.Log("HeadAndHandsAvatar", $"LocalHeadTRS Position: {localHeadTRS.GetPosition()} | Rotation: {localHeadTRS.rotation}");
+            experimentLogEmitter.Log("localHeadTRS", $"Position: {localHeadTRS.GetPosition()}", $"Rotation: {localHeadTRS.rotation}");
             var armatureTRS = Matrix4x4.Translate(headInputVar.value.position) 
                               * Matrix4x4.Rotate(headInputVar.value.rotation) 
                               * localHeadTRS.inverse;
             armature.position = armatureTRS.GetPosition();
 
-            experimentLogEmitter.Log("HeadAndHandsAvatar", $"ArmatureTRS Position: {armatureTRS.GetPosition()} | Rotation: {armatureTRS.rotation}");
+            experimentLogEmitter.Log("armatureTRS", $"Position: {armatureTRS.GetPosition()}", $"Rotation: {armatureTRS.rotation}");
 
             armature.rotation = armatureTRS.rotation;
 
-            experimentLogEmitter.Log("HeadAndHandsAvatar", $"HeadInputVar Position: {headInputVar.value.position} | Rotation: {headInputVar.value.rotation}");
+            experimentLogEmitter.Log("headInputVar", $"Position: {headInputVar.value.position}", $"Rotation: {headInputVar.value.rotation}");
     
             armature.Translate(headPositionOffset,Space.Self);
             armature.localRotation *= headRotationOffset;
     
-            experimentLogEmitter.Log("HeadAndHandsAvatar", $"ArmatureTRS Position: {armature.position} | Rotation: {armature.rotation}");
+            experimentLogEmitter.Log("armature", $"Position: {armature.position}", $"Rotation: {armature.rotation}");
 
             var indicator = GetComponentInChildren<VoipSpeechIndicator>();
             indicator.transform.localPosition = speechIndicatorPositionOffset;

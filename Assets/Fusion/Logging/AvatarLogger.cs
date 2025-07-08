@@ -1,51 +1,56 @@
 using UnityEngine;
-using Ubiq.Avatars;
+using Ubiq;
+// using Ubiq.Avatars; // Remove this to avoid ambiguity
 
 public class AvatarLogger : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    AvatarManager avatarManager;
+    private Ubiq.Avatars.AvatarManager avatarManager;
+
     void Start()
     {
-        avatarManager = GetComponent<AvatarManager>();
-        avatarManager.OnAvatarCreated.AddListener(LogAvatarJoints);
+        // avatarManager = GetComponent<AvatarManager>();
+        avatarManager = Ubiq.Avatars.AvatarManager.Find(this);
+        avatarManager.OnAvatarCreated.AddListener(OnAvatarCreated);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnAvatarCreated(Ubiq.Avatars.Avatar avatar)
     {
-                
-    }
-
-    private void LogAvatarJoints(Ubiq.Avatars.Avatar avatar)
-    {
-        // Try common paths for head and hands
-        var head = avatar.transform.Find("Armature/Hips/Spine/Neck/Head") ??
-                   avatar.transform.Find("Armature/Hips/Spine/Spine1/Spine2/Neck/Head");
-        var leftHand = avatar.transform.Find("Armature/Hips/Spine/LeftHand") ??
-                       avatar.transform.Find("Armature/Hips/Spine/Spine1/Spine2/LeftShoulder/LeftArm/LeftForeArm/LeftHand");
-        var rightHand = avatar.transform.Find("Armature/Hips/Spine/RightHand") ??
-                        avatar.transform.Find("Armature/Hips/Spine/Spine1/Spine2/RightShoulder/RightArm/RightForeArm/RightHand");
-
-        LogTransform("Head", head);
-        LogTransform("LeftHand", leftHand, true);
-        LogTransform("RightHand", rightHand, true);
-    }
-
-    private void LogTransform(string label, Transform t, bool logChildren = false)
-    {
-        if (t == null)
+        var headAndHands = avatar.GetComponentInChildren<Ubiq.HeadAndHandsAvatar>();
+        if (headAndHands != null)
         {
-            Debug.Log($"{label}: Not found");
-            return;
+            headAndHands.OnHeadUpdate.AddListener((input) => LogPose(avatar, "Head", input));
+            headAndHands.OnLeftHandUpdate.AddListener((input) => LogPose(avatar, "LeftHand", input));
+            headAndHands.OnRightHandUpdate.AddListener((input) => LogPose(avatar, "RightHand", input));
+            headAndHands.OnLeftGripUpdate.AddListener((input) => LogGrip(avatar, "LeftGrip", input));
+            headAndHands.OnRightGripUpdate.AddListener((input) => LogGrip(avatar, "RightGrip", input));
         }
-        Debug.Log($"{label}: {t.gameObject.name} | Pos: {t.position} | Rot: {t.rotation.eulerAngles}");
-        if (logChildren)
+        else
         {
-            foreach (Transform child in t)
-            {
-                Debug.Log($"  Child: {child.gameObject.name} | Pos: {child.position} | Rot: {child.rotation.eulerAngles}");
-            }
+            Debug.LogWarning($"No HeadAndHandsAvatar found on avatar: {avatar.gameObject.name}");
+        }
+    }
+
+    private void LogPose(Ubiq.Avatars.Avatar avatar, string label, InputVar<Pose> input)
+    {
+        if (input.valid)
+        {
+            Debug.Log($"[{avatar.Peer?.uuid}] {label} | Pos: {input.value.position} | Rot (euler): {input.value.rotation.eulerAngles} | Rot (quat): {input.value.rotation}");
+        }
+        else
+        {
+            Debug.Log($"[{avatar.Peer?.uuid}] {label} | No valid pose data");
+        }
+    }
+
+    private void LogGrip(Ubiq.Avatars.Avatar avatar, string label, InputVar<float> input)
+    {
+        if (input.valid)
+        {
+            Debug.Log($"[{avatar.Peer?.uuid}] {label} | Value: {input.value}");
+        }
+        else
+        {
+            Debug.Log($"[{avatar.Peer?.uuid}] {label} | No valid grip data");
         }
     }
 }
