@@ -1,16 +1,20 @@
 using UnityEngine;
 using Ubiq;
+using Ubiq.Logging;
 // using Ubiq.Avatars; // Remove this to avoid ambiguity
 
 public class AvatarLogger : MonoBehaviour
 {
     private Ubiq.Avatars.AvatarManager avatarManager;
+    private ExperimentLogEmitter experimentLogEmitter;  
 
     void Start()
     {
         // avatarManager = GetComponent<AvatarManager>();
         avatarManager = Ubiq.Avatars.AvatarManager.Find(this);
         avatarManager.OnAvatarCreated.AddListener(OnAvatarCreated);
+
+        experimentLogEmitter = new ExperimentLogEmitter(this);
     }
 
     private void OnAvatarCreated(Ubiq.Avatars.Avatar avatar)
@@ -24,33 +28,34 @@ public class AvatarLogger : MonoBehaviour
             headAndHands.OnLeftGripUpdate.AddListener((input) => LogGrip(avatar, "LeftGrip", input));
             headAndHands.OnRightGripUpdate.AddListener((input) => LogGrip(avatar, "RightGrip", input));
         }
-        else
-        {
-            Debug.LogWarning($"No HeadAndHandsAvatar found on avatar: {avatar.gameObject.name}");
-        }
+        // else
+        // {
+        //     Debug.LogWarning($"No HeadAndHandsAvatar found on avatar: {avatar.gameObject.name}");
+        // }
     }
 
     private void LogPose(Ubiq.Avatars.Avatar avatar, string label, InputVar<Pose> input)
     {
         if (input.valid)
         {
-            Debug.Log($"[{avatar.Peer?.uuid}] {label} | Pos: {input.value.position} | Rot (euler): {input.value.rotation.eulerAngles} | Rot (quat): {input.value.rotation}");
+            experimentLogEmitter.Log(label, input.value.position, input.value.rotation);    
         }
-        else
-        {
-            Debug.Log($"[{avatar.Peer?.uuid}] {label} | No valid pose data");
-        }
+        // else
+        // {
+        //     Debug.Log(label, "No valid pose data");
+        // }
     }
 
     private void LogGrip(Ubiq.Avatars.Avatar avatar, string label, InputVar<float> input)
     {
         if (input.valid)
         {
-            Debug.Log($"[{avatar.Peer?.uuid}] {label} | Value: {input.value}");
+            // Debug.Log(label, input.value);
+            experimentLogEmitter.Log(label, input.value);
         }
-        else
-        {
-            Debug.Log($"[{avatar.Peer?.uuid}] {label} | No valid grip data");
-        }
+        // else
+        // {
+        //     Debug.Log($"[{avatar.Peer?.uuid}] {label} | No valid grip data");
+        // }
     }
 }
