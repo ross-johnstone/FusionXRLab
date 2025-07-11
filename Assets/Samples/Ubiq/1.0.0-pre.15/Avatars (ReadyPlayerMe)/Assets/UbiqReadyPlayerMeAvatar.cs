@@ -144,29 +144,19 @@ namespace Ubiq.ReadyPlayerMe
             
             var headLocalPos = armature.InverseTransformPoint(head.position);
             var headLocalRot = Quaternion.Inverse(armature.rotation) * head.rotation;
-    
-            experimentLogEmitter.Log("headLocalPosRot", headLocalPos, headLocalRot);
 
 
             var localHeadTRS = Matrix4x4.Translate(headLocalPos) 
                                * Matrix4x4.Rotate(headLocalRot);
-
-            experimentLogEmitter.Log("localHeadTRS", localHeadTRS.GetPosition(), localHeadTRS.rotation);
             var armatureTRS = Matrix4x4.Translate(headInputVar.value.position) 
                               * Matrix4x4.Rotate(headInputVar.value.rotation) 
                               * localHeadTRS.inverse;
             armature.position = armatureTRS.GetPosition();
 
-            experimentLogEmitter.Log("armatureTRS", armatureTRS.GetPosition(), armatureTRS.rotation);
-
             armature.rotation = armatureTRS.rotation;
-
-            experimentLogEmitter.Log("headInputVar", headInputVar.value.position, headInputVar.value.rotation);
     
             armature.Translate(headPositionOffset,Space.Self);
             armature.localRotation *= headRotationOffset;
-    
-            experimentLogEmitter.Log("armature", armature.position, armature.rotation);
 
             var indicator = GetComponentInChildren<VoipSpeechIndicator>();
             indicator.transform.localPosition = speechIndicatorPositionOffset;
