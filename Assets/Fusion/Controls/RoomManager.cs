@@ -138,6 +138,7 @@ public class RoomManager : MonoBehaviour
         else
         {
             // Auto-detect based on platform
+            // change to "is_server" or "is device type"
 #if UNITY_EDITOR
             isFacilitator = true;
 #else

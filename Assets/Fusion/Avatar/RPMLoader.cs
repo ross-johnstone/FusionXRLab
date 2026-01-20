@@ -2,14 +2,66 @@
 
 using System.IO;
 using UnityEngine;
+using Ubiq.Rooms;
+using Ubiq.Avatars;
+using Ubiq.Messaging;
+using Ubiq.Logging;
+
+
+[System.Serializable]
+public struct DeviceIdMessage
+{
+    public NetworkId avatarId;
+    public string uniqueId;
+    public string id;
+}
 
 public class RPMLoader : MonoBehaviour
 {
+
+    private string deviceId;
+    private string deviceUniqueId;
+    private RoomClient roomClient;
+    private AvatarManager avatarManager;
     private const string PREFS_FILE_NAME = "prefs";
     private const string PLAYER_PREFS_KEY = "avatars.readyplayerme.url";
+    NetworkContext context;
+    private LogEmitter componentLogEmitter;
+
+    private HeadAndHandsAvatarLoggingController controller;
+
+
+    void Awake()
+    {
+        deviceUniqueId = SystemInfo.deviceUniqueIdentifier;   
+    }
 
     void Start()
     {
+
+        // Create listener for when this headset joins a room
+        if(SystemInfo.deviceType != DeviceType.Desktop)
+        {
+            roomClient = RoomClient.Find(this);
+            avatarManager = AvatarManager.Find(this);
+            
+            if (roomClient == null) 
+            {
+                Debug.Log("[RPMLoader] No RoomClient found!");
+            } else 
+            {
+                roomClient.OnJoinedRoom.AddListener((room) => OnJoinedRoom());
+            }
+
+        }
+
+        componentLogEmitter = new ComponentLogEmitter(this);
+
+        // Register for network messages
+        context = NetworkScene.Register(this);
+
+        Debug.Log($"[RPMLoader] Network: Registered with ID {context.Id}");
+
         var avatar = GetComponentInParent<Ubiq.Avatars.Avatar>();
         if (avatar == null || !avatar.IsLocal)
         {
@@ -61,5 +113,60 @@ public class RPMLoader : MonoBehaviour
         {
             Debug.LogWarning($"[RPMLoader] File not found at {path}");
         }
+
     }
+
+    private void OnJoinedRoom()
+    {
+        deviceId = GetDeviceId();
+        SendDeviceId(deviceId);
+        componentLogEmitter.Log(deviceId);
+    }
+
+    string GetDeviceId()
+    {
+        // Get device id
+
+        Debug.Log("[HeadAndHandsAvatarLoggingController] Start called. Path: " + Application.persistentDataPath);
+
+        string path = Path.Combine(Application.persistentDataPath, PREFS_FILE_NAME);
+
+        if (File.Exists(path))
+        {
+            string fileContent = File.ReadAllText(path).Trim();
+            Debug.Log($"[HeadAndHandsAvatarLoggingController] Read from file: {fileContent}");
+
+            if (File.Exists(path))
+            {
+                string id = fileContent.Substring("device_id=".Length).Trim();
+
+                PlayerPrefs.SetString("device_id", id);
+
+                return id;
+            }
+
+        }
+        return "";
+    }
+
+    void SendDeviceId(string deviceId)
+    {
+        controller = HeadAndHandsAvatarLoggingController.Find();
+        NetworkId localAvatarId = avatarManager.LocalAvatar.NetworkId;
+
+        Debug.Log($"[RPMLoader] Sending to server {controller.context.Id}, {localAvatarId}, {deviceId}");
+
+        context.Scene.SendJson(controller.context.Id, new DeviceIdMessage 
+        {
+            avatarId = localAvatarId,
+            uniqueId = deviceUniqueId,
+            id = deviceId
+        });
+        Debug.Log($"[RPMLoader] Sent device_id to server: {deviceId}");
+    }
+
+    public void ProcessMessage(ReferenceCountedSceneGraphMessage msg)
+    {
+
+    } 
 }
