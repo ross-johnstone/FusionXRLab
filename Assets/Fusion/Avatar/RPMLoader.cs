@@ -8,6 +8,7 @@ using Ubiq.Messaging;
 using Ubiq.Logging;
 
 
+// Message used to deliver device information for mapping device to avatar in logs
 [System.Serializable]
 public struct DeviceIdMessage
 {
@@ -23,6 +24,7 @@ public class RPMLoader : MonoBehaviour
     private string deviceUniqueId;
     private RoomClient roomClient;
     private AvatarManager avatarManager;
+    // appended to persistent path which appears as "/sdcard/Android/data/<Package Name>/files/(PREFS/DEVICE)_FILE_NAME"
     private const string PREFS_FILE_NAME = "prefs";
     private const string DEVICE_FILE_NAME = "device";
     private const string PLAYER_PREFS_KEY = "avatars.readyplayerme.url";
@@ -40,7 +42,7 @@ public class RPMLoader : MonoBehaviour
     void Start()
     {
 
-        // Create listener for when this headset joins a room
+        // Create listener for when this headset joins a room. Only runs on headsets
         if(SystemInfo.deviceType != DeviceType.Desktop)
         {
             roomClient = RoomClient.Find(this);
@@ -51,6 +53,7 @@ public class RPMLoader : MonoBehaviour
                 Debug.Log("[RPMLoader] No RoomClient found!");
             } else 
             {
+                // Call OnJoinedRoom() method when new room is joined on this headset
                 roomClient.OnJoinedRoom.AddListener((room) => OnJoinedRoom());
             }
 
@@ -117,6 +120,8 @@ public class RPMLoader : MonoBehaviour
 
     }
 
+    // When new room is joined on this headset, get this device name (set via adb manually)
+    //      e.g adb shell "echo 'device_id=Green' > /sdcard/Android/data/com.Fusion.XRLab/files/device"
     private void OnJoinedRoom()
     {
         deviceId = GetDeviceId();
@@ -126,7 +131,7 @@ public class RPMLoader : MonoBehaviour
 
     string GetDeviceId()
     {
-        // Get device id
+        // Get device id from device file
 
         Debug.Log("[HeadAndHandsAvatarLoggingController] Start called. Path: " + Application.persistentDataPath);
 
@@ -139,8 +144,10 @@ public class RPMLoader : MonoBehaviour
 
             if (File.Exists(devicePath))
             {
+                // Appears in device file as "device_id=<name>"
                 string id = deviceFileContent.Substring("device_id=".Length).Trim();
 
+                // Currently unused
                 PlayerPrefs.SetString("device_id", id);
 
                 return id;
@@ -152,11 +159,14 @@ public class RPMLoader : MonoBehaviour
 
     void SendDeviceId(string deviceId)
     {
+        // Find the logging component
         controller = HeadAndHandsAvatarLoggingController.Find();
+        // Get the Id of the avatar on the network - used for mapping the peer_id to device_id
         NetworkId localAvatarId = avatarManager.LocalAvatar.NetworkId;
 
         Debug.Log($"[RPMLoader] Sending to server {controller.context.Id}, {localAvatarId}, {deviceId}");
 
+        // NetworkContext doesn't allow specific messaging to components, so must be sent through NetworkScene
         context.Scene.SendJson(controller.context.Id, new DeviceIdMessage 
         {
             avatarId = localAvatarId,
@@ -166,6 +176,7 @@ public class RPMLoader : MonoBehaviour
         Debug.Log($"[RPMLoader] Sent device_id to server: {deviceId}");
     }
 
+    // Must be implemented, currently not receiving any messages
     public void ProcessMessage(ReferenceCountedSceneGraphMessage msg)
     {
 

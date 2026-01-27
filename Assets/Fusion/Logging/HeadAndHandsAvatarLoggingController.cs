@@ -22,6 +22,7 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
 
     void Awake()
     {
+        // If this is the laptop / host machine then this will act as the LogCollector
         if(SystemInfo.deviceType == DeviceType.Desktop)
         {
             experimentLogEmitter = new ExperimentLogEmitter(this);
@@ -31,13 +32,14 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
 
     void Start()
     {
-
+        // Register as a networked component to receive device_id from headset
         context  = NetworkScene.Register(this);
         Debug.Log($"[HeadAndHandsAvatarLoggingController] Network: Registered with ID {context.Id}");
 
-        // if is server or host rather than device type
+        // TODO if is server or host rather than device type
         if(SystemInfo.deviceType == DeviceType.Desktop)
         {
+            // Get the AvatarManager to listen to events
             avatarManager = AvatarManager.Find(this);
 
             if (avatarManager == null)
@@ -45,11 +47,13 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
                 Debug.Log("No avatar manager in scene!");
             }
 
+            // Bind the OnAvatarCreated / OnAvatarDestroyed methods to the events emitted from the AvatarManager
             if(avatarManager) {
                 avatarManager.OnAvatarCreated.AddListener(OnAvatarCreated);
                 avatarManager.OnAvatarDestroyed.AddListener(OnAvatarDestroyed);
             }
 
+            // if there are already registered Avatars, track all the update events
             foreach (var avatar in avatarManager.Avatars)
             {
                 Track(avatar);
@@ -60,9 +64,11 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
 
     }
 
+    // Process message from RPMLoader, to receive and map peer_id of avatar to the sent device_id
     public void ProcessMessage(ReferenceCountedSceneGraphMessage msg)
     {
         var data = msg.FromJson<DeviceIdMessage>();
+        // Local avatar id mapped to the name of the headset e.g Green
         peerToDeviceId[data.avatarId] = (data.uniqueId, data.id);
         Debug.Log($"[HeadAndHands] objectid = {msg.objectid}, uniqueId = {data.uniqueId}, avatarId = {data.avatarId}, id = {data.id}");
         componentLogEmitter.Log("DeviceId", data.id);
@@ -71,7 +77,7 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
 
     private void Track(Avatar avatar)
     {
-
+        // Find the head and hands avatar, that is the low level avatar representation that handles the bone movement in the avatar
         Debug.Log($"AvatarID = {avatar.NetworkId}");
         var headHandsAvatar = avatar.GetComponentInChildren<HeadAndHandsAvatar>();
 
@@ -83,11 +89,14 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
 
         Debug.Log($"Tracking {avatar.name}");
 
+        // Bind the OnHead, OnLeftHand and OnRightHand methods to the update events in the HeadAndHandsAvatar class
         headHandsAvatar.OnHeadUpdate.AddListener(pose => OnHead(avatar, pose));
         headHandsAvatar.OnLeftHandUpdate.AddListener(pose => OnLeftHand(avatar, pose));
         headHandsAvatar.OnRightHandUpdate.AddListener(pose => OnRightHand(avatar, pose));
     }
 
+    // TODO manage onAvatarDestroyed events. Currently unimplemented, as logs will no longer print this avatar (as no update events will happen)
+    // When avatar rejoins scene, the new peer_id will be mapped to the same device_id
     private void OnAvatarDestroyed(Avatar avatar)
     {
         Debug.Log($"Avatar {avatar.name} Destroyed.");
@@ -101,6 +110,8 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
     private void OnHead(Avatar avatar, InputVar<Pose> pose)
     {
         if (!pose.valid) return;
+        // print pose, SystemInfo.deviceUniqueIdentifier and Manual device name 
+        // SystemInfo.deviceUniqueIdentifier changes application to application
         experimentLogEmitter.Log("Head", pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
     }
 
@@ -135,6 +146,7 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
         }
     }
 
+    // Used to find controller in RPMLoader to send device id
     public static HeadAndHandsAvatarLoggingController Find()
     {
         var envController = GameObject.Find("Environment Controller");
