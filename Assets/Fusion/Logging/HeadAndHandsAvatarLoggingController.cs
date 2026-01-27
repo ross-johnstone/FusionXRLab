@@ -64,7 +64,7 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
     {
         var data = msg.FromJson<DeviceIdMessage>();
         peerToDeviceId[data.avatarId] = (data.uniqueId, data.id);
-        Debug.Log($"[HeadAndHands] {msg.objectid}, {data.uniqueId}, {data.avatarId}, {data.id}");
+        Debug.Log($"[HeadAndHands] objectid = {msg.objectid}, uniqueId = {data.uniqueId}, avatarId = {data.avatarId}, id = {data.id}");
         componentLogEmitter.Log("DeviceId", data.id);
     }
 
@@ -101,19 +101,19 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
     private void OnHead(Avatar avatar, InputVar<Pose> pose)
     {
         if (!pose.valid) return;
-        experimentLogEmitter.Log("Head", SystemInfo.deviceName, pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
+        experimentLogEmitter.Log("Head", pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
     }
 
     private void OnLeftHand(Avatar avatar, InputVar<Pose> pose)
     {
         if (!pose.valid) return;
-        experimentLogEmitter.Log("leftHand", SystemInfo.deviceName, pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
+        experimentLogEmitter.Log("leftHand", pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
     }
 
     private void OnRightHand(Avatar avatar, InputVar<Pose> pose)
     {
         if (!pose.valid) return;
-        experimentLogEmitter.Log("rightHand", SystemInfo.deviceName, pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
+        experimentLogEmitter.Log("rightHand", pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
     }
 
     void OnDisable()

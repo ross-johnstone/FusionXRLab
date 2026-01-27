@@ -24,6 +24,7 @@ public class RPMLoader : MonoBehaviour
     private RoomClient roomClient;
     private AvatarManager avatarManager;
     private const string PREFS_FILE_NAME = "prefs";
+    private const string DEVICE_FILE_NAME = "device";
     private const string PLAYER_PREFS_KEY = "avatars.readyplayerme.url";
     NetworkContext context;
     private LogEmitter componentLogEmitter;
@@ -129,16 +130,16 @@ public class RPMLoader : MonoBehaviour
 
         Debug.Log("[HeadAndHandsAvatarLoggingController] Start called. Path: " + Application.persistentDataPath);
 
-        string path = Path.Combine(Application.persistentDataPath, PREFS_FILE_NAME);
+        string devicePath = Path.Combine(Application.persistentDataPath, DEVICE_FILE_NAME);
 
-        if (File.Exists(path))
+        if (File.Exists(devicePath))
         {
-            string fileContent = File.ReadAllText(path).Trim();
-            Debug.Log($"[HeadAndHandsAvatarLoggingController] Read from file: {fileContent}");
+            string deviceFileContent = File.ReadAllText(devicePath).Trim();
+            Debug.Log($"[HeadAndHandsAvatarLoggingController] Read from file: {deviceFileContent}");
 
-            if (File.Exists(path))
+            if (File.Exists(devicePath))
             {
-                string id = fileContent.Substring("device_id=".Length).Trim();
+                string id = deviceFileContent.Substring("device_id=".Length).Trim();
 
                 PlayerPrefs.SetString("device_id", id);
 
