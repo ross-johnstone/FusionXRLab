@@ -103,6 +103,31 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    public void SpawnA()
+    {
+        DespawnCurrentObject();
+        SpawnObject(objectPrefabA, SpawnType.A);
+    }
+
+    public void SpawnB()
+    {
+        DespawnCurrentObject();
+        SpawnObject(objectPrefabB, SpawnType.B);
+    }
+
+    public void SpawnTable()
+    {
+        DespawnTableObject();
+        SpawnTableObject();
+    }
+
+    public void DespawnAll()
+    {
+        DespawnCurrentObject();
+        DespawnTableObject();
+    }
+
+
 
     private System.Collections.IEnumerator ForceNetworkUpdateNextFrame(NetworkedGrabbableWithVelocity grabbable)
     {

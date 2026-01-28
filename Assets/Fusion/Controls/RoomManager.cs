@@ -18,6 +18,14 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private bool forceUserMode = false;
     [SerializeField] private AudioClip[] availableAudioClips;
     [SerializeField] private GameObject facilitatorAvatarPrefab;
+
+    [Header("Spawn Menu (Editor Play Mode)")]
+    [SerializeField] private Spawner[] objectSpawners; // 9 spawnpoints
+    [SerializeField] private Spawner tableSpawner;     // Spawnpoint_Table
+    [SerializeField] private Spawner papersSpawner;    // Spawnpoint_Papers
+    [SerializeField] private bool tableAdded = false;  // gate for buttons
+    public bool TableAdded => tableAdded;
+
     #endregion
 
     #region Private Fields
@@ -38,6 +46,11 @@ public class RoomManager : MonoBehaviour
     private float lastDiscoveryTime = 0f;
     private const float PING_INTERVAL = 1f;
     private const float DISCOVERY_INTERVAL = 2f;
+
+    private NetworkSpawnManager spawnManager;
+    private GameObject spawnedTable;
+    private GameObject spawnedSet;
+
     #endregion
 
     #region Unity Lifecycle Methods
@@ -47,6 +60,13 @@ public class RoomManager : MonoBehaviour
         DetermineRole();
         SetupEventListeners();
         ConfigureAvatarVisibility();
+
+        // Get or add spawnManafer
+        spawnManager = networkScene.GetComponent<NetworkSpawnManager>();
+        if (spawnManager == null)
+        {
+            spawnManager = gameObject.AddComponent<NetworkSpawnManager>();
+        }
 
         // Get or add DarknessController
         darknessController = GetComponent<DarknessController>();
@@ -203,6 +223,49 @@ public class RoomManager : MonoBehaviour
     #endregion
 
     #region Room Management Methods
+
+    //public bool HasTable => spawnedTable != null;
+
+    public void AddTable()
+    {
+        if (tableSpawner == null) return;
+        tableSpawner.SpawnTable();
+        tableAdded = true;
+    }
+
+    public void ObjectSetA()
+    {
+        if (!tableAdded) return;
+
+        foreach (var s in objectSpawners)
+            if (s != null) s.SpawnA();
+
+        if (papersSpawner != null) papersSpawner.SpawnA();
+    }
+
+    public void ObjectSetB()
+    {
+        if (!tableAdded) return;
+
+        foreach (var s in objectSpawners)
+            if (s != null) s.SpawnB();
+
+        if (papersSpawner != null) papersSpawner.SpawnB();
+    }
+
+    public void DespawnAllSpawns()
+    {
+        foreach (var s in objectSpawners)
+            if (s != null) s.DespawnAll();
+
+        if (papersSpawner != null) papersSpawner.DespawnAll();
+        if (tableSpawner != null) tableSpawner.DespawnAll();
+
+        tableAdded = false;
+    }
+
+
+
     public void CreateRoom()
     {
         try
@@ -477,7 +540,35 @@ public class RoomManager : MonoBehaviour
                     UnityEditor.EditorGUILayout.HelpBox("No audio clips assigned. Please add audio clips to the Available Audio Clips array.", UnityEditor.MessageType.Info);
                 }
             }
+            UnityEditor.EditorGUILayout.Space();
+            UnityEditor.EditorGUILayout.LabelField("Experiment Spawn Controls", UnityEditor.EditorStyles.boldLabel);
+
+            if (GUILayout.Button("ADD TABLE"))
+            {
+                manager.AddTable();
+            }
+
+            GUI.enabled = manager.TableAdded;
+            if (GUILayout.Button("OBJECT SET A"))
+            {
+                manager.ObjectSetA();
+            }
+            if (GUILayout.Button("OBJECT SET B"))
+            {
+                manager.ObjectSetB();
+            }
+            GUI.enabled = true;
+
+            if (GUILayout.Button("DESPAWN ALL"))
+            {
+                manager.DespawnAllSpawns();
+            }
+
+
+            GUI.enabled = true;
+
         }
+
     }
 #endif
     #endregion
