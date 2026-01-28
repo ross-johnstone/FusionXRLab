@@ -1,0 +1,862 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6765007548529600699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4057622884236373629}
+  m_Layer: 0
+  m_Name: Table 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4057622884236373629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765007548529600699}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1203920946791045340}
+  - {fileID: 5583027412572709339}
+  - {fileID: 1513311759480748524}
+  - {fileID: 1806769933111446168}
+  - {fileID: 7138415010071665152}
+  - {fileID: 8780703160213344159}
+  - {fileID: 7003163084994868722}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1319227852965960994
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4057622884236373629}
+    m_Modifications:
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_text
+      value: "Hellenistic Cnidian Lamp\n\nReplica of a 2nd\u20131st century BC oil
+        lamp from Cnidus, a key ceramic centre in Anatolia. Part of the Dorian Hexapolis,
+        Cnidus was famed for its art and architecture. Hellenistic lamps became mould-made,
+        with closed tops, filling holes, and decorative reliefs stamped or engraved.\n\nVenus
+        of Willendorf\n\nSmall limestone figure (11.1 cm) from around 28,000\u201325,000
+        BCE, found in Austria. Shows a female form with exaggerated features linked
+        to fertility or survival. Lacking facial detail, the head has braids or a
+        patterned cap. Likely used in ritual and symbolic contexts.\n\nBaby Feeder\n\nSpouted
+        clay vessels from infant graves in Bronze and Iron Age Europe. Milk residue
+        confirms their use in feeding babies. Often buried with children, they reflect
+        early childcare practices. May also have served the sick or elderly, offering
+        insight into prehistoric family life."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSize
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_lineSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_characterSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Name
+      value: Paper1A
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.278
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7555009
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.097
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.81009793
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.58629465
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 71.789
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8526558719889410481, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+--- !u!4 &5583027412572709339 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+  m_PrefabInstance: {fileID: 1319227852965960994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1675223361633697591
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4057622884236373629}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.009999998
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.009999998
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6373035393894840800, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5105368099837451804, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1337267282928294607, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -748208634671458330, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 609855619553158100, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 730360785399024251, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Name
+      value: Round_Folding_Table_White_Unfolded_obj_base
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005138512018200555, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4912978739190095564, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194300645873736205, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5212124531298830539, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487238584240426268, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8032750206264916975, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1816166785860093249, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 339792582008435259}
+  m_SourcePrefab: {fileID: 100100000, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+--- !u!1 &1012118956918536822 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1816166785860093249, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+  m_PrefabInstance: {fileID: 1675223361633697591}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &339792582008435259
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012118956918536822}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4185675743113982831, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+--- !u!4 &1203920946791045340 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 859c4352f8b839d4ca86dccd6d020053, type: 3}
+  m_PrefabInstance: {fileID: 1675223361633697591}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2805567078287209318
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4057622884236373629}
+    m_Modifications:
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_text
+      value: "Greek Antefix with Medusa\n\nTerracotta roof tile end from Ancient
+        Greece with both protective and decorative roles. Features a grotesque face\u2014often
+        Medusa\u2014meant to ward off evil. Her wide eyes, gaping mouth, and snake
+        hair offered apotropaic power while sealing and shielding rooftop structures.\n\nBoyne
+        Valley Grooved Ware Bowl\n\nReplica of Neolithic pottery from Br\xFA Na B\xF3inne,
+        based on finds at Newgrange, Knowth, and Dowth. Incised lines and symmetry
+        reflect symbolic design. Likely used in ritual settings for food, pigment,
+        or offerings in ceremonies tied to passage tombs.\n\nRoman Black Burnished
+        Cup\n\nReplica of Romano-British black burnished ware, fired using traditional
+        methods at Vindolanda. Wheel-thrown and polished by hand, it has a rich sheen.
+        Widely used across Roman Britain, it blends everyday function with fine local
+        craftsmanship."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSize
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_lineSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_characterSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Name
+      value: Paper2B
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.038
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7555009
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.253
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.11156908
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9937567
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 192.812
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8526558719889410481, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+--- !u!4 &8780703160213344159 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+  m_PrefabInstance: {fileID: 2805567078287209318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4333744620142798585
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4057622884236373629}
+    m_Modifications:
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_text
+      value: "Roman Terracotta Oil Lamp with Cupid\n\nTerracotta oil lamp from the
+        Early Roman Empire (1st century BCE\u20131st century CE), measuring 9.9 cm
+        long. Used in homes and public spaces for everyday lighting. Its simple,
+        practical form reflects Roman ceramic design. From the Cesnola Collection,
+        now in The Met.\n\nBird Woman\n\nTerracotta figurine from Predynastic Egypt
+        (Naqada II, c. 3500\u20133400 BCE). With outstretched arms and a birdlike
+        shape, it highlights feminine features linked to fertility. Likely used in
+        ritual or burial, symbolising transformation, rebirth, or spiritual power.\n\nBaby
+        Feeding Animal Vessel\n\nReplica of Bronze and Iron Age vessels from Central
+        Europe, made of smoke-fired terracotta. Animal-shaped with a spout, it resembles
+        a feeding bottle. Traces of milk show use in infant care, possibly easing
+        weaning. Combines function with creative, calming design."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSize
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_lineSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_characterSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Name
+      value: Paper1B
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.278
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7555009
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.097
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.81009793
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.58629465
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 71.789
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8526558719889410481, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+--- !u!4 &7138415010071665152 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+  m_PrefabInstance: {fileID: 4333744620142798585}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4468706473681291531
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4057622884236373629}
+    m_Modifications:
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_text
+      value: "Roman Votive Foot\n\nReplica of a Roman anatomical offering left at
+        healing sanctuaries for ailments of the foot. Often dedicated to Asclepius,
+        these votives symbolised prayer or thanks. Common across the Roman world,
+        they reflect belief in divine healing through body-focused ritual.\n\nBout
+        Coup\xE9 Handaxe\n\nFlint handaxe made by Neanderthals in Britain around
+        60,000\u201340,000 years ago. Named for its rounded base and triangular shape,
+        it was finely flaked for cutting tasks. Unique to Britain, it shows local
+        adaptation and late Neanderthal craftsmanship.\n\nMinoan Snake Goddess\n\nBronze
+        Age figure from Knossos, Crete, dated to c. 1600 BCE. Made of faience, she
+        holds snakes and may wear a feline crown. Possibly a goddess or priestess,
+        she symbolises fertility, renewal, and chthonic power in Minoan ritual and
+        belief."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSize
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_lineSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_characterSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Name
+      value: Paper3B
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.192
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7555009
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.224
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92493796
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.3801181
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -44.682
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8526558719889410481, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+--- !u!4 &7003163084994868722 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+  m_PrefabInstance: {fileID: 4468706473681291531}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5054970393346618977
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4057622884236373629}
+    m_Modifications:
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_text
+      value: 'Roman Votive Hand
+
+
+        Replica of a terracotta votive hand from
+        the British Museum. Such offerings were left at healing sanctuaries across
+        the Greco-Roman world, often dedicated to gods like Asclepius. They reflect
+        beliefs in divine healing and the connection between religion and medicine.
+
+
+        Bronze
+        Flanged Axe
+
+
+        Early Bronze Age axe from Britain marking the move
+        from stone to metal. Raised flanges secured the blade to a wooden handle.
+        Cast in simple moulds, it symbolised status and access to rare materials,
+        as well as early innovation in toolmaking.
+
+
+        Shabti of Psamtik
+
+
+        Replica
+        of a Late Period Egyptian shabti (c. 600 BCE) made of vivid blue composition.
+        With mummiform body, divine beard, and farm tools, it was inscribed to serve
+        Psamtik in the afterlife. A symbol of resurrection, magical labour, and eternal
+        service.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSize
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_lineSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_characterSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Name
+      value: Paper3A
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.192
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7555009
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.224
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92493796
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.3801181
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -44.682
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8526558719889410481, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+--- !u!4 &1806769933111446168 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+  m_PrefabInstance: {fileID: 5054970393346618977}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5347020029650601237
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4057622884236373629}
+    m_Modifications:
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_text
+      value: "Roman Antefix/Tile\n\nReplica of a 2nd\u20133rd century AD roof tile
+        with \u201CLEG XX\u201D and the boar emblem of the 20th Legion, based on
+        a find from Holt, now in the British Museum. Made by the Legion\u2019s tilery
+        in Romano-Britain, these tiles lined roof eaves and marked military presence
+        and authority. The 20th Legion, famed for its fierceness, came to Britain
+        with Claudius in 43 AD.\n\nHembury Bowl\n\nBased on a pottery sherd from
+        Hembury Hillfort, Devon, dated to 3700\u20133400 BCE. The site was a key
+        Neolithic gathering place with signs of communal life. The bowl\u2019s handmade
+        form reflects simple, functional use and a deep connection to land and craft.\n\nGreek
+        Skyphos\n\nReplica of a two-handled Greek wine cup from the Shefton Collection.
+        Used in symposia and casual gatherings, the skyphos blends practicality and
+        elegance, symbolizing the social value of shared drinking and conversation
+        in classical Greece."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSize
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_lineSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_characterSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882262320171367339, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Name
+      value: Paper2A
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782548244708260545, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.038
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7555009
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.253
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.11156908
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9937567
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 192.812
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8526558719889410481, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+--- !u!4 &1513311759480748524 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6860164637526883577, guid: c480ee079c800aa42a2a66683d2783ad, type: 3}
+  m_PrefabInstance: {fileID: 5347020029650601237}
+  m_PrefabAsset: {fileID: 0}
