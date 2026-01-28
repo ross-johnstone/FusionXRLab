@@ -491,7 +491,7 @@ MonoBehaviour:
   - {fileID: 555151557}
   - {fileID: 812860154}
   - {fileID: 2107567194}
-  tableSpawnPoint: {fileID: 758271899}
+  tableSpawner: {fileID: 758271899}
   papersSpawner: {fileID: 0}
   tableAdded: 0
 --- !u!1 &221942198

@@ -1,3 +1,5 @@
+// Currently unused - refer to Spawner script
+
 using UnityEngine;
 using Ubiq.Messaging;
 

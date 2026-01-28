@@ -21,7 +21,7 @@ public class RoomManager : MonoBehaviour
 
     [Header("Spawn Menu (Editor Play Mode)")]
     [SerializeField] private Spawner[] objectSpawners; // 9 spawnpoints
-    [SerializeField] private Spawner tableSpawnPoint;     // Spawnpoint_Table
+    [SerializeField] private Spawner tableSpawner;     // Spawnpoint_Table
     [SerializeField] private Spawner papersSpawner;    // Spawnpoint_Papers
     [SerializeField] private bool tableAdded = false;  // gate for buttons
     public bool TableAdded => tableAdded;
@@ -38,7 +38,7 @@ public class RoomManager : MonoBehaviour
     private AvatarManager avatarManager;
     private DarknessController darknessController;
     private AudioController audioController;
-    private TableSpawner tableSpawner;
+    // private TableSpawner tableSpawner;
     private bool isFacilitator;
     private bool isAvatarHidden = true;
     private bool isExperimentRunning = false;
@@ -83,11 +83,12 @@ public class RoomManager : MonoBehaviour
             audioController = gameObject.AddComponent<AudioController>();
         }
 
-        tableSpawner = GetComponent<TableSpawner>();
-        if (tableSpawner == null)
-        {
-            tableSpawner = gameObject.AddComponent<TableSpawner>();
-        }
+        // Currently unsued - used for enabling table object in the scene for all headsets currently in the scene
+        // tableSpawner = GetComponent<TableSpawner>();
+        // if (tableSpawner == null)
+        // {
+        //     tableSpawner = gameObject.AddComponent<TableSpawner>();
+        // }
 
         // Initialize audio controller with clips
         if (availableAudioClips != null && availableAudioClips.Length > 0)
@@ -235,8 +236,8 @@ public class RoomManager : MonoBehaviour
 
     public void AddTable()
     {
-        if (tableSpawnPoint == null) return;
-        tableSpawnPoint.SpawnTable();
+        if (tableSpawner == null) return;
+        tableSpawner.SpawnTable();
         tableAdded = true;
     }
 
@@ -266,7 +267,7 @@ public class RoomManager : MonoBehaviour
             if (s != null) s.DespawnAll();
 
         if (papersSpawner != null) papersSpawner.DespawnAll();
-        if (tableSpawnPoint != null) tableSpawnPoint.DespawnAll();
+        if (tableSpawner != null) tableSpawner.DespawnAll();
 
         tableAdded = false;
     }
@@ -510,12 +511,13 @@ public class RoomManager : MonoBehaviour
                     manager.experimentLogger.Log("[RoomManager] Room Environment Toggled");
                 }
 
-                UnityEditor.EditorGUILayout.Space();
-                if (GUILayout.Button("Toggle Table"))
-                {
-                    manager.tableSpawner.ToggleTable();
-                    manager.experimentLogger.Log("[RoomManager] Room Environment Toggled");
-                }
+                // Currently usused - activates enables table object for all headsets currently in the scene. 
+                // UnityEditor.EditorGUILayout.Space();
+                // if (GUILayout.Button("Toggle Table"))
+                // {
+                //     manager.tableSpawner.ToggleTable();
+                //     manager.experimentLogger.Log("[RoomManager] Room Environment Toggled");
+                // }
 
                 UnityEditor.EditorGUILayout.Space();
                 UnityEditor.EditorGUILayout.LabelField("Audio Controls", UnityEditor.EditorStyles.boldLabel);
@@ -562,7 +564,7 @@ public class RoomManager : MonoBehaviour
                 manager.AddTable();
             }
 
-            GUI.enabled = manager.TableAdded;
+            // GUI.enabled = manager.TableAdded;
             if (GUILayout.Button("OBJECT SET A"))
             {
                 manager.ObjectSetA();
@@ -571,7 +573,7 @@ public class RoomManager : MonoBehaviour
             {
                 manager.ObjectSetB();
             }
-            GUI.enabled = true;
+            // GUI.enabled = true;
 
             if (GUILayout.Button("DESPAWN ALL"))
             {
