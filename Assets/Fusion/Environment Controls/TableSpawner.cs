@@ -48,7 +48,6 @@ public class TableSpawner : MonoBehaviour
         try 
         {
             toggleTable = !toggleTable;
-            Debug.Log($"[DarknessController] Table {(toggleTable ? "ON" : "OFF")}");
             
             // Send the new state to all clients
             if (context.Id.Valid)
