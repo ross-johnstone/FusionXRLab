@@ -30,6 +30,7 @@ public class RoomManager : MonoBehaviour
     private AvatarManager avatarManager;
     private DarknessController darknessController;
     private AudioController audioController;
+    private TableSpawner tableSpawner;
     private bool isFacilitator;
     private bool isAvatarHidden = true;
     private bool isExperimentRunning = false;
@@ -60,6 +61,12 @@ public class RoomManager : MonoBehaviour
         if (audioController == null)
         {
             audioController = gameObject.AddComponent<AudioController>();
+        }
+
+        tableSpawner = GetComponent<TableSpawner>();
+        if (tableSpawner == null)
+        {
+            tableSpawner = gameObject.AddComponent<TableSpawner>();
         }
 
         // Initialize audio controller with clips
@@ -437,6 +444,13 @@ public class RoomManager : MonoBehaviour
                 if (GUILayout.Button("Toggle Room Environment"))
                 {
                     manager.darknessController.ToggleDarkness();
+                    manager.experimentLogger.Log("[RoomManager] Room Environment Toggled");
+                }
+
+                UnityEditor.EditorGUILayout.Space();
+                if (GUILayout.Button("Toggle Table"))
+                {
+                    manager.tableSpawner.ToggleTable();
                     manager.experimentLogger.Log("[RoomManager] Room Environment Toggled");
                 }
 

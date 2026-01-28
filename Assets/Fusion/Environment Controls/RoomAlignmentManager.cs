@@ -20,8 +20,8 @@ public class RoomAlignmentManager : MonoBehaviour
         boundaryPoints = new Vector3[4];
         
         // Subscribe to OVRManager events
-        OVRManager.HMDMounted += OnHMDMounted;
-        OVRManager.HMDUnmounted += OnHMDUnmounted;
+        // OVRManager.HMDMounted += OnHMDMounted;
+        // OVRManager.HMDUnmounted += OnHMDUnmounted;
         
         // Initial alignment
         UpdateRoomAlignment();
