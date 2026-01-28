@@ -110,6 +110,7 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
     private void OnHead(Avatar avatar, InputVar<Pose> pose)
     {
         if (!pose.valid) return;
+        if (!peerToDeviceId.TryGetValue(avatar.NetworkId, out var data)) return;
         // print pose, SystemInfo.deviceUniqueIdentifier and Manual device name 
         // SystemInfo.deviceUniqueIdentifier changes application to application
         experimentLogEmitter.Log("Head", pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
@@ -118,12 +119,14 @@ public class HeadAndHandsAvatarLoggingController : MonoBehaviour
     private void OnLeftHand(Avatar avatar, InputVar<Pose> pose)
     {
         if (!pose.valid) return;
+        if (!peerToDeviceId.TryGetValue(avatar.NetworkId, out var data)) return;
         experimentLogEmitter.Log("leftHand", pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
     }
 
     private void OnRightHand(Avatar avatar, InputVar<Pose> pose)
     {
         if (!pose.valid) return;
+        if (!peerToDeviceId.TryGetValue(avatar.NetworkId, out var data)) return;
         experimentLogEmitter.Log("rightHand", pose.value.position, pose.value.rotation, peerToDeviceId[avatar.NetworkId].uniqueId, peerToDeviceId[avatar.NetworkId].deviceId);
     }
 
