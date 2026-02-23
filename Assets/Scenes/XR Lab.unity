@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5718651ca0731c543a11eb7cf816b36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: Iain
+  roomName: Experiment Room
   enableVoice: 1
   forceFacilitatorMode: 0
   forceUserMode: 0
@@ -4929,11 +4929,11 @@ PrefabInstance:
     - target: {fileID: 1082635309853141966, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
       propertyPath: avatarPrefab
       value: 
-      objectReference: {fileID: 4180888396450579537, guid: 4a57ad116b595554cb09c38ed86a21d6, type: 3}
+      objectReference: {fileID: 3172939939781028348, guid: 59bce046eba3bb14a80855d4c1810e99, type: 3}
     - target: {fileID: 1082635309853141966, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
       propertyPath: avatarCatalogue
       value: 
-      objectReference: {fileID: 11400000, guid: 9d44d10fb7a14c34487057013a560c8f, type: 2}
+      objectReference: {fileID: 11400000, guid: 154fbe2147d60d44384df3453ca8feba, type: 2}
     - target: {fileID: 1253916436262327332, guid: 73369a530bd8253469d623a3ea6dcff9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
