@@ -1,0 +1,21 @@
+﻿<Solution>
+  <Project Path="Oculus.AvatarSDK2.Samples.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Unity.XR.Interaction.Toolkit.Samples.DeviceSimulator.csproj" />
+  <Project Path="ReadyPlayerMe.AvatarLoader.Editor.csproj" />
+  <Project Path="Ubiq.ReadyPlayerMe.csproj" />
+  <Project Path="ReadyPlayerMe.AvatarLoader.csproj" />
+  <Project Path="Ubiq.Demo.csproj" />
+  <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj" />
+  <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="ReadyPlayerMe.AvatarLoader.Editor.Tests.csproj" />
+  <Project Path="Unity.XR.Interaction.Toolkit.Samples.Hands.csproj" />
+  <Project Path="Oculus.AvatarSDK2.Samples.Editor.csproj" />
+  <Project Path="Unity.XR.Hands.Samples.VisualizerSample.csproj" />
+  <Project Path="ReadyPlayerMe.Extras.Editor.csproj" />
+  <Project Path="Unity.XR.Hands.Samples.Gestures.csproj" />
+  <Project Path="Ubiq.ReadyPlayerMe.Editor.csproj" />
+  <Project Path="Unity.XR.Interaction.Toolkit.Samples.Hands.Editor.csproj" />
+  <Project Path="Ubiq.Demo.Editor.csproj" />
+</Solution>
