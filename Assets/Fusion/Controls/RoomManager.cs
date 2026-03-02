@@ -248,7 +248,7 @@ public class RoomManager : MonoBehaviour
         foreach (var s in objectSpawners)
             if (s != null) s.SpawnA();
 
-        if (papersSpawner != null) papersSpawner.SpawnA();
+        //if (papersSpawner != null) papersSpawner.SpawnA();
     }
 
     public void ObjectSetB()
@@ -258,7 +258,25 @@ public class RoomManager : MonoBehaviour
         foreach (var s in objectSpawners)
             if (s != null) s.SpawnB();
 
-        if (papersSpawner != null) papersSpawner.SpawnB();
+        //if (papersSpawner != null) papersSpawner.SpawnB();
+    }
+
+    public void SpawnPaper1()
+    {
+        if (!tableAdded) return;
+        if (papersSpawner != null) papersSpawner.SpawnPaper1();
+    }
+
+    public void SpawnPaper2()
+    {
+        if (!tableAdded) return;
+        if (papersSpawner != null) papersSpawner.SpawnPaper2();
+    }
+
+    public void SpawnPaper3()
+    {
+        if (!tableAdded) return;
+        if (papersSpawner != null) papersSpawner.SpawnPaper3();
     }
 
     public void DespawnAllSpawns()
@@ -578,6 +596,22 @@ public class RoomManager : MonoBehaviour
             if (GUILayout.Button("DESPAWN ALL"))
             {
                 manager.DespawnAllSpawns();
+            }
+
+            UnityEditor.EditorGUILayout.Space();
+            UnityEditor.EditorGUILayout.LabelField("Paper Spawns", UnityEditor.EditorStyles.boldLabel);
+
+            if (GUILayout.Button("PAPERS 1"))
+            {
+                manager.SpawnPaper1();
+            }
+            if (GUILayout.Button("PAPERS 2"))
+            {
+                manager.SpawnPaper2();
+            }
+            if (GUILayout.Button("PAPERS 3"))
+            {
+                manager.SpawnPaper3();
             }
 
 
