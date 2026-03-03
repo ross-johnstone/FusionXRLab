@@ -80,7 +80,6 @@ MonoBehaviour:
   m_multiviewRenderRegionsOptimizationMode: 0
   m_hasMigratedMultiviewRenderRegionSetting: 1
   m_foveatedRenderingApi: 0
-  m_useOpenXRPredictedTime: 0
 --- !u!114 &-8505279607585197269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +242,6 @@ MonoBehaviour:
   m_multiviewRenderRegionsOptimizationMode: 0
   m_hasMigratedMultiviewRenderRegionSetting: 1
   m_foveatedRenderingApi: 0
-  m_useOpenXRPredictedTime: 0
 --- !u!114 &-7593902343289962451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,7 +477,6 @@ MonoBehaviour:
   m_multiviewRenderRegionsOptimizationMode: 0
   m_hasMigratedMultiviewRenderRegionSetting: 1
   m_foveatedRenderingApi: 0
-  m_useOpenXRPredictedTime: 0
 --- !u!114 &-4088851921126486003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,7 +517,6 @@ MonoBehaviour:
   company: Unity
   priority: 0
   required: 0
-  m_UseRightHandedNDC: 0
 --- !u!114 &-3045428698653470789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1176,7 +1172,6 @@ MonoBehaviour:
   m_multiviewRenderRegionsOptimizationMode: 0
   m_hasMigratedMultiviewRenderRegionSetting: 1
   m_foveatedRenderingApi: 0
-  m_useOpenXRPredictedTime: 0
 --- !u!114 &7129012390677400193
 MonoBehaviour:
   m_ObjectHideFlags: 0
