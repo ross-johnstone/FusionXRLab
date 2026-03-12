@@ -2333,6 +2333,7 @@ GameObject:
   - component: {fileID: 693981368}
   - component: {fileID: 693981369}
   - component: {fileID: 693981370}
+  - component: {fileID: 693981371}
   m_Layer: 0
   m_Name: Device Logger
   m_TagString: Untagged
@@ -2392,6 +2393,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf4633a2afd64fabb6d8dce16ed6b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadAndHandsAvatarLoggingController
+--- !u!114 &693981371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693981366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6807504f4a54824c8d34e39e58812aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RPMLoader
 --- !u!1 &706186785 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6355494128053973299, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
